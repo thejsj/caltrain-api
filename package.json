@@ -1,0 +1,25 @@
+{
+  "name": "caltrain-api",
+  "version": "0.0.1",
+  "description": "A simple API for Caltrain",
+  "main": "server/index.js",
+  "scripts": {
+    "test": "./node_modules/mocha/bin/mocha.js server/test/index.js"
+  },
+  "keywords": [
+    "caltrain",
+    "api",
+    "node",
+    "rethinkdb"
+  ],
+  "author": "thejsj",
+  "license": "ISC",
+  "devDependencies": {
+    "mocha": "^2.1.0",
+    "nodemon": "^1.3.7"
+  },
+  "dependencies": {
+    "lodash": "^3.3.0",
+    "rethinkdb": "^1.16.0"
+  }
+}
