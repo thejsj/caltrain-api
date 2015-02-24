@@ -5,8 +5,8 @@ import sys, argparse
 from generate_parse_schedule import generate_parse_schedule
 
 parse_weekday_schedule = generate_parse_schedule(2, 2, 'weekday')
-parse_saturday_schedule = generate_parse_schedule(3, 2, 'saturday')
-parse_sunday_schedule = generate_parse_schedule(3, 2, 'sunday')
+parse_saturday_schedule = generate_parse_schedule(3, 0, 'saturday')
+parse_sunday_schedule = generate_parse_schedule(3, 0, 'sunday')
 
 def get_location(name, file_extension):
   parent_path = os.path.abspath(os.curdir)
@@ -52,17 +52,17 @@ parser.add_argument('-c', '--clear', action='store_true', help="Clear the curren
 def main():
   args = parser.parse_args(sys.argv[1:])
   urls = {
-    'weekday': 'http://www.caltrain.com/schedules/weekdaytimetable.html',
     'saturday': 'http://www.caltrain.com/schedules/weekend-timetable.html',
-    'sunday': 'http://www.caltrain.com/schedules/weekend-timetable.html'
+    'weekday': 'http://www.caltrain.com/schedules/weekdaytimetable.html',
+    'sunday': 'http://www.caltrain.com/schedules/weekend-timetable.html',
   }
   if args.clear: clear_cache(urls)
   train_times = []
   station_times = []
   for key, url in urls.iteritems():
     train_times, station_times = get_schedule(url, key, train_times, station_times)
-  save_to_json(train_times, 'trains' )
-  save_to_json(station_times, 'station')
+  save_to_json(train_times, 'trains')
+  save_to_json(station_times, 'stations')
 
 if __name__ == "__main__":
   main()

@@ -8,8 +8,8 @@
     [ ] Shuttle Bus
     [x] Train may leave up to 5 minutes early
     [x] Train departure may be delayed up to 15 minutes
-    [ ] Add am and pm
-    [ ] Convert into 2 JSON files (stations.json and train.json)
+    [x] Add am and pm
+    [x] Convert into 2 JSON files (stations.json and train.json)
 
 [ ] Import to RethinkDB
     [ ] Create tables (if necessary)
