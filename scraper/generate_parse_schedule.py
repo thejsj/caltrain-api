@@ -1,5 +1,9 @@
 #!/usr/bin/python
 from slugify import slugify
+import re
+
+start_star = re.compile(r'^\*')
+end_plus_sign = re.compile(r'\+{1}$')
 
 def get_type(train_number, day_type):
   try:
@@ -17,13 +21,25 @@ def get_type(train_number, day_type):
     return False
 
 def filter_saturday_only_trains(trains):
-  sat_only = [421, 451, 450, 454]
-  trains = {train_number: time for train_number, time in trains.iteritems() if train_number not in sat_only}
-  print trains.keys()
-  return trains
+  nd = re.compile(r'\D*')
+  sat_only = ['421', '451', '450', '454']
+  return {train_number: time for train_number, time in trains.iteritems() if nd.sub('', train_number) not in sat_only}
+
+def get24HourBasedTime(text, row_num, col_num):
+  text = start_star.sub('', text)
+  text = end_plus_sign.sub('', text)
+  split_numbers = text.split(':')
+  if split_numbers[0].isdigit():
+    if ((col_num < 8) or (col_num > 42)) and split_numbers[0] is '12':
+      split_numbers[0] = '0'
+    if col_num > 8 or (col_num > 6 and split_numbers[0] is '12'):
+      split_numbers[0] = str(int(split_numbers[0]) * 2)
+    return split_numbers[0] + ':' + split_numbers[1]
+  return text
 
 def generate_parse_schedule(first_index, last_index, day_type):
   def parse_schedule(soup, table_class):
+    print ('parse_schedule', table_class, day_type)
     train_times = {}
     station_times = {}
 
@@ -44,26 +60,33 @@ def generate_parse_schedule(first_index, last_index, day_type):
       trains = {train_lines[i]: times[i] for i, time in enumerate(times) if time.encode('ascii', 'ignore')}
       if day_type is 'sunday':
         trains = filter_saturday_only_trains(trains)
-        print(trains)
       # Remove empty times
       times = [time for time in times if time.encode('ascii', 'ignore')]
       station_times[slugify(cells[first_index - 1])] = {
         'name': cells[first_index - 1],
         'slug': slugify(cells[first_index - 1]),
         'zone': cells[first_index - 2],
-        'times': times,
+        'times': [get24HourBasedTime(time, i, ii) for ii, time in enumerate(times)],
+        'day': day_type,
         'trains': trains
       }
     for station_slug, station in station_times.iteritems():
-      for train_number, time in station['trains'].iteritems():
-        if train_number not in train_times:
-          train_times[train_number] = {
-            'number': train_number,
-            'times': [],
-            'type': get_type(train_number, day_type),
-            'stations': {}
-          }
-        train_times[train_number]['times'].append(time)
-        train_times[train_number]['stations'][station['slug']] = time
+      for train_number_str, time in station['trains'].iteritems():
+        train_number = start_star.sub('', train_number_str)
+        train_number = end_plus_sign.sub('', train_number_str)
+        if train_number.isdigit():
+          if train_number not in train_times:
+            train_times[train_number] = {
+              'number': train_number,
+              'day': day_type,
+              'direction': ('south' if int(train_number) % 2 == 0 else 'north'),
+              'type': get_type(train_number, day_type),
+              'times': [],
+              'stations': {},
+              'may_leave_5_minutes_early': bool(start_star.match(train_number_str)), # Check if first chart is '*'
+              'may_be_delayed_15_minutes': bool(end_plus_sign.match(train_number_str)), # Check if last char is '#'
+            }
+          train_times[train_number]['times'].append(time)
+          train_times[train_number]['stations'][station['slug']] = time
     return train_times, station_times
   return parse_schedule

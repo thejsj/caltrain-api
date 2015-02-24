@@ -7,16 +7,13 @@ from generate_parse_schedule import generate_parse_schedule
 parse_weekday_schedule = generate_parse_schedule(2, 2, 'weekday')
 parse_saturday_schedule = generate_parse_schedule(3, 2, 'saturday')
 parse_sunday_schedule = generate_parse_schedule(3, 2, 'sunday')
-train_times = False
-station_times = False
 
 def get_location(name, file_extension):
   parent_path = os.path.abspath(os.curdir)
   file_name = "%s/%s/%s.%s" % ('data', file_extension, name, file_extension)
   return os.path.join(parent_path, file_name)
 
-def get_schedule(schedule_url, schedule_name):
-  global train_times, station_times
+def get_schedule(schedule_url, schedule_name, train_times, station_times):
   html = open(get_location(schedule_name, 'html'), 'r')
   soup = BeautifulSoup(html)
   directions = {
@@ -25,13 +22,14 @@ def get_schedule(schedule_url, schedule_name):
   }
   for key, value in directions.iteritems():
     if schedule_name is 'weekday':
-      train_times, station_times = parse_weekday_schedule(soup, value)
+      _train_times, _station_times = parse_weekday_schedule(soup, value)
     elif schedule_name is 'saturday':
-      train_times, station_times = parse_saturday_schedule(soup, value)
+      _train_times, _station_times = parse_saturday_schedule(soup, value)
     elif schedule_name is 'sunday':
-      train_times, station_times = parse_sunday_schedule(soup, value)
-    save_to_json(train_times, 'train-times-%s-%s' % (schedule_name, key) )
-    save_to_json(station_times, 'station-times-%s-%s' % (schedule_name, key))
+      _train_times, _station_times = parse_sunday_schedule(soup, value)
+    train_times =  train_times + _train_times.values()
+    station_times = station_times + _station_times.values()
+  return train_times, station_times
 
 def clear_cache(urls):
   print('Clear Cache')
@@ -59,8 +57,12 @@ def main():
     'sunday': 'http://www.caltrain.com/schedules/weekend-timetable.html'
   }
   if args.clear: clear_cache(urls)
+  train_times = []
+  station_times = []
   for key, url in urls.iteritems():
-    get_schedule(url, key)
+    train_times, station_times = get_schedule(url, key, train_times, station_times)
+  save_to_json(train_times, 'trains' )
+  save_to_json(station_times, 'station')
 
 if __name__ == "__main__":
   main()
