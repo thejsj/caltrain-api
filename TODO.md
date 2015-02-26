@@ -1,10 +1,10 @@
 
 ## TODO
 
-[ ] Scraper
+[x] Scraper
     [x] Add Saturday VS. Sunday Service
     [x] Add Express/Limited/Local
-    [ ] Write Tests
+    [x] Write Tests
     [ ] Shuttle Bus
     [x] Train may leave up to 5 minutes early
     [x] Train departure may be delayed up to 15 minutes

@@ -90,7 +90,7 @@ class TrainTests(unittest.TestCase):
     self.assertTrue(train_times_dict['199']['may_leave_5_minutes_early'])
     self.assertTrue(train_times_dict['451']['may_leave_5_minutes_early'])
 
-  # Trains should have the correct `may_be_delayed_15_minutes`
+  # Trains should the correct day in which they run
   def test_train_day(self):
     # Not getting sundays in these keys
     self.assertEqual(train_times_dict['801']['day'], 'saturday')
