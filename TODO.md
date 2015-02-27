@@ -10,12 +10,12 @@
     [x] Train departure may be delayed up to 15 minutes
     [x] Add am and pm
     [x] Convert into 2 JSON files (stations.json and train.json)
+    [ ] Add geolocation to stations
 
-[ ] Import to RethinkDB
-    [ ] Create tables (if necessary)
-    [ ] Create indexes
-    [ ] Add documents
-    [ ] Create cross-references
+[x] Import to RethinkDB
+    [x] Create tables (if necessary)
+    [x] Create indexes
+    [x] Add documents
 
 [ ] Create API
     [ ] Install io.js

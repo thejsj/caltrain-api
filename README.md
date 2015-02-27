@@ -7,19 +7,19 @@ Extremely simple API to get Caltrain schedule data.
 
 ### Endpoints
 
-There are two endpoints in this API: `/schedule` and `/station`,
+There are two endpoints in this API: `/train` and `/station`,
 
 #### /schedule
 
 Provide a `from` station and a `to` station and get a list of departures.
 
 ```
-curl http://api.caltrain-api.com/v1/schedule \
+curl http://api.caltrain-api.com/v1/train \
     -d from='22nd-street' \ // Station
     -d to='mountain-view'   // Station
 ```
 
-`Station`s (`from` and `to`) can be queried in three ways:
+`Station`s (`from` and `to`) can be queried in two ways:
 
 - Station Name <String>
 - Station ID <Integer>
@@ -27,7 +27,7 @@ curl http://api.caltrain-api.com/v1/schedule \
 Provide a departure time an get the the closest departures.
 
 ```
-curl http://api.caltrain-api.com/v1/schedule \
+curl http://api.caltrain-api.com/v1/train \
   -d from='22nd-street' \ // Station
   -d to='mountain-view' \  // Station
   -d departure='1424570262' // Time
@@ -42,7 +42,7 @@ curl http://api.caltrain-api.com/v1/schedule \
 Provide an arrival time an get the the closest departures.
 
 ```
-curl http://api.caltrain-api.com/v1/schedule \
+curl http://api.caltrain-api.com/v1/train \
   -d station_from='22nd-street' \
   -d station_to='mountain-view' \ 
   -d arrival='1424570262' // Unix Timestamp <Number>
@@ -51,10 +51,24 @@ curl http://api.caltrain-api.com/v1/schedule \
 Provide an type in order to filter results by local, limited or express trains.
 
 ```
-curl http://api.caltrain-api.com/v1/schedule \
+curl http://api.caltrain-api.com/v1/train \
   -d station_from='22nd-street' \
   -d station_to='mountain-view' \ 
   -d train_type='limited,express'
+```
+
+Provide a train `id` to see the schedule for that train.
+
+```
+curl http://api.caltrain-api.com/v1/train \
+  -d id='d9000734-078e-490b-bbfa-c11fb2f48322'
+```
+
+Provide a train number to see the schedule for that train.
+
+```
+curl http://api.caltrain-api.com/v1/train \
+  -d number='103'
 ```
 
 #### /station
@@ -79,22 +93,6 @@ Provide a `longitude` and `latitude` to get the closest station to that location
 curl http://api.caltrain-api.com/v1/station \
   -d latitude='37.3876416'
   -d longitude='-122.0656136'
-```
-
-## /train
-
-Provide a train `id` to see the schedule for that train.
-
-```
-curl http://api.caltrain-api.com/v1/train \
-  -d id='d9000734-078e-490b-bbfa-c11fb2f48322'
-```
-
-Provide a train number to see the schedule for that train.
-
-```
-curl http://api.caltrain-api.com/v1/train \
-  -d number='103'
 ```
 
 ### Requests
