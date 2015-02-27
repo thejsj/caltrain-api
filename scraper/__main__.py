@@ -10,7 +10,7 @@ class CaltrainScraper():
   def __init__(self):
     parser = argparse.ArgumentParser(description = "Scrapes the Caltrain website")
     parser.add_argument('-c', '--clear', action='store_true', help="Clear the current cache of HTML files")
-    parser.add_argument('-i', '--file_import', action='store_true', help="Import Resulting JSON Files Into Database")
+    parser.add_argument('-i', '--file_import', action='store_true', help="Import JSON files into database")
     args = parser.parse_args(sys.argv[1:])
 
     self.parse_weekday_schedule = generate_parse_schedule(2, 2, 'weekday')
@@ -34,6 +34,8 @@ class CaltrainScraper():
 
     if args.file_import is True:
       caltrain_import = CaltrainFileImport()
+      caltrain_import.delete_tables()
+      caltrain_import.create_tables()
       caltrain_import.import_file('trains.json', 'trains')
       caltrain_import.import_file('stations.json', 'stations')
 

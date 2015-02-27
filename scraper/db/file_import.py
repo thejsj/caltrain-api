@@ -8,12 +8,21 @@ class CaltrainFileImport():
     self.conn = r.connect(host="localhost", port=28015, db="caltrain", auth_key="", timeout=20)
     self.conn.use('caltrain')
 
+  def delete_tables(self):
     table_list = r.table_list().run(self.conn)
+    if 'trains' in table_list:
+      r.table_drop('trains').run(self.conn)
+    if 'stations' in table_list:
+      r.table_drop('stations').run(self.conn)
 
+  def create_tables(self):
+    table_list = r.table_list().run(self.conn)
     if 'trains' not in table_list:
       r.table_create('trains').run(self.conn)
+      r.table('trains').index_create('number').run(self.conn)
     if 'stations' not in table_list:
       r.table_create('stations').run(self.conn)
+      r.table('trains').index_create('name').run(self.conn)
 
   def get_file_entries(self, file_name, table_name):
     # Open File
