@@ -1,6 +1,8 @@
 
 # CalTrain API
 
+*This is still in development. None of it actually works yet :)*
+
 Extremely simple API to get Caltrain schedule data.
 
 ## API

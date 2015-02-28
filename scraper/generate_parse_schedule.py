@@ -88,7 +88,7 @@ def generate_parse_schedule(first_index, last_index, day_type):
       for train_number, time in station['trains'].iteritems():
         if train_number not in train_times:
           train_times[train_number] = {
-            'number': train_number,
+            'number': int(train_number),
             'day': day_type,
             'direction': ('south' if int(train_number) % 2 == 0 else 'north'),
             'type': get_type(train_number, day_type),
