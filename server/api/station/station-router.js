@@ -2,11 +2,14 @@
 'use strict';
 
 var express = require('express');
-var stationRouteController = require('./station-controller');
+var stationController = require('./station-controller');
+var stationSearchController = require('./station-search-controller');
 
 var stationRouter = express.Router();
 
-stationRouter.get('/', stationRouteController);
-stationRouter.post('/', stationRouteController);
+stationRouter.get('/search', stationSearchController);
+stationRouter.post('/search', stationSearchController);
+stationRouter.get('/', stationController);
+stationRouter.post('/', stationController);
 
 module.exports = stationRouter;

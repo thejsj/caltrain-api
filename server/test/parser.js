@@ -8,18 +8,19 @@ var agent = request.agent(app);
 var _ = require('lodash');
 
 var resHandler = function (done, res) {
-  res.body.should.be.an.instanceOf(Object);
-  res.body.parameters.from.should.be.an.instanceOf(String);
-  res.body.parameters.from.should.equal('22nd-street');
-  res.body.parameters.to.should.be.an.instanceOf(String);
-  res.body.parameters.to.should.equal('mountain-view');
+  var parameters = JSON.parse(res.headers.parameters);
+  parameters.should.be.an.instanceOf(Object);
+  parameters.from.should.be.an.instanceOf(String);
+  parameters.from.should.equal('22nd-street');
+  parameters.to.should.be.an.instanceOf(String);
+  parameters.to.should.equal('mountain-view');
   done();
 };
 
 describe('Argument Parser', function () {
     it('should receive parameters through the data attribute', function (done) {
       agent
-        .get('/v1/station/')
+        .get('/v1/train/')
         .send({
           from: '22nd-street',
           to: 'mountain-view'
@@ -30,14 +31,14 @@ describe('Argument Parser', function () {
 
     it('should receive GET query parameters', function (done) {
       agent
-        .get('/v1/station/?from=22nd-street&to=mountain-view')
+        .get('/v1/train/?from=22nd-street&to=mountain-view')
         .expect(200)
         .then(resHandler.bind(null, done));
     });
 
     it('should receive parameters through the data attribute', function (done) {
       agent
-        .get('/v1/station/')
+        .get('/v1/train/')
         .send('{"from": "22nd-street", "to": "mountain-view"}')
         .expect(200)
         .then(resHandler.bind(null, done));

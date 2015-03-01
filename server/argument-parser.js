@@ -15,8 +15,7 @@ var bodyParamaterParser = function (bodyObject) {
 
 var argumentParser = function () {
   return function (req, res, next) {
-    res.locals.response = {};
-    res.locals.response.parameters = _.extend(
+    res.locals.parameters = _.extend(
       {},
       req.query,
       bodyParamaterParser(req.body),

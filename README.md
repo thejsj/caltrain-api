@@ -11,7 +11,7 @@ Extremely simple API to get Caltrain schedule data.
 
 There are two endpoints in this API: `/train` and `/station`,
 
-#### /schedule
+#### /train
 
 Provide a `from` station and a `to` station and get a list of departures.
 
@@ -75,21 +75,29 @@ curl http://api.caltrain-api.com/v1/train \
 
 #### /station
 
-Provide an `id` to query a particular station.
+Provide an `id` to get a particular station. Returns a JSON object.
 
 ```
 curl http://api.caltrain-api.com/v1/station \
   -d id='d9000734-078e-490b-bbfa-c11fb2f48322'
 ```
 
-Provide a `name` to query a particular station.
+Provide a `slug` to get a particular station. Returns a JSON object.
 
 ```
 curl http://api.caltrain-api.com/v1/station \
-  -d name='Mountain View'
+  -d slug='mountain-view'
 ```
 
-Provide a `longitude` and `latitude` to get the closest station to that location:
+Provide a `name`  in `/search` to query stations with that name. Returns an array.
+
+```
+curl http://api.caltrain-api.com/v1/station \
+  -d slug='mountain-view'
+```
+
+
+Provide a `longitude` and `latitude` to get the closest station to that location. Returns an array.
 
 ```
 curl http://api.caltrain-api.com/v1/station \

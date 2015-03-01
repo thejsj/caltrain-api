@@ -2,11 +2,11 @@
 'use strict';
 
 var express = require('express');
-var trainRouteController = require('./train-controller');
+var trainController = require('./train-controller');
 
 var trainRouter = express.Router();
 
-trainRouter.get('/', trainRouteController);
-trainRouter.post('/', trainRouteController);
+trainRouter.get('/', trainController);
+trainRouter.post('/', trainController);
 
 module.exports = trainRouter;
