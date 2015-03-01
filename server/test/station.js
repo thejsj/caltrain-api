@@ -6,10 +6,10 @@ var request = require('supertest-as-promised');
 var app = require('../index.js');
 var agent = request.agent(app);
 
-describe('/stations', function () {
+describe('/station', function () {
     it('should return an array with train information', function () {
       agent
-        .get('/api/file/')
+        .get('/v1/station/')
         .send({
           projectName: projectName,
         })

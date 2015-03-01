@@ -16,7 +16,7 @@ var resHandler = function (done, res) {
   done();
 };
 
-describe('/parser', function () {
+describe('Argument Parser', function () {
     it('should receive parameters through the data attribute', function (done) {
       agent
         .get('/v1/station/')

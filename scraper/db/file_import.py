@@ -1,12 +1,13 @@
 import rethinkdb as r
+from rethinkdb import RqlRuntimeError
 import json, os
 
 class CaltrainFileImport():
 
-  def __init__(self):
+  def __init__(self, db='caltrain'):
     # Import Into Database
-    self.conn = r.connect(host="localhost", port=28015, db="caltrain", auth_key="", timeout=20)
-    self.conn.use('caltrain')
+    self.conn = r.connect(host="localhost", port=28015, db=db, auth_key="", timeout=20)
+    self.conn.use(db)
 
   def delete_tables(self):
     table_list = r.table_list().run(self.conn)
