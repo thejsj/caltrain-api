@@ -18,9 +18,9 @@
     [x] Add documents
 
 [ ] Create API
-    [ ] Install io.js
-    [ ] Add express.js, bodyParser
-    [ ] Add Routes
+    [x] Install io.js
+    [x] Add express.js, bodyParser
+    [x] Add Routes
     [ ] Add custom arg parser
     [ ] Add database queries
 

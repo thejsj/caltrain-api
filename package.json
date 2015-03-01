@@ -4,7 +4,8 @@
   "description": "A simple API for Caltrain",
   "main": "server/index.js",
   "scripts": {
-    "test": "./node_modules/mocha/bin/mocha server/test/index.js"
+    "test": "./node_modules/mocha/bin/mocha server/test/index.js",
+    "dev": "./node_modules/nodemon/bin/nodemon.js server/index.js"
   },
   "keywords": [
     "caltrain",

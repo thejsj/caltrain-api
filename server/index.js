@@ -1,26 +1,30 @@
 /*jshint node:true */
 'use strict';
 
-//dependencies
-var bodyParser = require('body-parser'),
-  express = require('express');
+// Dependencies
+var bodyParser = require('body-parser');
+var express = require('express');
 
-// Set routes
+var argumentParser = require('./argument-parser');
+var send404 = require('./send-404');
 var apiRouter = require('./api');
 
-// Init app
 var app = express();
 
 // Middlewares
 app
+  .use(bodyParser.raw())
+  .use(bodyParser.text())
   .use(bodyParser.urlencoded({
     extended: true
   }))
-  .use(bodyParser.json());
+  .use(bodyParser.json())
+  .use(argumentParser());
 
 // Set Routes
 app
-  .use('/api', apiRouter)
+  .use('/v1', apiRouter)
+  .use('*', send404)
   .listen(8000, function () {
     console.log('Server listening on port:', 8000);
   });
