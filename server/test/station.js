@@ -25,7 +25,7 @@ describe('/station', function () {
     it('should a return station when given its id', function (done) {
       get22ndStreetStation({
         // If we re-import the database, this will change... :(
-        id: '71188cec-d3ec-4523-80db-535f9e0d51a7'
+        id: 'e6adb346-669f-43c9-8cee-352a59721c9d'
       })
       .expect(200)
       .then(function (res) {

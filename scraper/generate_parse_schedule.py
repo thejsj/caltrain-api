@@ -51,6 +51,9 @@ class ScheduleParser():
   def isTime(self, time):
     return bool(self.digits.search(time)) and 'street' not in time.lower()
 
+  def n_or_s(self, train_number):
+    return ('south' if int(train_number) % 2 == 0 else 'north')
+
   def generate_parse_schedule(self, first_index, last_index, day_type):
     def parse_schedule(soup, table_class, train_times, station_times):
 
@@ -90,29 +93,39 @@ class ScheduleParser():
             'times': { },
             'trains': { }
           }
-        station_times[slug]['times'][day_type] = trains.values()
-        station_times[slug]['trains'][day_type] = trains
+        if day_type not in station_times[slug]['times']:
+          station_times[slug]['times'][day_type] = {}
+        if day_type not in station_times[slug]['trains']:
+          station_times[slug]['trains'][day_type] = {}
+        if len(trains.keys()) > 0:
+          station_times[slug]['times'][day_type][self.n_or_s(trains.keys()[0])] = trains.values()
+          station_times[slug]['trains'][day_type][self.n_or_s(trains.keys()[0])] = trains
 
       for station_slug, station in station_times.iteritems():
         if day_type in station['trains']:
-          for train_number, time in station['trains'][day_type].iteritems():
-            if train_number not in train_times.keys():
-              train_times[train_number] = {
-                'number': int(train_number),
-                'direction': ('south' if int(train_number) % 2 == 0 else 'north'),
-                'type': self.get_type(train_number, day_type),
-                'times': {},
-                'stations': {},
-                # Check if first chart is '*'
-                'may_leave_5_minutes_early': bool(self.start_star.match(train_strings[train_number])),
-                # Check if last char is '#'
-                'may_be_delayed_15_minutes': bool(self.end_plus_sign.match(train_strings[train_number])),
-              }
-            if day_type not in train_times[train_number]['times']:
-              train_times[train_number]['times'][day_type] = []
-            if day_type not in train_times[train_number]['stations']:
-              train_times[train_number]['stations'][day_type] = {}
-            train_times[train_number]['times'][day_type].append(time)
-            train_times[train_number]['stations'][day_type][station['slug']] = time
+          for direction, _trains in station['trains'][day_type].iteritems():
+            for train_number, time in _trains.iteritems():
+              if train_number not in train_times.keys():
+                train_times[train_number] = {
+                  'number': int(train_number),
+                  'direction': direction,
+                  'type': self.get_type(train_number, day_type),
+                  'times': {},
+                  'stations': {},
+                  # Check if first chart is '*'
+                  'may_leave_5_minutes_early': bool(self.start_star.match(train_strings[train_number])),
+                  # Check if last char is '#'
+                  'may_be_delayed_15_minutes': bool(self.end_plus_sign.match(train_strings[train_number])),
+                }
+              if day_type not in train_times[train_number]['times']:
+                train_times[train_number]['times'][day_type] = {}
+              if direction not in train_times[train_number]['times'][day_type]:
+                train_times[train_number]['times'][day_type][direction] = []
+              if day_type not in train_times[train_number]['stations']:
+                train_times[train_number]['stations'][day_type] = {}
+              if direction not in train_times[train_number]['stations'][day_type]:
+                train_times[train_number]['stations'][day_type][direction] = {}
+              train_times[train_number]['times'][day_type][direction].append(time)
+              train_times[train_number]['stations'][day_type][direction][station['slug']] = time
       return train_times, station_times
     return parse_schedule

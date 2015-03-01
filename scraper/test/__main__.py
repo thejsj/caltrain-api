@@ -47,20 +47,23 @@ class StationTests(unittest.TestCase):
   def test_station_times(self):
     is_time = re.compile(r'^[0-9]{1,2}:[0-9]{2}$')
     for station in staiton_times:
-      for times in station['times'].values():
-        for time in times:
-          self.assertTrue(bool(is_time.match(time)))
-      for times in station['trains'].values():
-        for time in times.values():
-          self.assertTrue(bool(is_time.match(time)))
+      for direction in station['times'].values():
+        for times in direction.values():
+          for time in times:
+            self.assertTrue(bool(is_time.match(time)))
+      for direction in station['trains'].values():
+        for times in direction.values():
+          for time in times.values():
+            self.assertTrue(bool(is_time.match(time)))
 
   # Test all stations keys
   def test_stations_keys(self):
     is_train = re.compile(r'^[0-9]{3}$')
     for station in staiton_times:
-      for direction, trains in station['trains'].iteritems():
-        for train in trains.keys():
-          self.assertTrue(bool(is_train.match(train)))
+      for direction in station['trains'].values():
+        for trains in direction.values():
+          for train in trains.keys():
+            self.assertTrue(bool(is_train.match(train)))
 
 class TrainTests(unittest.TestCase):
 
@@ -76,12 +79,14 @@ class TrainTests(unittest.TestCase):
   def test_train_times(self):
     is_time = re.compile(r'^[0-9]{1,2}:[0-9]{2}$')
     for station in train_times:
-      for times in station['times'].values():
-        for time in times:
-          self.assertTrue(bool(is_time.match(time)))
-      for times in station['stations'].values():
-        for time in times.values():
-          self.assertTrue(bool(is_time.match(time)))
+      for direction in station['times'].values():
+        for times in direction.values():
+          for time in times:
+            self.assertTrue(bool(is_time.match(time)))
+      for direction in station['stations'].values():
+        for times in direction.values():
+          for time in times.values():
+            self.assertTrue(bool(is_time.match(time)))
 
   # All train numbers should just be numbers
   def test_stations_keys(self):

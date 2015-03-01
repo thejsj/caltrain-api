@@ -11,13 +11,15 @@
     [x] Add am and pm
     [x] Convert into 2 JSON files (stations.json and train.json)
     [ ] Add geolocation to stations (Google Maps API?)
-    [ ] Make only 1 stations and trains dict with no repetitions
-        [ ] Station
-            [ ] Add times as dict with `weekday`, `saturday`, and `sunday` keys
-            [ ] Add trains as dict with `weekday`, `saturday`, and `sunday` keys
-        [ ] Train
-            [ ] Add stations as dict with `weekday`, `saturday`, and `sunday` keys
-            [ ] Add times as dict with `weekday`, `saturday`, and `sunday` keys
+    [ ] Fix stations with 'leaving', 'arriving'
+    [ ] Add `north` and `south` direction to times and stations
+    [x] Make only 1 stations and trains dict with no repetitions
+        [x] Station
+            [x] Add times as dict with `weekday`, `saturday`, and `sunday` keys
+            [x] Add trains as dict with `weekday`, `saturday`, and `sunday` keys
+        [x] Train
+            [x] Add stations as dict with `weekday`, `saturday`, and `sunday` keys
+            [x] Add times as dict with `weekday`, `saturday`, and `sunday` keys
 
 [x] Import to RethinkDB
     [x] Create tables (if necessary)
