@@ -2,7 +2,7 @@
 from bs4 import BeautifulSoup
 import os, urllib2, json
 import sys, argparse
-from generate_parse_schedule import generate_parse_schedule
+from generate_parse_schedule import ScheduleParser
 from db.file_import import CaltrainFileImport
 
 class CaltrainScraper():
@@ -14,9 +14,10 @@ class CaltrainScraper():
     parser.add_argument('-d', '--database', type=str, default='caltrain', help="Name of database to import results to")
     args = parser.parse_args(sys.argv[1:])
 
-    self.parse_weekday_schedule = generate_parse_schedule(2, 2, 'weekday')
-    self.parse_saturday_schedule = generate_parse_schedule(3, 0, 'saturday')
-    self.parse_sunday_schedule = generate_parse_schedule(3, 0, 'sunday')
+    schedule_parser = ScheduleParser()
+    self.parse_weekday_schedule = schedule_parser.generate_parse_schedule(2, 2, 'weekday')
+    self.parse_saturday_schedule = schedule_parser.generate_parse_schedule(3, 0, 'saturday')
+    self.parse_sunday_schedule = schedule_parser.generate_parse_schedule(3, 0, 'sunday')
 
     urls = {
       'saturday': 'http://www.caltrain.com/schedules/weekend-timetable.html',
@@ -26,12 +27,13 @@ class CaltrainScraper():
 
     if args.clear: self.clear_cache(urls)
 
-    train_times = []
-    station_times = []
+    train_times = {}
+    station_times = {}
     for key, url in urls.iteritems():
       train_times, station_times = self.get_schedule(url, key, train_times, station_times)
-    self.save_to_json(train_times, 'trains')
-    self.save_to_json(station_times, 'stations')
+
+    self.save_to_json(train_times.values(), 'trains')
+    self.save_to_json(station_times.values(), 'stations')
 
     if args.file_import is True:
       caltrain_import = CaltrainFileImport(db=args.database)
@@ -54,13 +56,11 @@ class CaltrainScraper():
     }
     for key, value in directions.iteritems():
       if schedule_name is 'weekday':
-        _train_times, _station_times = self.parse_weekday_schedule(soup, value)
+        train_times, station_times = self.parse_weekday_schedule(soup, value, train_times, station_times)
       elif schedule_name is 'saturday':
-        _train_times, _station_times = self.parse_saturday_schedule(soup, value)
+        train_times, station_times = self.parse_saturday_schedule(soup, value, train_times, station_times)
       elif schedule_name is 'sunday':
-        _train_times, _station_times = self.parse_sunday_schedule(soup, value)
-      train_times =  train_times + _train_times.values()
-      station_times = station_times + _station_times.values()
+        train_times, station_times = self.parse_sunday_schedule(soup, value, train_times, station_times)
     return train_times, station_times
 
   def clear_cache(self, urls):
@@ -75,7 +75,7 @@ class CaltrainScraper():
   def save_to_json(self, data, name):
     print("Saving To: %s" % self.get_location(name, 'json'))
     json_file = open(self.get_location(name, 'json'), 'w')
-    json_file.write(json.dumps(data))
+    json_file.write(json.dumps(data, sort_keys=True, indent=2, separators=(',', ': ')))
     json_file.close()
 
 if __name__ == "__main__":

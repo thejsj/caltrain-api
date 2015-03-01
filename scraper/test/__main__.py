@@ -13,6 +13,7 @@ def open_file(name):
 
 def convert_to_dict(dict_list, property_name):
   keys = map(operator.itemgetter(property_name), dict_list)
+  keys = [str(key) for key in keys]
   return dict(zip(keys, dict_list))
 
 train_times = open_file('trains')
@@ -46,17 +47,20 @@ class StationTests(unittest.TestCase):
   def test_station_times(self):
     is_time = re.compile(r'^[0-9]{1,2}:[0-9]{2}$')
     for station in staiton_times:
-      for time in station['times']:
-        self.assertTrue(bool(is_time.match(time)))
-      for time in station['trains'].values():
-        self.assertTrue(bool(is_time.match(time)))
+      for times in station['times'].values():
+        for time in times:
+          self.assertTrue(bool(is_time.match(time)))
+      for times in station['trains'].values():
+        for time in times.values():
+          self.assertTrue(bool(is_time.match(time)))
 
   # Test all stations keys
   def test_stations_keys(self):
     is_train = re.compile(r'^[0-9]{3}$')
     for station in staiton_times:
-      for train in station['trains'].keys():
-        self.assertTrue(bool(is_train.match(train)))
+      for direction, trains in station['trains'].iteritems():
+        for train in trains.keys():
+          self.assertTrue(bool(is_train.match(train)))
 
 class TrainTests(unittest.TestCase):
 
@@ -72,16 +76,18 @@ class TrainTests(unittest.TestCase):
   def test_train_times(self):
     is_time = re.compile(r'^[0-9]{1,2}:[0-9]{2}$')
     for station in train_times:
-      for time in station['times']:
-        self.assertTrue(bool(is_time.match(time)))
-      for time in station['stations'].values():
-        self.assertTrue(bool(is_time.match(time)))
+      for times in station['times'].values():
+        for time in times:
+          self.assertTrue(bool(is_time.match(time)))
+      for times in station['stations'].values():
+        for time in times.values():
+          self.assertTrue(bool(is_time.match(time)))
 
   # All train numbers should just be numbers
   def test_stations_keys(self):
     is_train = re.compile(r'^[0-9]{3}$')
     for train in train_times:
-      self.assertTrue(bool(is_train.match(train['number'])))
+      self.assertTrue(bool(is_train.match(str(train['number']))))
 
   # Trains should have the correct `may_leave_5_minutes_early`
   def test_train_may_leave_5_minutes_early(self):
@@ -92,21 +98,13 @@ class TrainTests(unittest.TestCase):
 
   # Trains should the correct day in which they run
   def test_train_day(self):
-    # Not getting sundays in these keys
-    self.assertEqual(train_times_dict['801']['day'], 'saturday')
-    self.assertEqual(train_times_dict['451']['day'], 'saturday')
-    self.assertEqual(train_times_dict['421']['day'], 'saturday')
-    self.assertEqual(train_times_dict['454']['day'], 'saturday')
-    # Saturday And Sunday
-    saturday_and_sunday_trains = filter(lambda t: int(t['number']) == 801, train_times)
-    self.assertEqual(len(saturday_and_sunday_trains), 2)
-    saturday_and_sunday_trains = filter(lambda t: int(t['number']) == 423, train_times)
-    self.assertEqual(len(saturday_and_sunday_trains), 2)
-    # Only Sunday
-    sunday_trains = filter(lambda t: int(t['number']) == 451, train_times)
-    self.assertEqual(len(sunday_trains), 1)
-    sunday_trains = filter(lambda t: int(t['number']) == 454, train_times)
-    self.assertEqual(len(sunday_trains), 1)
+    # Test Saturday Keys
+    self.assertEqual(len(train_times_dict['801']['times'].keys()), 2)
+    self.assertEqual(len(train_times_dict['423']['times'].keys()), 2)
+    # Test Sunday Keys
+    self.assertEqual(len(train_times_dict['451']['times'].keys()), 1)
+    self.assertEqual(len(train_times_dict['454']['times'].keys()), 1)
+
 
 if __name__ == '__main__':
     unittest.main()
