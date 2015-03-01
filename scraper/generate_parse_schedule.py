@@ -79,8 +79,6 @@ class ScheduleParser():
         if day_type is 'sunday':
           trains = self.filter_saturday_only_trains(trains)
 
-        print 'CHECKING', '454' in trains.keys(), day_type
-
         # Remove empty times
         station_name = cells[first_index - 1].replace(u'\xa0', u' ')
         slug = slugify(station_name)
