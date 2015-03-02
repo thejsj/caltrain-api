@@ -12,7 +12,7 @@
     [x] Convert into 2 JSON files (stations.json and train.json)
     [ ] Add geolocation to stations (Google Maps API?)
     [ ] Fix stations with 'leaving', 'arriving'
-    [ ] Add `north` and `south` direction to times and stations
+    [X] Add `north` and `south` direction to times and stations
     [x] Make only 1 stations and trains dict with no repetitions
         [x] Station
             [x] Add times as dict with `weekday`, `saturday`, and `sunday` keys
