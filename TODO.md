@@ -12,6 +12,7 @@
     [x] Convert into 2 JSON files (stations.json and train.json)
     [ ] Add geolocation to stations (Google Maps API?)
     [ ] Fix stations with 'leaving', 'arriving'
+    [ ] Add order of stations
     [X] Add `north` and `south` direction to times and stations
     [x] Make only 1 stations and trains dict with no repetitions
         [x] Station
@@ -31,9 +32,13 @@
     [x] Add express.js, bodyParser
     [x] Add Routes
     [x] Add custom arg parser
-    [ ] Add database queries for /station
-    [ ] Add database queries for /station/search
+    [x] Add database queries for /station
+    [x] Add database queries for /station/search
     [ ] Add database queries for /train
+        [ ] From and to
+        [ ] Departure and arrival
+        [ ] Train type filter
+        [ ] Geolocation
     [ ] Add fields query
     [ ] Add Pagination http://dev.billysbilling.com/blog/How-to-make-your-API-better-than-the-REST
     [ ] Add Rate Limiting http://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api#rate-limiting
