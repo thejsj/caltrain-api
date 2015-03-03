@@ -54,10 +54,24 @@ describe('/train', function () {
   });
 
   describe('/search', function () {
-    xit('should only return trains that pass through the `from` station', function () { });
-    xit('should only return trains that pass through the `from` station and `to` station', function () { });
-    xit('should only return trains that pass through the `from` station and `to` station', function () { });
-    xit('should only return trains that pass through the `from` station and `to` station', function () { });
-  });
+    describe('From and To', function () {
+      xit('should only return trains that pass through the `from` station', function () { });
+      xit('should only return trains that pass through the `from` station and `to` station', function () { });
+      xit('should only return trains that pass through the `from` station and `to` station', function () { });
+      xit('should only return trains that pass through the `from` station and `to` station', function () { });
+    });
 
+    describe('Departure', function () {
+
+    });
+
+    describe('Arrival', function () {
+
+    });
+
+
+    describe('Train Type Filter', function () {
+
+    });
+  });
 });
