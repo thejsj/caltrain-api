@@ -58,7 +58,7 @@ describe('/train', function () {
     });
   });
 
-  describe('/search', function () {
+  xdescribe('/search', function () {
 
     it('should return an array', function (done) {
       searchTrains()
@@ -109,7 +109,6 @@ describe('/train', function () {
     describe('Arrival', function () {
 
     });
-
 
     describe('Train Type Filter', function () {
 
