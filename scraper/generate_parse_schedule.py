@@ -87,6 +87,7 @@ class ScheduleParser():
         slug = slugify(station_name)
         if slug not in station_times.keys():
           station_times[slug] = {
+            'location_index': i,
             'name': station_name,
             'slug': slug,
             'zone': cells[first_index - 2],
@@ -118,14 +119,14 @@ class ScheduleParser():
                   'may_be_delayed_15_minutes': bool(self.end_plus_sign.match(train_strings[train_number])),
                 }
               if day_type not in train_times[train_number]['times']:
-                train_times[train_number]['times'][day_type] = {}
-              if direction not in train_times[train_number]['times'][day_type]:
-                train_times[train_number]['times'][day_type][direction] = []
+                train_times[train_number]['times'][day_type] = []
+              # if direction not in train_times[train_number]['times'][day_type]:
+              #   train_times[train_number]['times'][day_type][direction] = []
               if day_type not in train_times[train_number]['stations']:
                 train_times[train_number]['stations'][day_type] = {}
-              if direction not in train_times[train_number]['stations'][day_type]:
-                train_times[train_number]['stations'][day_type][direction] = {}
-              train_times[train_number]['times'][day_type][direction].append(time)
-              train_times[train_number]['stations'][day_type][direction][station['slug']] = time
+              # if direction not in train_times[train_number]['stations'][day_type]:
+              #   train_times[train_number]['stations'][day_type][direction] = {}
+              train_times[train_number]['times'][day_type].append(time)
+              train_times[train_number]['stations'][day_type][station['slug']] = time
       return train_times, station_times
     return parse_schedule
