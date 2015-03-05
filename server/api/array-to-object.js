@@ -13,7 +13,7 @@ var arrayToObject = function () {
   if (args.length === 2) return obj;
   for (var i = args.length - 3; i >= 0; i -= 1) {
     var copy = {};
-    copy[i] = _.clone(obj);
+    copy[args[i]] = _.clone(obj);
     obj = copy;
   }
   return obj;
