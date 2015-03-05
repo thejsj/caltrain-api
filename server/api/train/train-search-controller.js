@@ -46,20 +46,18 @@ var trainSearchController = function (req, res) {
     })
     .spread(function (query, departureTime, arrivalTime) {
       // Query by arrivalTime and departureTime
-      // if (departureTime && params.from !== undefined) {
-      //   var departureTimeInMinutes = departureTime.format('H') * 60 + departureTime.format('m');
-      //   query = query
-      //     .hasFields(arrayToObject('stations', getWeekday(departureTime), true))
-      //     .map(r.row('stations')(getWeekday(departureTime)))
-      //     .filter(r.row(params.from).gt(departureTimeInMinutes));
-      // }
-      // if (arrivalTime && params.to !== undefined) {
-      //   var arrivalTimeInMinutes = arrivalTime.format('H') * 60 + arrivalTime.format('m');
-      //   query = query
-      //     .hasFields(arrayToObject('stations', getWeekday(arrivalTime), true))
-      //     .map(r.row('stations')(getWeekday(arrivalTime)))
-      //     .filter(r.row(params.to).lt(arrivalTimeInMinutes));
-      // }
+      if (departureTime && params.from !== undefined) {
+        var departureTimeInMinutes = (+departureTime.format('H')) * 60 + (+departureTime.format('m'));
+        query = query
+          .hasFields(arrayToObject('stations', getWeekday(departureTime), true))
+          .filter(r.row('stations')(getWeekday(departureTime))(params.from).gt(departureTimeInMinutes));
+      }
+      if (arrivalTime && params.to !== undefined) {
+        var arrivalTimeInMinutes = (+arrivalTime.format('H')) * 60 + (+arrivalTime.format('m'));
+        query = query
+          .hasFields(arrayToObject('stations', getWeekday(arrivalTime), true))
+          .filter(r.row('stations')(getWeekday(arrivalTime))(params.from).gt(arrivalTimeInMinutes));
+      }
       return [query, departureTime, arrivalTime];
     })
     .spread(respond.bind(null, res));

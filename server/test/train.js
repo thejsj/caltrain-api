@@ -8,6 +8,7 @@ var moment = require('moment');
 var app = require('../index.js');
 var agent = request.agent(app);
 var getWeekday = require('../utils').getWeekday;
+var getTimeFromMinutes = require('../utils').getTimeFromMinutes;
 
 var get381Train = function (sendObject) {
   return agent.get('/v1/train/').send(sendObject || { number: 381 });
@@ -155,8 +156,8 @@ describe('/train', function () {
           .then(function (res) {
             res.body.length.should.be.above(0);
             res.body.forEach(function (train) {
-              var _time = train.stations[getWeekday(departureTime)]['22nd-street'];
-              var time = moment(_time, 'H:mm');
+              var timeInHmm = getTimeFromMinutes(train.stations[getWeekday(departureTime)]['22nd-street']);
+              var time = moment(timeInHmm, 'H:mm');
               departureTime.isBefore(time).should.equal(true);
             });
             done();

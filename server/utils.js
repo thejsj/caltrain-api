@@ -39,6 +39,13 @@ var getSingleStationLocationIndexQuery = function (stationSlug) {
     .getAll(stationSlug, {'index': 'slug'}).limit(1)(0)('location_index');
 };
 
+var getTimeFromMinutes = function (minutesString) {
+  var minutes = '' + minutesString % 60;
+  if (minutes.length === 1) minutes = '0' + minutes;
+  return '' + Math.floor(minutesString / 60) + ':' + minutes;
+};
+
 exports.arrayToObject = arrayToObject;
 exports.getWeekday = getWeekday;
 exports.getSingleStationLocationIndexQuery = getSingleStationLocationIndexQuery;
+exports.getTimeFromMinutes = getTimeFromMinutes;

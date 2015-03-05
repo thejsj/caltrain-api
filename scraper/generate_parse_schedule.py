@@ -41,7 +41,7 @@ class ScheduleParser():
       if col_num > 8 or (col_num > 6 and split_numbers[0] is '12'):
         split_numbers[0] = str(int(split_numbers[0]) + 12)
       try:
-        text = int(split_numbers[0]) * 60 + int(split_numbers[1])
+        text = (int(split_numbers[0]) * 60 + int(split_numbers[1])) % 1440
       except (ValueError):
         return False
     return text
