@@ -78,6 +78,18 @@ describe('/train', function () {
     describe('From and To', function () {
 
       it('should only return trains that pass through the `from` station', function (done) {
+        searchTrains({'from': '22nd-street'})
+          .then(function (res) {
+            res.body.forEach(function (train) {
+              _.some(_.keys(train.stations.weekday), function (stationName) {
+                return stationName === '22nd-street';
+              }).should.equal(true);
+            });
+            done();
+          });
+      });
+
+      it('should only return trains that pass through the `from` station with a departure time', function (done) {
         searchTrains({'from': '22nd-street', 'departure': weekdayMorningTimeString})
           .then(function (res) {
             res.body.forEach(function (train) {
@@ -96,7 +108,6 @@ describe('/train', function () {
           'departure': weekdayMorningTimeString
         })
           .then(function (res) {
-            console.log(res.body);
             res.body.length.should.be.above(0);
             res.body.forEach(function (train) {
               _.some(_.keys(train.stations.weekday), function (stationName) {
@@ -142,7 +153,6 @@ describe('/train', function () {
           'departure': weekdayEveningTimeString
         })
           .then(function (res) {
-            console.log(res.body);
             res.body.length.should.be.above(0);
             res.body.forEach(function (train) {
               var _time = train.stations[getWeekday(departureTime)]['22nd-street'];

@@ -46,12 +46,20 @@ var trainSearchController = function (req, res) {
     })
     .spread(function (query, departureTime, arrivalTime) {
       // Query by arrivalTime and departureTime
-      if (arrivalTime) {
-
-      }
-      if (departureTime) {
-        query = query.
-      }
+      // if (departureTime && params.from !== undefined) {
+      //   var departureTimeInMinutes = departureTime.format('H') * 60 + departureTime.format('m');
+      //   query = query
+      //     .hasFields(arrayToObject('stations', getWeekday(departureTime), true))
+      //     .map(r.row('stations')(getWeekday(departureTime)))
+      //     .filter(r.row(params.from).gt(departureTimeInMinutes));
+      // }
+      // if (arrivalTime && params.to !== undefined) {
+      //   var arrivalTimeInMinutes = arrivalTime.format('H') * 60 + arrivalTime.format('m');
+      //   query = query
+      //     .hasFields(arrayToObject('stations', getWeekday(arrivalTime), true))
+      //     .map(r.row('stations')(getWeekday(arrivalTime)))
+      //     .filter(r.row(params.to).lt(arrivalTimeInMinutes));
+      // }
       return [query, departureTime, arrivalTime];
     })
     .spread(respond.bind(null, res));

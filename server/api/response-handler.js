@@ -9,7 +9,6 @@ var successHandler = function (res, jsonResponseObject) {
 };
 
 var errorHandler = function (res, err) {
-  console.log('Request Error:', err);
   res.set('Parameters', JSON.stringify(res.locals.parameters));
   res.status(400);
   res.json({

@@ -1,5 +1,6 @@
 /*jshint node:true */
 'use strict';
+var moment = require('moment');
 var _ = require('lodash');
 var r = require('./db');
 
@@ -21,8 +22,14 @@ var arrayToObject = function () {
   return obj;
 };
 
-var getWeekday = function (moment) {
-  var day = moment.format('dddd');
+/**
+ * Get whether the moment instance if 'weekday', 'saturday', or 'sunday'
+ *
+ * @param time (moment instance) (default: moment now)
+ */
+var getWeekday = function (time) {
+  if (typeof time === 'boolean') time = moment();
+  var day = time.format('dddd');
   if (day === 'sunday' || day === 'saturday') return day;
   return 'weekday';
 };
