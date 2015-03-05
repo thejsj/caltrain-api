@@ -148,7 +148,7 @@ describe('/train', function () {
 
     describe('Departure', function () {
       var departureTime = moment(new Date(weekdayEveningTimeString));
-      it('should only get trains that depart after the arrival time', function (done) {
+      it('should only get trains that depart after the arrival time on weekdays', function (done) {
         searchTrains({
           'from': '22nd-street',
           'to': 'mountain-view',
@@ -164,13 +164,17 @@ describe('/train', function () {
             done();
           });
         });
+      xit('should only get trains that depart after the arrival time on Saturdays', function () {
+      });
+      xit('should only get trains that depart after the arrival time on Sundays', function () {
+      });
     });
 
     describe('Arrival', function () {
       var arrivalTime = moment(new Date(weekdayEveningTimeString));
       var arrivalTimeInMinutes = getMinutesFromTime(arrivalTime.format('H'), arrivalTime.format('m'));
 
-      it('should only get trains that depart after the arrival time', function (done) {
+      it('should only get trains that depart after the arrival time on weekdays', function (done) {
         searchTrains({
           'from': '22nd-street',
           'to': 'mountain-view',
@@ -186,10 +190,23 @@ describe('/train', function () {
             done();
           });
         });
+
+      xit('should only get trains that depart after the arrival time on Saturdays', function (done) {
+        done();
+      });
+
+      xit('should only get trains that depart after the arrival time on Sundays', function (done) {
+        done();
+      });
     });
 
     describe('Train Type Filter', function () {
-
+      xit('should only get `express` trains when requested', function (done) {
+        done();
+      });
+      xit('should only get `express` and `limited` trains when requested', function (done) {
+        done();
+      });
     });
   });
 });
