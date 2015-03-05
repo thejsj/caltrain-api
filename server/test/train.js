@@ -9,6 +9,7 @@ var app = require('../index.js');
 var agent = request.agent(app);
 var getWeekday = require('../utils').getWeekday;
 var getTimeFromMinutes = require('../utils').getTimeFromMinutes;
+var getMinutesFromTime = require('../utils').getMinutesFromTime;
 
 var get381Train = function (sendObject) {
   return agent.get('/v1/train/').send(sendObject || { number: 381 });
@@ -166,7 +167,25 @@ describe('/train', function () {
     });
 
     describe('Arrival', function () {
+      var arrivalTime = moment(new Date(weekdayEveningTimeString));
+      var arrivalTimeInMinutes = getMinutesFromTime(arrivalTime.format('H'), arrivalTime.format('m'));
 
+      it('should only get trains that depart after the arrival time', function (done) {
+        searchTrains({
+          'from': '22nd-street',
+          'to': 'mountain-view',
+          'arrival': weekdayEveningTimeString
+        })
+          .then(function (res) {
+            res.body.length.should.be.above(0);
+            res.body.forEach(function (train) {
+              train.stations[getWeekday(arrivalTime)].should.not.equal(undefined);
+              var timeInMinutes = train.stations[getWeekday(arrivalTime)]['22nd-street'];
+              arrivalTimeInMinutes.should.be.above(timeInMinutes);
+            });
+            done();
+          });
+        });
     });
 
     describe('Train Type Filter', function () {

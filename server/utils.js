@@ -45,7 +45,12 @@ var getTimeFromMinutes = function (minutesString) {
   return '' + Math.floor(minutesString / 60) + ':' + minutes;
 };
 
+var getMinutesFromTime = function (hours, minutes) {
+  return ((+hours) * 60 + (+minutes)) % 1440;
+};
+
 exports.arrayToObject = arrayToObject;
 exports.getWeekday = getWeekday;
 exports.getSingleStationLocationIndexQuery = getSingleStationLocationIndexQuery;
 exports.getTimeFromMinutes = getTimeFromMinutes;
+exports.getMinutesFromTime = getMinutesFromTime;

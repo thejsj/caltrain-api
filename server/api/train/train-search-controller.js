@@ -56,7 +56,7 @@ var trainSearchController = function (req, res) {
         var arrivalTimeInMinutes = (+arrivalTime.format('H')) * 60 + (+arrivalTime.format('m'));
         query = query
           .hasFields(arrayToObject('stations', getWeekday(arrivalTime), true))
-          .filter(r.row('stations')(getWeekday(arrivalTime))(params.from).gt(arrivalTimeInMinutes));
+          .filter(r.row('stations')(getWeekday(arrivalTime))(params.from).lt(arrivalTimeInMinutes));
       }
       return [query, departureTime, arrivalTime];
     })
