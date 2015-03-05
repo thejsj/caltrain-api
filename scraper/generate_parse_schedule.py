@@ -40,7 +40,10 @@ class ScheduleParser():
         split_numbers[0] = '0'
       if col_num > 8 or (col_num > 6 and split_numbers[0] is '12'):
         split_numbers[0] = str(int(split_numbers[0]) + 12)
-      text = split_numbers[0] + ':' + split_numbers[1]
+      try:
+        text = int(split_numbers[0]) * 60 + int(split_numbers[1])
+      except (ValueError):
+        return False
     return text
 
   def getTrainNumber(self, text):
@@ -49,6 +52,8 @@ class ScheduleParser():
     return text
 
   def isTime(self, time):
+    if isinstance(time, int): return True
+    if isinstance(time, bool): return time
     return bool(self.digits.search(time)) and 'street' not in time.lower()
 
   def n_or_s(self, train_number):

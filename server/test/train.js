@@ -7,6 +7,7 @@ var _ = require('lodash');
 var moment = require('moment');
 var app = require('../index.js');
 var agent = request.agent(app);
+var getWeekday = require('../utils').getWeekday;
 
 var get381Train = function (sendObject) {
   return agent.get('/v1/train/').send(sendObject || { number: 381 });
@@ -95,6 +96,8 @@ describe('/train', function () {
           'departure': weekdayMorningTimeString
         })
           .then(function (res) {
+            console.log(res.body);
+            res.body.length.should.be.above(0);
             res.body.forEach(function (train) {
               _.some(_.keys(train.stations.weekday), function (stationName) {
                 return stationName === '22nd-street';
@@ -130,7 +133,7 @@ describe('/train', function () {
       });
     });
 
-    xdescribe('Departure', function () {
+    describe('Departure', function () {
       var departureTime = moment(new Date(weekdayEveningTimeString));
       it('should only get trains that depart after the arrival time', function (done) {
         searchTrains({
@@ -139,8 +142,12 @@ describe('/train', function () {
           'departure': weekdayEveningTimeString
         })
           .then(function (res) {
+            console.log(res.body);
+            res.body.length.should.be.above(0);
             res.body.forEach(function (train) {
-
+              var _time = train.stations[getWeekday(departureTime)]['22nd-street'];
+              var time = moment(_time, 'H:mm');
+              departureTime.isBefore(time).should.equal(true);
             });
             done();
           });

@@ -1,6 +1,8 @@
 /*jshint node:true */
 'use strict';
 var _ = require('lodash');
+var r = require('./db');
+
 /**
  * Take the arguments in the function and make a recursive object out of them
  * Ex: 1, 2, 3 -> {1: {2: 3}}
@@ -19,4 +21,17 @@ var arrayToObject = function () {
   return obj;
 };
 
-module.exports = arrayToObject;
+var getWeekday = function (moment) {
+  var day = moment.format('dddd');
+  if (day === 'sunday' || day === 'saturday') return day;
+  return 'weekday';
+};
+
+var getSingleStationLocationIndexQuery = function (stationSlug) {
+  return r.db('caltrain_test').table('stations')
+    .getAll(stationSlug, {'index': 'slug'}).limit(1)(0)('location_index');
+};
+
+exports.arrayToObject = arrayToObject;
+exports.getWeekday = getWeekday;
+exports.getSingleStationLocationIndexQuery = getSingleStationLocationIndexQuery;

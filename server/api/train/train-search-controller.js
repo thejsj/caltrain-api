@@ -4,18 +4,9 @@ var q = require('q');
 var moment = require('moment');
 var r = require('../../db');
 var respond = require('../response-handler').responseHandler;
-var arrayToObject = require('../array-to-object');
-
-var getWeekday = function (moment) {
-  var day = moment.format('dddd');
-  if (day === 'sunday' || day === 'saturday') return day;
-  return 'weekday';
-};
-
-var getSingleStationLocationIndexQuery = function (stationSlug) {
-  return r.db('caltrain_test').table('stations')
-    .getAll(stationSlug, {'index': 'slug'}).limit(1)(0)('location_index');
-};
+var arrayToObject = require('../../utils').arrayToObject;
+var getWeekday = require('../../utils').getWeekday;
+var getSingleStationLocationIndexQuery = require('../../utils').getSingleStationLocationIndexQuery;
 
 var trainSearchController = function (req, res) {
   var params = res.locals.parameters;
@@ -28,7 +19,7 @@ var trainSearchController = function (req, res) {
     })
     .then(function (query) {
       if (params.departure !== undefined) return [query, moment(new Date(params.departure))];
-      return [query, moment()];
+      return [query, false];
     })
     .spread(function (query, departureTime) {
       if (params.arrival !== undefined) return [query, departureTime, moment(new Date(params.arrival))];
@@ -47,13 +38,20 @@ var trainSearchController = function (req, res) {
           .gt(getSingleStationLocationIndexQuery(params.from))
           .run(r.conn)
           .then(function (isNorth) {
-            query = query.filter({'direction': (isNorth ? 'north' : 'false')});
+            query = query.filter({'direction': (isNorth ? 'north' : 'south')});
             return [query, departureTime, arrivalTime];
           });
       }
       return [query, departureTime, arrivalTime];
     })
     .spread(function (query, departureTime, arrivalTime) {
+      // Query by arrivalTime and departureTime
+      if (arrivalTime) {
+
+      }
+      if (departureTime) {
+        query = query.
+      }
       return [query, departureTime, arrivalTime];
     })
     .spread(respond.bind(null, res));
