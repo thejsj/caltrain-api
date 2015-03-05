@@ -58,7 +58,7 @@ describe('/train', function () {
     });
   });
 
-  xdescribe('/search', function () {
+  describe('/search', function () {
 
     it('should return an array', function (done) {
       searchTrains()
@@ -70,6 +70,7 @@ describe('/train', function () {
     });
 
     describe('From and To', function () {
+
       it('should only return trains that pass through the `from` station', function (done) {
         searchTrains({'from': '22nd-street', 'departure': 'Tue Mar 03 2015 08:17:43 GMT-0800 (PST)'})
           .then(function (res) {
@@ -81,6 +82,7 @@ describe('/train', function () {
             done();
           });
       });
+
       it('should only return trains that pass through the `from` station and `to` station', function (done) {
         searchTrains({
           'from': '22nd-street',
