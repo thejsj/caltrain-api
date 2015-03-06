@@ -164,15 +164,47 @@ describe('/train', function () {
             done();
           });
         });
-      xit('should only get trains that depart after the arrival time on Saturdays', function () {
+      it('should only get trains that depart after the arrival time on Saturdays', function (done) {
+        searchTrains({
+          'from': '22nd-street',
+          'to': 'mountain-view',
+          'departure': saturdayTimeString
+        })
+          .then(function (res) {
+            var departureTime = moment(new Date(saturdayTimeString));
+            var departureTimeInMinutes = getMinutesFromTime(departureTime.format('H'), departureTime.format('m'));
+            res.body.length.should.be.above(0);
+            res.body.forEach(function (train) {
+              train.stations[getWeekday(departureTime)].should.not.equal(undefined);
+              var timeInMinutes = train.stations[getWeekday(departureTime)]['22nd-street'];
+              departureTimeInMinutes.should.be.below(timeInMinutes);
+            });
+            done();
+          });
+
       });
-      xit('should only get trains that depart after the arrival time on Sundays', function () {
+      it('should only get trains that depart after the arrival time on Sundays', function (done) {
+        searchTrains({
+          'from': '22nd-street',
+          'to': 'mountain-view',
+          'departure': sundayTimeString
+        })
+          .then(function (res) {
+            var departureTime = moment(new Date(sundayTimeString));
+            var departureTimeInMinutes = getMinutesFromTime(departureTime.format('H'), departureTime.format('m'));
+            res.body.length.should.be.above(0);
+            res.body.forEach(function (train) {
+              train.stations[getWeekday(departureTime)].should.not.equal(undefined);
+              var timeInMinutes = train.stations[getWeekday(departureTime)]['22nd-street'];
+              departureTimeInMinutes.should.be.below(timeInMinutes);
+            });
+            done();
+          });
+
       });
     });
 
     describe('Arrival', function () {
-      var arrivalTime = moment(new Date(weekdayEveningTimeString));
-      var arrivalTimeInMinutes = getMinutesFromTime(arrivalTime.format('H'), arrivalTime.format('m'));
 
       it('should only get trains that depart after the arrival time on weekdays', function (done) {
         searchTrains({
@@ -181,6 +213,8 @@ describe('/train', function () {
           'arrival': weekdayEveningTimeString
         })
           .then(function (res) {
+            var arrivalTime = moment(new Date(weekdayEveningTimeString));
+            var arrivalTimeInMinutes = getMinutesFromTime(arrivalTime.format('H'), arrivalTime.format('m'));
             res.body.length.should.be.above(0);
             res.body.forEach(function (train) {
               train.stations[getWeekday(arrivalTime)].should.not.equal(undefined);
@@ -191,13 +225,43 @@ describe('/train', function () {
           });
         });
 
-      xit('should only get trains that depart after the arrival time on Saturdays', function (done) {
-        done();
-      });
+      it('should only get trains that depart after the arrival time on Saturdays', function (done) {
+        searchTrains({
+          'from': '22nd-street',
+          'to': 'mountain-view',
+          'arrival': saturdayTimeString
+        })
+          .then(function (res) {
+            var arrivalTime = moment(new Date(saturdayTimeString));
+            var arrivalTimeInMinutes = getMinutesFromTime(arrivalTime.format('H'), arrivalTime.format('m'));
+            res.body.length.should.be.above(0);
+            res.body.forEach(function (train) {
+              train.stations[getWeekday(arrivalTime)].should.not.equal(undefined);
+              var timeInMinutes = train.stations[getWeekday(arrivalTime)]['22nd-street'];
+              arrivalTimeInMinutes.should.be.above(timeInMinutes);
+            });
+            done();
+          });
+        });
 
-      xit('should only get trains that depart after the arrival time on Sundays', function (done) {
-        done();
-      });
+      it('should only get trains that depart after the arrival time on Sundays', function (done) {
+        searchTrains({
+          'from': '22nd-street',
+          'to': 'mountain-view',
+          'arrival': sundayTimeString
+        })
+          .then(function (res) {
+            var arrivalTime = moment(new Date(sundayTimeString));
+            var arrivalTimeInMinutes = getMinutesFromTime(arrivalTime.format('H'), arrivalTime.format('m'));
+            res.body.length.should.be.above(0);
+            res.body.forEach(function (train) {
+              train.stations[getWeekday(arrivalTime)].should.not.equal(undefined);
+              var timeInMinutes = train.stations[getWeekday(arrivalTime)]['22nd-street'];
+              arrivalTimeInMinutes.should.be.above(timeInMinutes);
+            });
+            done();
+          });
+        });
     });
 
     describe('Train Type Filter', function () {
