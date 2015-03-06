@@ -5,6 +5,6 @@ require('should');
 
 describe('API', function () {
   require('./parser');
-  // require('./station');
+  require('./station');
   require('./train');
 });

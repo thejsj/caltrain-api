@@ -1,10 +1,12 @@
 /*jshint node:true */
 'use strict';
 var respond = require('../response-handler').responseHandler;
+var _ = require('lodash');
 var q = require('q');
 var r = require('../../db');
 
 var stationController = function (req, res) {
+  _.extend(res.locals.parameters, req.params);
   var params = res.locals.parameters;
   return q()
     .then(function () {

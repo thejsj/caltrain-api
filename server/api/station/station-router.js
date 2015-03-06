@@ -7,13 +7,16 @@ var stationSearchController = require('./station-search-controller');
 
 var stationRouter = express.Router();
 
-stationRouter.get('/:id([A-z0-9]{8}-[A-z0-9]{4}-[A-z0-9]{4}-[A-z0-9]{4}-[A-z0-9]{12})', stationController);
-stationRouter.post('/:id([A-z0-9]{8}-[A-z0-9]{4}-[A-z0-9]{4}-[A-z0-9]{4}-[A-z0-9]{12})', stationController);
+stationRouter.route('/:id([A-z0-9]{8}-[A-z0-9]{4}-[A-z0-9]{4}-[A-z0-9]{4}-[A-z0-9]{12})')
+  .get(stationController)
+  .post(stationController);
 
-stationRouter.get('/:slug([A-z0-9-]+)', stationController);
-stationRouter.post('/:slug([A-z0-9-]+)', stationController);
+stationRouter.route('/:slug([A-z0-9-]+)')
+  .get(stationController)
+  .post(stationController);
 
-stationRouter.get('/', stationSearchController);
-stationRouter.post('/', stationSearchController);
+stationRouter.route('/')
+  .get(stationSearchController)
+  .post(stationSearchController);
 
 module.exports = stationRouter;
