@@ -60,6 +60,20 @@ var trainSearchController = function (req, res) {
       }
       return [query, departureTime, arrivalTime];
     })
+    .spread(function (query, departureTime, arrivalTime) {
+      if (params.type !== undefined) {
+        if (params.type.length === 1) {
+          query = query
+            .filter(r.row('type').eq(params.type[0]));
+        }
+        if (params.type.length === 2) {
+          query = query
+            .filter(r.row('type').eq(params.type[0]).or(r.row('type').eq(params.type[1])));
+        }
+        if (params.type.length > 2) throw new Error('Only two types allowed for type filter');
+      }
+      return [query, departureTime, arrivalTime];
+    })
     .spread(respond.bind(null, res));
 };
 

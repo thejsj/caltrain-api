@@ -21,6 +21,12 @@ var argumentParser = function () {
       bodyParamaterParser(req.body),
       req.params
     );
+    if (res.locals.parameters.type !== undefined) {
+      res.locals.parameters.type = res.locals.parameters.type.split(',')
+        .map(function (type) {
+          return type.trim();
+        });
+    }
     next();
   };
 };

@@ -265,11 +265,36 @@ describe('/train', function () {
     });
 
     describe('Train Type Filter', function () {
-      xit('should only get `express` trains when requested', function (done) {
-        done();
+      it('should only get `express` trains when requested', function (done) {
+        searchTrains({
+          'from': '22nd-street',
+          'to': 'mountain-view',
+          'type': 'express'
+        })
+          .then(function (res) {
+            res.body.length.should.be.above(0);
+            res.body.forEach(function (train) {
+              train.type.should.equal('express');
+            });
+            done();
+          });
       });
-      xit('should only get `express` and `limited` trains when requested', function (done) {
-        done();
+
+      it('should only get `express` and `limited` trains when requested', function (done) {
+        searchTrains({
+          'from': '22nd-street',
+          'to': 'mountain-view',
+          'type': 'express, limited'
+        })
+          .then(function (res) {
+            res.body.length.should.be.above(0);
+            res.body.forEach(function (train) {
+              true.should.equal(
+                train.type === 'express' || train.type === 'limited'
+              );
+            });
+            done();
+          });
       });
     });
   });
