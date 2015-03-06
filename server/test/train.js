@@ -20,7 +20,7 @@ var searchTrains = function (sendObject) {
 };
 
 describe('/train', function () {
-  describe('/', function () {
+  describe('/:id_or_number', function () {
     var trainId;
     it('should return a json object', function (done) {
       get381Train()
@@ -62,7 +62,7 @@ describe('/train', function () {
     });
   });
 
-  describe('/search', function () {
+  describe('/', function () {
     var weekdayMorningTimeString = 'Tue Mar 03 2015 08:17:43 GMT-0800 (PST)';
     var weekdayEveningTimeString = 'Wed Mar 04 2015 20:42:37 GMT-0800 (PST)';
     var saturdayTimeString = 'Sat Mar 07 2015 20:42:37 GMT-0800 (PST)';

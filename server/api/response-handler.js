@@ -4,7 +4,9 @@ var r = require('../db');
 var q = require('q');
 
 var successHandler = function (res, jsonResponseObject) {
+  var params = res.locals.parameters;
   res.set('Parameters', JSON.stringify(res.locals.parameters));
+
   return res.json(jsonResponseObject);
 };
 

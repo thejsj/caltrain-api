@@ -17,7 +17,7 @@ var searchStation = function (sendObject) {
 describe('/station', function () {
   var stationUUID;
 
-  describe('/', function () {
+  describe('/:id_or_slug', function () {
     it('should return a json object', function (done) {
         get22ndStreetStation()
           .expect(200)
@@ -30,12 +30,10 @@ describe('/station', function () {
 
     it('should a return station when given its id', function (done) {
       get22ndStreetStation({
-        // If we re-import the database, this will change... :(
         id: stationUUID
       })
       .expect(200)
       .then(function (res) {
-        // console.log(res.body);
         res.body.should.be.an.instanceOf(Object);
         res.body.slug.should.be.an.instanceOf(Object);
         res.body.slug.should.equal('22nd-street');
@@ -54,7 +52,7 @@ describe('/station', function () {
      });
   });
 
-  describe('/search', function () {
+  describe('/', function () {
     describe('Name Search', function () {
       it('should a return an array or stations when given a name', function (done) {
         searchStation({ 'name': 'mountain' })

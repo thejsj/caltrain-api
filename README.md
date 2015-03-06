@@ -62,15 +62,13 @@ curl http://api.caltrain-api.com/v1/train \
 Provide a train `id` to see the schedule for that train.
 
 ```
-curl http://api.caltrain-api.com/v1/train \
-  -d id='d9000734-078e-490b-bbfa-c11fb2f48322'
+curl http://api.caltrain-api.com/v1/train/d9000734-078e-490b-bbfa-c11fb2f48322
 ```
 
 Provide a train number to see the schedule for that train.
 
 ```
-curl http://api.caltrain-api.com/v1/train \
-  -d number='103'
+curl http://api.caltrain-api.com/v1/train/103
 ```
 
 #### /station
@@ -78,22 +76,20 @@ curl http://api.caltrain-api.com/v1/train \
 Provide an `id` to get a particular station. Returns a JSON object.
 
 ```
-curl http://api.caltrain-api.com/v1/station \
-  -d id='d9000734-078e-490b-bbfa-c11fb2f48322'
+curl http://api.caltrain-api.com/v1/station/d9000734-078e-490b-bbfa-c11fb2f48322
 ```
 
 Provide a `slug` to get a particular station. Returns a JSON object.
 
 ```
-curl http://api.caltrain-api.com/v1/station \
-  -d slug='mountain-view'
+curl http://api.caltrain-api.com/v1/station/mountain-view
 ```
 
 Provide a `name`  in `/search` to query stations with that name. Returns an array.
 
 ```
 curl http://api.caltrain-api.com/v1/station \
-  -d slug='mountain-view'
+  -d name='san'
 ```
 
 
@@ -111,8 +107,8 @@ Requests data can be based by form-encoded data and by JSON-serialized strings:
 
 ```
 curl http://api.caltrain-api.com/v1/schedule \
-    -d from='22nd Street' \ // Station
-    -d to='Mountain View'   // Station
+    -d from='22nd-street' \ // Station
+    -d to='mountain-view'   // Station
 ```
 
 is the same as: 

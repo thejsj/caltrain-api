@@ -34,16 +34,24 @@
     [x] Add custom arg parser
     [x] Add database queries for /station
     [x] Add database queries for /station/search
+    [ ] Remove `/search` query
     [ ] Add database queries for /train
-        [ ] From and to
-        [ ] Departure and arrival
-        [ ] Train type filter
+        [x] From and to
+        [x] Departure and arrival
+        [x] Train type filter
         [ ] Geolocation
-    [ ] Add fields query
+    [ ] Add fields query (Only get certain fields)
+        [ ] _.pluck with fields
+    [ ] Only get times for Today (mapping result)(Add option)
     [ ] Add Pagination http://dev.billysbilling.com/blog/How-to-make-your-API-better-than-the-REST
     [ ] Add Rate Limiting http://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api#rate-limiting
     [ ] ETag http://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api#caching
     [ ] Last Modified http://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api#caching
+    [ ] Adding Google Analytics to API Request
+
+[ ] Tests
+    [ ] Add tests for timestamps
+    [ ] Add tests for trains past midnight
 
 [ ] Deployment
     [ ] Add fig files
