@@ -9,7 +9,7 @@ var agent = request.agent(app);
 var resHandler = function (done, res) {
   var parameters = JSON.parse(res.headers.parameters);
   parameters.should.be.an.instanceOf(Object);
-  parameters.number.should.equal('381');
+  parameters.from.should.equal('22nd-street');
   done();
 };
 
@@ -18,7 +18,7 @@ describe('Argument Parser', function () {
       agent
         .get('/v1/train/')
         .send({
-          number: '381',
+          from: '22nd-street',
         })
         .expect(200)
         .then(resHandler.bind(null, done));
@@ -26,7 +26,7 @@ describe('Argument Parser', function () {
 
     it('should receive GET query parameters', function (done) {
       agent
-        .get('/v1/train/?number=381')
+        .get('/v1/train/?from=22nd-street')
         .expect(200)
         .then(resHandler.bind(null, done));
     });
@@ -34,7 +34,7 @@ describe('Argument Parser', function () {
     it('should receive parameters through the data attribute', function (done) {
       agent
         .get('/v1/train/')
-        .send('{"number": "381"}')
+        .send('{"from": "22nd-street"}')
         .expect(200)
         .then(resHandler.bind(null, done));
     });
