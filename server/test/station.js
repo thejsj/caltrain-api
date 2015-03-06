@@ -7,11 +7,11 @@ var app = require('../index.js');
 var agent = request.agent(app);
 
 var get22ndStreetStation = function (sendObject) {
-  return agent.get('/v1/station/').send(sendObject || { slug: '22nd-street' });
+  return agent.get('/v1/station/22nd-street').send(sendObject);
 };
 
 var searchStation = function (sendObject) {
-  return agent.get('/v1/station/search').send(sendObject || { name: 'san' });
+  return agent.get('/v1/station/').send(sendObject || { name: 'san' });
 };
 
 describe('/station', function () {

@@ -4,7 +4,6 @@
 // Dependencies
 var bodyParser = require('body-parser');
 var express = require('express');
-
 var argumentParser = require('./argument-parser');
 var send404 = require('./send-404');
 var apiRouter = require('./api');

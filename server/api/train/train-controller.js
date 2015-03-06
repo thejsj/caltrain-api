@@ -2,9 +2,11 @@
 'use strict';
 var respond = require('../response-handler').responseHandler;
 var q = require('q');
+var _ = require('lodash');
 var r = require('../../db');
 
 var trainController = function (req, res) {
+  _.extend(res.locals.parameters, req.params);
   var params = res.locals.parameters;
   return q()
     .then(function () {

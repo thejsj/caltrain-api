@@ -11,12 +11,12 @@ var getWeekday = require('../utils').getWeekday;
 var getTimeFromMinutes = require('../utils').getTimeFromMinutes;
 var getMinutesFromTime = require('../utils').getMinutesFromTime;
 
-var get381Train = function (sendObject) {
-  return agent.get('/v1/train/').send(sendObject || { number: 381 });
+var get381Train = function (param, sendObject) {
+  return agent.get('/v1/train/' + (param || 381)).send(sendObject);
 };
 
 var searchTrains = function (sendObject) {
-  return agent.get('/v1/train/search').send(sendObject || { from: '22nd-street' });
+  return agent.get('/v1/train/').send(sendObject || { from: '22nd-street' });
 };
 
 describe('/train', function () {
@@ -32,8 +32,9 @@ describe('/train', function () {
           done();
         });
     });
+
     it('should return the train specified by the ID', function (done) {
-      get381Train({ id: trainId })
+      get381Train(trainId)
         .expect(200)
         .then(function (res) {
           res.body.should.be.an.instanceOf(Object);
@@ -41,8 +42,9 @@ describe('/train', function () {
           done();
         });
     });
+
     it('should return the train specified by the number (Number)', function (done) {
-      get381Train({ 'number': 381 })
+      get381Train(381)
         .expect(200)
         .then(function (res) {
           res.body.should.be.an.instanceOf(Object);
@@ -52,7 +54,7 @@ describe('/train', function () {
     });
 
    it('should return the train specified by the number (Number)', function (done) {
-      get381Train({ 'number': '381' })
+      get381Train('381')
         .expect(200)
         .then(function (res) {
           res.body.should.be.an.instanceOf(Object);
@@ -265,6 +267,7 @@ describe('/train', function () {
     });
 
     describe('Train Type Filter', function () {
+
       it('should only get `express` trains when requested', function (done) {
         searchTrains({
           'from': '22nd-street',
@@ -296,6 +299,15 @@ describe('/train', function () {
             done();
           });
       });
+
+    });
+
+    describe('Geolocation', function () {
+
+      xit('it should query the `from` and `to` station with a geolocation', function () {
+
+      });
+
     });
   });
 });
