@@ -2,8 +2,10 @@
 /*jshint node:true */
 'use strict';
 require('should');
+
 var request = require('supertest-as-promised');
 var app = require('../index.js');
+
 var agent = request.agent(app);
 
 var resHandler = function (done, res) {

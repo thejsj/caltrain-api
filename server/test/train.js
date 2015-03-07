@@ -5,11 +5,13 @@ require('should');
 var request = require('supertest-as-promised');
 var _ = require('lodash');
 var moment = require('moment');
+
 var app = require('../index.js');
-var agent = request.agent(app);
 var getWeekday = require('../utils').getWeekday;
 var getTimeFromMinutes = require('../utils').getTimeFromMinutes;
 var getMinutesFromTime = require('../utils').getMinutesFromTime;
+
+var agent = request.agent(app);
 
 var get381Train = function (param, sendObject) {
   return agent.get('/v1/train/' + (param || 381)).send(sendObject);

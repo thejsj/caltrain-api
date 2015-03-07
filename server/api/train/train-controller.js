@@ -1,9 +1,10 @@
 /*jshint node:true */
 'use strict';
-var respond = require('../response-handler').responseHandler;
 var q = require('q');
 var _ = require('lodash');
+
 var r = require('../../db');
+var respond = require('../response-handler').responseHandler;
 
 var trainController = function (req, res) {
   _.extend(res.locals.parameters, req.params);

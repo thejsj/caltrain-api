@@ -1,8 +1,9 @@
 /*jshint node:true */
 'use strict';
-var respond = require('../response-handler').responseHandler;
 var q = require('q');
+
 var r = require('../../db');
+var respond = require('../response-handler').responseHandler;
 
 var stationSearchController = function (req, res) {
   var params = res.locals.parameters;

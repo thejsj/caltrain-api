@@ -7,4 +7,5 @@ describe('API', function () {
   require('./parser');
   require('./station');
   require('./train');
+  require('./meta');
 });

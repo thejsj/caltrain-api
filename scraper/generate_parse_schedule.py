@@ -1,5 +1,6 @@
 #!/usr/bin/python
 from slugify import slugify
+from pygeocoder import Geocoder
 import re
 
 class ScheduleParser():
@@ -91,6 +92,8 @@ class ScheduleParser():
         station_name = cells[first_index - 1].replace(u'\xa0', u' ')
         slug = slugify(station_name)
         if slug not in station_times.keys():
+          # results = Geocoder.geocode("Tian'anmen, Beijing")
+          # print(results[0].coordinates)
           station_times[slug] = {
             'location_index': i,
             'name': station_name,

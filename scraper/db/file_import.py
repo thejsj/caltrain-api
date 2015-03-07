@@ -24,6 +24,8 @@ class CaltrainFileImport():
     if 'stations' not in table_list:
       r.table_create('stations').run(self.conn)
       r.table('trains').index_create('name').run(self.conn)
+    if 'meta' not in table_list:
+      r.table_create('meta').run(self.conn)
 
   def get_file_entries(self, file_name, table_name):
     # Open File
@@ -33,6 +35,11 @@ class CaltrainFileImport():
     import_file_str = json.loads(import_file.read())
     import_file.close()
     return import_file_str
+
+  def update_meta(self):
+    r.table('meta').insert({
+          'last_modified': r.now()
+        }).run(self.conn)
 
   def import_file(self, file_name, table_name):
     entries = self.get_file_entries(file_name, table_name)

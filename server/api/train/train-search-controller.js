@@ -2,6 +2,7 @@
 'use strict';
 var q = require('q');
 var moment = require('moment');
+
 var r = require('../../db');
 var respond = require('../response-handler').responseHandler;
 var arrayToObject = require('../../utils').arrayToObject;

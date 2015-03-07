@@ -41,6 +41,7 @@ class CaltrainScraper():
       caltrain_import.create_tables()
       caltrain_import.import_file('trains.json', 'trains')
       caltrain_import.import_file('stations.json', 'stations')
+      caltrain_import.update_meta()
 
   def get_location(self, name, file_extension):
     parent_path = os.path.abspath(os.curdir)

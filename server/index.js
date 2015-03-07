@@ -1,10 +1,10 @@
 /*jshint node:true */
 'use strict';
-
-// Dependencies
 var bodyParser = require('body-parser');
 var express = require('express');
+
 var argumentParser = require('./argument-parser');
+var etagGenerator = require('./etag-generator');
 var send404 = require('./send-404');
 var apiRouter = require('./api');
 
@@ -18,7 +18,8 @@ app
     extended: true
   }))
   .use(bodyParser.json())
-  .use(argumentParser());
+  .use(argumentParser())
+  .set('etag', etagGenerator());
 
 // Set Routes
 app

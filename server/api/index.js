@@ -1,9 +1,9 @@
 /*jshint node:true */
 'use strict';
+var express = require('express');
 
 var trainRouter = require('./train/train-router.js');
 var stationRouter = require('./station/station-router.js');
-var express = require('express');
 
 var apiRouter = express.Router();
 

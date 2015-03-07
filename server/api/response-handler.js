@@ -1,13 +1,20 @@
 /*jshint node:true */
 'use strict';
-var r = require('../db');
 var q = require('q');
+var r = require('../db');
 
 var successHandler = function (res, jsonResponseObject) {
-  var params = res.locals.parameters;
-  res.set('Parameters', JSON.stringify(res.locals.parameters));
-
-  return res.json(jsonResponseObject);
+  return q()
+    .then(function () {
+      return r.table('meta')('last_modified')
+        .max().toISO8601()
+        .run(r.conn);
+    })
+    .then(function (last_modified) {
+      res.set('Last-Modified', last_modified);
+      res.set('Parameters', JSON.stringify(res.locals.parameters));
+      return res.json(jsonResponseObject);
+    });
 };
 
 var errorHandler = function (res, err) {

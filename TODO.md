@@ -45,7 +45,7 @@
     [ ] Only get times for Today (mapping result)(Add option)
     [ ] Add Pagination http://dev.billysbilling.com/blog/How-to-make-your-API-better-than-the-REST
     [ ] Add Rate Limiting http://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api#rate-limiting
-    [ ] ETag http://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api#caching
+    [x] ETag http://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api#caching
     [ ] Last Modified http://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api#caching
     [ ] Adding Google Analytics to API Request
 

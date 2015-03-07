@@ -1,7 +1,7 @@
 /*jshint node:true */
 'use strict';
-
 var express = require('express');
+
 var stationController = require('./station-controller');
 var stationSearchController = require('./station-search-controller');
 
