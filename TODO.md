@@ -46,7 +46,7 @@
     [ ] Add Pagination http://dev.billysbilling.com/blog/How-to-make-your-API-better-than-the-REST
     [ ] Add Rate Limiting http://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api#rate-limiting
     [x] ETag http://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api#caching
-    [ ] Last Modified http://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api#caching
+    [x] Last Modified http://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api#caching
     [ ] Adding Google Analytics to API Request
 
 [ ] Tests

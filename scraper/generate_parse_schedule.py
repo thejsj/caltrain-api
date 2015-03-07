@@ -92,13 +92,18 @@ class ScheduleParser():
         station_name = cells[first_index - 1].replace(u'\xa0', u' ')
         slug = slugify(station_name)
         if slug not in station_times.keys():
-          # results = Geocoder.geocode("Tian'anmen, Beijing")
-          # print(results[0].coordinates)
+          location = Geocoder.geocode(station_name + " Caltrain Station, CA")
+          coordinates = location[0].coordinates
+          print station_name
           station_times[slug] = {
             'location_index': i,
             'name': station_name,
             'slug': slug,
             'zone': cells[first_index - 2],
+            'location': {
+              'latitude': coordinates[0],
+              'longitude': coordinates[1]
+            },
             'times': { },
             'trains': { }
           }
