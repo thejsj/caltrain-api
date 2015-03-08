@@ -23,14 +23,16 @@ describe('Argument Parser', function () {
           from: '22nd-street',
         })
         .expect(200)
-        .then(resHandler.bind(null, done));
+        .then(resHandler.bind(null, done))
+        .catch(done);
     });
 
     it('should receive GET query parameters', function (done) {
       agent
         .get('/v1/train/?from=22nd-street')
         .expect(200)
-        .then(resHandler.bind(null, done));
+        .then(resHandler.bind(null, done))
+        .catch(done);
     });
 
     it('should receive parameters through the data attribute', function (done) {
@@ -38,6 +40,7 @@ describe('Argument Parser', function () {
         .get('/v1/train/')
         .send('{"from": "22nd-street"}')
         .expect(200)
-        .then(resHandler.bind(null, done));
+        .then(resHandler.bind(null, done))
+        .catch(done);
     });
   });

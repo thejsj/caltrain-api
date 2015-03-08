@@ -26,7 +26,7 @@ curl http://api.caltrain-api.com/v1/train \
 - Station Slug <String>
 - Station ID <Integer>
 
-Provide a departure time and get the the closest departures.
+Provide a departure time and get the the closest departures. If `departure` is specified without `from`, the API will respond with a 400 error.
 
 ```
 curl http://api.caltrain-api.com/v1/train \
@@ -41,7 +41,7 @@ curl http://api.caltrain-api.com/v1/train \
 - Time and Format `<Array>` (A tuple with a time `<String>` and the format `<String>`)(in serialized JSON)
 - Time `<String>` (To be automatically parse by `moment.js`)
 
-Provide an arrival time an get the the closest departures.
+Provide an arrival time an get the the closest departures. If `arrival` is specified without `to`, the API will respond with a 400 error.
 
 ```
 curl http://api.caltrain-api.com/v1/train \
@@ -100,6 +100,18 @@ curl http://api.caltrain-api.com/v1/station \
   -d latitude='37.3876416'
   -d longitude='-122.0656136'
 ```
+
+### Filters and Options
+ 
+Provide a `fields` in order to filter the response to only certain fields:
+
+```
+curl http://api.caltrain-api.com/v1/station \
+  -d name='san'
+  -d fields='id,name,coordinates,trains'
+```
+
+By default, the API always returns a `today` attribute in `train.times`, `train.stations`, `station.trains`, and `station.times`. This 
 
 ### Requests
 

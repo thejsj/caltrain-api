@@ -47,13 +47,19 @@ var trainSearchController = function (req, res) {
     })
     .spread(function (query, departureTime, arrivalTime) {
       // Query by arrivalTime and departureTime
-      if (departureTime && params.from !== undefined) {
+      if (departureTime) {
+        if (params.from === undefined) {
+          throw new Error('Not enough parameters supplied. `departure` specified without a `from` station.');
+        }
         var departureTimeInMinutes = (+departureTime.format('H')) * 60 + (+departureTime.format('m'));
         query = query
           .hasFields(arrayToObject('stations', getWeekday(departureTime), true))
           .filter(r.row('stations')(getWeekday(departureTime))(params.from).gt(departureTimeInMinutes));
       }
-      if (arrivalTime && params.to !== undefined) {
+      if (arrivalTime) {
+        if (params.to === undefined) {
+          throw new Error('Not enough parameters supplied. `arrival` specified without a `to` station.');
+        }
         var arrivalTimeInMinutes = (+arrivalTime.format('H')) * 60 + (+arrivalTime.format('m'));
         query = query
           .hasFields(arrayToObject('stations', getWeekday(arrivalTime), true))

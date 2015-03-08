@@ -32,7 +32,8 @@ describe('/train', function () {
           res.body.number.should.be.an.instanceOf(Number);
           trainId = res.body.id;
           done();
-        });
+        })
+        .catch(done);
     });
 
     it('should return the train specified by the ID', function (done) {
@@ -42,7 +43,8 @@ describe('/train', function () {
           res.body.should.be.an.instanceOf(Object);
           res.body.number.should.equal(381);
           done();
-        });
+        })
+        .catch(done);
     });
 
     it('should return the train specified by the number (Number)', function (done) {
@@ -52,7 +54,8 @@ describe('/train', function () {
           res.body.should.be.an.instanceOf(Object);
           res.body.number.should.equal(381);
           done();
-        });
+        })
+        .catch(done);
     });
 
    it('should return the train specified by the number (Number)', function (done) {
@@ -62,7 +65,8 @@ describe('/train', function () {
           res.body.should.be.an.instanceOf(Object);
           res.body.number.should.equal(381);
           done();
-        });
+        })
+        .catch(done);
     });
   });
 
@@ -78,7 +82,8 @@ describe('/train', function () {
         .then(function (res) {
           res.body.should.be.an.instanceOf(Array);
           done();
-        });
+        })
+        .catch(done);
     });
 
     describe('From and To', function () {
@@ -92,7 +97,8 @@ describe('/train', function () {
               }).should.equal(true);
             });
             done();
-          });
+          })
+          .catch(done);
       });
 
       it('should only return trains that pass through the `from` station with a departure time', function (done) {
@@ -104,7 +110,8 @@ describe('/train', function () {
               }).should.equal(true);
             });
             done();
-          });
+          })
+          .catch(done);
       });
 
       it('should only return trains that pass through the `from` station and `to` station heading south', function (done) {
@@ -125,7 +132,8 @@ describe('/train', function () {
               train.direction.should.equal('south');
             });
             done();
-          });
+          })
+          .catch(done);
       });
 
       it('should only return trains that pass through the `from` station and `to` station heading north', function (done) {
@@ -146,7 +154,8 @@ describe('/train', function () {
               train.direction.should.equal('north');
             });
             done();
-          });
+          })
+          .catch(done);
       });
     });
 
@@ -161,13 +170,15 @@ describe('/train', function () {
           .then(function (res) {
             res.body.length.should.be.above(0);
             res.body.forEach(function (train) {
-              var timeInHmm = getTimeFromMinutes(train.stations[getWeekday(departureTime)]['22nd-street']);
+              var timeInHmm = train.stations[getWeekday(departureTime)]['22nd-street'];
               var time = moment(timeInHmm, 'H:mm');
               departureTime.isBefore(time).should.equal(true);
             });
             done();
-          });
+          })
+          .catch(done);
         });
+
       it('should only get trains that depart after the arrival time on Saturdays', function (done) {
         searchTrains({
           'from': '22nd-street',
@@ -180,11 +191,15 @@ describe('/train', function () {
             res.body.length.should.be.above(0);
             res.body.forEach(function (train) {
               train.stations[getWeekday(departureTime)].should.not.equal(undefined);
-              var timeInMinutes = train.stations[getWeekday(departureTime)]['22nd-street'];
+              var timeInMinutes = getMinutesFromTime.apply(
+                null,
+                train.stations[getWeekday(departureTime)]['22nd-street'].split(':')
+              );
               departureTimeInMinutes.should.be.below(timeInMinutes);
             });
             done();
-          });
+          })
+          .catch(done);
 
       });
       it('should only get trains that depart after the arrival time on Sundays', function (done) {
@@ -199,16 +214,33 @@ describe('/train', function () {
             res.body.length.should.be.above(0);
             res.body.forEach(function (train) {
               train.stations[getWeekday(departureTime)].should.not.equal(undefined);
-              var timeInMinutes = train.stations[getWeekday(departureTime)]['22nd-street'];
+              var timeInMinutes = getMinutesFromTime.apply(
+                null,
+                train.stations[getWeekday(departureTime)]['22nd-street'].split(':')
+              );
               departureTimeInMinutes.should.be.below(timeInMinutes);
             });
             done();
-          });
+          })
+          .catch(done);
+      });
 
+      it('it should throw an error if a `departure` is specified and no `from` is specified', function (done) {
+        return searchTrains({
+          'to': 'mountain-view',
+          'departure': weekdayEveningTimeString
+        })
+          .expect(400)
+          .then(function (res) {
+            res.body.message.should.match(/departure/);
+            res.body.message.should.match(/from/);
+            done();
+          })
+          .catch(done);
       });
     });
 
-    describe('Arrival', function () {
+   describe('Arrival', function () {
 
       it('should only get trains that depart after the arrival time on weekdays', function (done) {
         searchTrains({
@@ -222,11 +254,15 @@ describe('/train', function () {
             res.body.length.should.be.above(0);
             res.body.forEach(function (train) {
               train.stations[getWeekday(arrivalTime)].should.not.equal(undefined);
-              var timeInMinutes = train.stations[getWeekday(arrivalTime)]['22nd-street'];
+              var timeInMinutes = getMinutesFromTime.apply(
+                null,
+                train.stations[getWeekday(arrivalTime)]['22nd-street'].split(':')
+              );
               arrivalTimeInMinutes.should.be.above(timeInMinutes);
             });
             done();
-          });
+          })
+          .catch(done);
         });
 
       it('should only get trains that depart after the arrival time on Saturdays', function (done) {
@@ -237,15 +273,20 @@ describe('/train', function () {
         })
           .then(function (res) {
             var arrivalTime = moment(new Date(saturdayTimeString));
-            var arrivalTimeInMinutes = getMinutesFromTime(arrivalTime.format('H'), arrivalTime.format('m'));
+            var arrivalTimeInMinutes =
+              getMinutesFromTime(arrivalTime.format('H'), arrivalTime.format('m'));
             res.body.length.should.be.above(0);
             res.body.forEach(function (train) {
               train.stations[getWeekday(arrivalTime)].should.not.equal(undefined);
-              var timeInMinutes = train.stations[getWeekday(arrivalTime)]['22nd-street'];
+              var timeInMinutes = getMinutesFromTime.apply(
+                null,
+                train.stations[getWeekday(arrivalTime)]['22nd-street'].split(':')
+              );
               arrivalTimeInMinutes.should.be.above(timeInMinutes);
             });
             done();
-          });
+          })
+          .catch(done);
         });
 
       it('should only get trains that depart after the arrival time on Sundays', function (done) {
@@ -260,11 +301,29 @@ describe('/train', function () {
             res.body.length.should.be.above(0);
             res.body.forEach(function (train) {
               train.stations[getWeekday(arrivalTime)].should.not.equal(undefined);
-              var timeInMinutes = train.stations[getWeekday(arrivalTime)]['22nd-street'];
+              var timeInMinutes = getMinutesFromTime.apply(
+                null,
+                train.stations[getWeekday(arrivalTime)]['22nd-street'].split(':')
+              );
               arrivalTimeInMinutes.should.be.above(timeInMinutes);
             });
             done();
-          });
+          })
+          .catch(done);
+        });
+
+        it('it should throw an error if a `arrival` is specified and no `to` is specified', function (done) {
+          return searchTrains({
+            'from': 'mountain-view',
+            'arrival': weekdayEveningTimeString
+          })
+            .expect(400)
+            .then(function (res) {
+              res.body.message.should.match(/arrival/);
+              res.body.message.should.match(/to/);
+              done();
+            })
+            .catch(done);
         });
     });
 
@@ -282,7 +341,8 @@ describe('/train', function () {
               train.type.should.equal('express');
             });
             done();
-          });
+          })
+          .catch(done);
       });
 
       it('should only get `express` and `limited` trains when requested', function (done) {
@@ -299,7 +359,8 @@ describe('/train', function () {
               );
             });
             done();
-          });
+          })
+          .catch(done);
       });
     });
   });

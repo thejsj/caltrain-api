@@ -25,7 +25,8 @@ describe('Metadata', function () {
         .then(function (res) {
           should.exist(res.headers.etag);
           done();
-        });
+        })
+        .catch(done);
     });
 
     it('should return the same ETag for the same request', function (done) {
@@ -38,7 +39,8 @@ describe('Metadata', function () {
               etag.should.equal(res.headers.etag);
               done();
             });
-        });
+        })
+        .catch(done);
     });
 
     it('should return a different ETag for two different requests', function (done) {
@@ -51,7 +53,8 @@ describe('Metadata', function () {
               etag.should.not.equal(res.headers.etag);
               done();
             });
-        });
+        })
+        .catch(done);
     });
   });
 
@@ -66,7 +69,8 @@ describe('Metadata', function () {
           lastModified._f.should.equal('YYYY-MM-DDTHH:mm:ss.SSSSZ'); // ISO 8601
           lastModified.isValid().should.equal(true);
           done();
-        });
+        })
+        .catch(done);
     });
 
   });

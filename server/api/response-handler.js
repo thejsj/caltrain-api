@@ -5,6 +5,7 @@ var _ = require('lodash');
 
 var r = require('../db');
 var splitAndTrim = require('../utils').splitAndTrim;
+var getTimeFromMinutes = require('../utils').getTimeFromMinutes;
 
 var fieldsHandler = function (res, query) {
   var params = res.locals.parameters;
@@ -14,18 +15,70 @@ var fieldsHandler = function (res, query) {
   return query;
 };
 
+var _parseTimeInEntry = function (entry) {
+  // if (entry.stations) {
+  //   for (let day in entry.stations) {
+  //     for (let station in entry.stations[day]) {
+  //       let time = getTimeFromMinutes(entry.stations[day][station]);
+  //       entry.stations[day][station] = time;
+  //     }
+  //   }
+  // }
+  // // if (entry.times) {
+  // //   for (let day in entry.times) {
+  // //     for (let direction in entry.times[day]) {
+  // //       for(var i = 0; i < entry.times[day][direction].length; i++) {
+  // //         let _t = entry.times[day][direction][i];
+  // //         entry.times[day][direction][i] = getTimeFromMinutes(_t);
+  // //       }
+  // //     }
+  // //   }
+  // // }
+  // if (entry.times) {
+  //   for (let day in entry.times) {
+  //     for (let direction in entry.times[day]) {
+  //       for(var i = 0; i < entry.times[day][direction].length; i++) {
+  //         let _t = entry.times[day][direction][i];
+  //         entry.times[day][direction][i] = getTimeFromMinutes(_t);
+  //       }
+  //     }
+  //   }
+  // }
+  var _parseTime = function (object, key) {
+    if (Array.isArray(object[key])) {
+      for (let i = 0; i < object[key].length; i += 1) {
+        object[key][i] = getTimeFromMinutes(object[key][i]);
+      }
+      return;
+    }
+    if (typeof _.values(object[key])[0] === 'number') {
+      for (let i in object[key]) {
+        object[key][i] = getTimeFromMinutes(object[key][i]);
+      }
+      return;
+    }
+    _.each(object[key], function (obj, newKey) {
+      _parseTime(object[key], newKey);
+    });
+  };
+  if (entry.stations) _parseTime(entry, 'stations');
+  if (entry.trains) _parseTime(entry, 'trains');
+  if (entry.times) _parseTime(entry, 'times');
+};
+
 var successHandler = function (res, jsonResponseObject) {
-  if (Array.isArray(jsonResponseObject) &&
-    jsonResponseObject.length > 0 &&
-    _.keys(jsonResponseObject[0]).length === 0
-  ) {
-    throw new Error('No fields returned for queried objects. Check your `fields` parameter in query');
-  }
-  if (typeof jsonResponseObject === 'object' &&
-      !Array.isArray(jsonResponseObject) &&
-      _.keys(jsonResponseObject).length === 0
-  ) {
-    throw new Error('No fields returned for queried objects. Check your `fields` parameter in query');
+  if (Array.isArray(jsonResponseObject)) {
+    // Array of Objects
+    if(jsonResponseObject.length > 0 && _.keys(jsonResponseObject[0]).length === 0) {
+      throw new Error('No fields returned for queried objects. Check your `fields` parameter in query');
+    }
+    jsonResponseObject.forEach(_parseTimeInEntry);
+  } else {
+    // Objects
+    if (!Array.isArray(jsonResponseObject) && _.keys(jsonResponseObject).length === 0) {
+      throw new Error('No fields returned for queried objects. Check your `fields` parameter in query');
+    }
+    _parseTimeInEntry(jsonResponseObject);
   }
   return q()
     .then(function () {

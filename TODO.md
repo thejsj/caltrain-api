@@ -41,10 +41,14 @@
         [x] Departure and arrival
         [x] Train type filter
         [x] Geolocation
-    [ ] Add fields query (Only get certain fields)
-        [ ] _.pluck with fields
+    [x] Add fields query (Only get certain fields)
+        [x] _.pluck with fields
+    [ ] Fix times for certain responses (trains 139, 142)
     [ ] Parse all times in to H:mm
+        [ ] Add `time_format='minutes'` Returns time in minutes
+        [ ] Add `time_format='default'` Returns time in 'H:mm'
     [ ] Append times for today or departure arrival day (Add option)
+        [ ] Add `today=true`
         [ ] Parse times into ISO 8601
         [ ] Add option for time format parsing 
     [ ] Add Pagination http://dev.billysbilling.com/blog/How-to-make-your-API-better-than-the-REST

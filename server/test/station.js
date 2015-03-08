@@ -28,7 +28,8 @@ describe('/station', function () {
             res.body.should.be.an.instanceOf(Object);
             stationUUID = res.body.id;
             done();
-          });
+          })
+          .catch(done);
      });
 
     it('should a return station when given its id', function (done) {
@@ -39,7 +40,8 @@ describe('/station', function () {
         res.body.slug.should.be.an.instanceOf(Object);
         res.body.slug.should.equal('22nd-street');
         done();
-      });
+      })
+      .catch(done);
      });
 
     it('should a return station when given its slug', function (done) {
@@ -49,7 +51,8 @@ describe('/station', function () {
           res.body.should.be.an.instanceOf(Object);
           res.body.slug.should.equal('22nd-street');
           done();
-        });
+        })
+        .catch(done);
      });
   });
 
@@ -62,7 +65,8 @@ describe('/station', function () {
             res.body.should.be.an.instanceOf(Array);
             res.body.length.should.equal(1);
             done();
-          });
+          })
+          .catch(done);
       });
 
       it('should only return stations that have the string as a sub string', function (done) {
@@ -75,7 +79,8 @@ describe('/station', function () {
               row.name.toLowerCase().match('san').length.should.not.equal(0);
             });
             done();
-          });
+          })
+          .catch(done);
       });
       it('should return an array of length `0` when an irrelevant string is provided', function (done) {
         searchStation({ 'name': 'asdfasfaeresrsdd' })
@@ -84,7 +89,8 @@ describe('/station', function () {
             res.body.should.be.an.instanceOf(Array);
             res.body.length.should.equal(0);
             done();
-          });
+          })
+          .catch(done);
       });
     });
 
@@ -105,7 +111,8 @@ describe('/station', function () {
                 });
                 done();
               });
-          });
+          })
+         .catch(done);
       });
 
       it('should return an array of stations in order of distance', function (done) {
@@ -137,19 +144,21 @@ describe('/station', function () {
                 names[10].should.equal('hillsdale');
                 done();
               });
-          });
+          })
+          .catch(done);
       });
 
       it('should return a 400 error if bad longitude is given', function (done) {
-            return searchStation({
-              'longitude': '-180.18202',
-              'latitude': '37.45418'
-            })
-              .expect(400)
-              .then(function (res) {
-                res.body.message.should.match(/longitude/);
-                done();
-              });
+        return searchStation({
+          'longitude': '-180.18202',
+          'latitude': '37.45418'
+        })
+          .expect(400)
+          .then(function (res) {
+            res.body.message.should.match(/longitude/);
+            done();
+          })
+          .catch(done);
       });
 
       it('should return a 400 error if bad longitude is given', function (done) {
@@ -161,7 +170,8 @@ describe('/station', function () {
               .then(function (res) {
                 res.body.message.should.match(/latitude/);
                 done();
-              });
+              })
+              .catch(done);
       });
     });
   });
