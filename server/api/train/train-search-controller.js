@@ -75,7 +75,8 @@ var trainSearchController = function (req, res) {
       }
       return [query, departureTime, arrivalTime];
     })
-    .spread(respond.bind(null, res));
+    .spread(respond.bind(null, res))
+    .catch(respond.bind(null, res));
 };
 
 module.exports = trainSearchController;

@@ -45,16 +45,17 @@ class StationTests(unittest.TestCase):
 
   # Test that all numbers are properly structured
   def test_station_times(self):
-    is_time = re.compile(r'^[0-9]{1,2}:[0-9]{2}$')
+    # is_time = re.compile(r'^[0-9]{1,2}:[0-9]{2}$')
+    is_time = re.compile(r'\d')
     for station in staiton_times:
       for direction in station['times'].values():
         for times in direction.values():
           for time in times:
-            self.assertTrue(bool(is_time.match(time)))
+            self.assertTrue(bool(is_time.match(str(time))))
       for direction in station['trains'].values():
         for times in direction.values():
           for time in times.values():
-            self.assertTrue(bool(is_time.match(time)))
+            self.assertTrue(bool(is_time.match(str(time))))
 
   # Test all stations keys
   def test_stations_keys(self):
@@ -77,16 +78,15 @@ class TrainTests(unittest.TestCase):
 
   # All times should be properly structured
   def test_train_times(self):
-    is_time = re.compile(r'^[0-9]{1,2}:[0-9]{2}$')
+    # is_time = re.compile(r'^[0-9]{1,2}:[0-9]{2}$')
+    is_time = re.compile(r'^\d')
     for station in train_times:
-      for direction in station['times'].values():
-        for times in direction.values():
-          for time in times:
-            self.assertTrue(bool(is_time.match(time)))
-      for direction in station['stations'].values():
-        for times in direction.values():
-          for time in times.values():
-            self.assertTrue(bool(is_time.match(time)))
+      for times in station['times'].values():
+        for time in times:
+          self.assertTrue(bool(is_time.match(str(time))))
+      for times in station['stations'].values():
+        for time in times.values():
+          self.assertTrue(bool(is_time.match(str(time))))
 
   # All train numbers should just be numbers
   def test_stations_keys(self):

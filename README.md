@@ -97,6 +97,13 @@ Provide a `longitude` and `latitude` to get the closest station to that location
 
 ```
 curl http://api.caltrain-api.com/v1/station \
+  -d coordinates='37.3876416,-122.0656136'
+```
+
+or?
+
+```
+curl http://api.caltrain-api.com/v1/station \
   -d latitude='37.3876416'
   -d longitude='-122.0656136'
 ```

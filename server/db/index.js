@@ -2,6 +2,7 @@
 'use strict';
 var r = require('rethinkdb');
 var config = require('config');
+
 r.connections = [];
 
 r.connect(config.get('rethinkdb'))

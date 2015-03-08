@@ -20,7 +20,8 @@ var trainController = function (req, res) {
       if (params.number !== undefined) return query.getAll(+params.number, {'index': 'number'})(0);
       if (params.id !== undefined) return query.get(params.id);
     })
-    .then(respond.bind(null, res));
+    .then(respond.bind(null, res))
+    .catch(respond.bind(null, res));
 };
 
 module.exports = trainController;

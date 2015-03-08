@@ -21,8 +21,7 @@ var errorHandler = function (res, err) {
   res.set('Parameters', JSON.stringify(res.locals.parameters));
   res.status(400);
   res.json({
-    code: 0,
-    message: err
+    message: err.toString()
   });
 };
 
@@ -35,6 +34,7 @@ var toArray = function (cursor) {
 };
 
 var responseHandler = function (res, query) {
+  if (query instanceof Error) return errorHandler(res, query);
   return q()
     .then(runHandler.bind(null, query))
     .then(function (cursorOrArray) {

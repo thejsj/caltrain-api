@@ -301,15 +301,6 @@ describe('/train', function () {
             done();
           });
       });
-
-    });
-
-    describe('Geolocation', function () {
-
-      xit('it should query the `from` and `to` station with a geolocation', function () {
-
-      });
-
     });
   });
 });

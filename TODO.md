@@ -10,8 +10,8 @@
     [x] Train departure may be delayed up to 15 minutes
     [x] Add am and pm
     [x] Convert into 2 JSON files (stations.json and train.json)
-    [ ] Add geolocation to stations (Google Maps API?)
-    [ ] Fix stations with 'leaving', 'arriving'
+    [x] Add geolocation to stations (Google Maps API?)
+    [x] Fix stations with 'leaving', 'arriving'
     [x] Add order of stations
     [X] Add `north` and `south` direction to times and stations
     [x] Make only 1 stations and trains dict with no repetitions
@@ -21,6 +21,7 @@
         [x] Train
             [x] Add stations as dict with `weekday`, `saturday`, and `sunday` keys
             [x] Add times as dict with `weekday`, `saturday`, and `sunday` keys
+    [x] Fix `north` not showing up in weekends
 
 [x] Import to RethinkDB
     [x] Create tables (if necessary)
@@ -34,7 +35,7 @@
     [x] Add custom arg parser
     [x] Add database queries for /station
     [x] Add database queries for /station/search
-    [ ] Remove `/search` query
+    [x] Remove `/search` query
     [ ] Add database queries for /train
         [x] From and to
         [x] Departure and arrival

@@ -44,4 +44,6 @@ class CaltrainFileImport():
   def import_file(self, file_name, table_name):
     entries = self.get_file_entries(file_name, table_name)
     for entry in entries:
+      if 'coordinates' in entry.keys():
+        entry['location'] = r.point(entry['coordinates']['longitude'], entry['coordinates']['latitude'])
       r.table(table_name).insert(entry).run(self.conn)

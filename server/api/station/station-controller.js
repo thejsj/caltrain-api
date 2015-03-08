@@ -20,7 +20,8 @@ var stationController = function (req, res) {
       if (params.id !== undefined) return query.get(params.id);
       if (params.slug !== undefined) return query.getAll(params.slug, {'index': 'slug'})(0);
     })
-    .then(respond.bind(null, res));
+    .then(respond.bind(null, res))
+    .catch(respond.bind(null, res));
 };
 
 module.exports = stationController;

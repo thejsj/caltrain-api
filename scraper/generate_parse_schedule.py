@@ -1,5 +1,6 @@
 #!/usr/bin/python
 from slugify import slugify
+from time import sleep
 from pygeocoder import Geocoder
 import re
 
@@ -58,11 +59,10 @@ class ScheduleParser():
     return bool(self.digits.search(time)) and 'street' not in time.lower()
 
   def n_or_s(self, train_number):
-    return ('south' if int(train_number) % 2 == 0 else 'north')
+    return  ('south' if int(train_number) % 2 == 0 else 'north')
 
   def generate_parse_schedule(self, first_index, last_index, day_type):
     def parse_schedule(soup, table_class, train_times, station_times):
-
       table = soup.find('table', attrs={'class': table_class})
       # Get Lines
       table_head = table.find('thead').find_all('th')
@@ -71,7 +71,6 @@ class ScheduleParser():
       if first_index > 0: train_lines = train_lines[first_index:]
       if last_index > 0: train_lines = train_lines[:-last_index]
       # train_lines.pop(21) # 21 is a column in this table that copies the header
-
       table_rows = table.find('tbody').find_all('tr')
       # Get Stations
       for i, row in enumerate(table_rows):
@@ -91,29 +90,30 @@ class ScheduleParser():
         # Remove empty times
         station_name = cells[first_index - 1].replace(u'\xa0', u' ')
         slug = slugify(station_name)
-        if slug not in station_times.keys():
-          location = Geocoder.geocode(station_name + " Caltrain Station, CA")
-          coordinates = location[0].coordinates
-          print station_name
-          station_times[slug] = {
-            'location_index': i,
-            'name': station_name,
-            'slug': slug,
-            'zone': cells[first_index - 2],
-            'location': {
-              'latitude': coordinates[0],
-              'longitude': coordinates[1]
-            },
-            'times': { },
-            'trains': { }
-          }
-        if day_type not in station_times[slug]['times']:
-          station_times[slug]['times'][day_type] = {}
-        if day_type not in station_times[slug]['trains']:
-          station_times[slug]['trains'][day_type] = {}
-        if len(trains.keys()) > 0:
-          station_times[slug]['times'][day_type][self.n_or_s(trains.keys()[0])] = trains.values()
-          station_times[slug]['trains'][day_type][self.n_or_s(trains.keys()[0])] = trains
+        if slug not in ['shuttle-bus', 'departs-sj-diridon', 'arrives-sj-diridon', 'arrives-tamien', 'departs-tamien']:
+          if slug not in station_times.keys():
+            sleep(0.1)
+            location = Geocoder.geocode(station_name + " Caltrain Station, CA")
+            coordinates = location[0].coordinates
+            station_times[slug] = {
+              'location_index': i,
+              'name': station_name,
+              'slug': slug,
+              'zone': cells[first_index - 2],
+              'coordinates': {
+                'latitude': coordinates[0],
+                'longitude': coordinates[1]
+              },
+              'times': { },
+              'trains': { }
+            }
+          if day_type not in station_times[slug]['times']:
+            station_times[slug]['times'][day_type] = {}
+          if day_type not in station_times[slug]['trains']:
+            station_times[slug]['trains'][day_type] = {}
+          if len(trains.keys()) > 0:
+            station_times[slug]['times'][day_type][self.n_or_s(trains.keys()[0])] = trains.values()
+            station_times[slug]['trains'][day_type][self.n_or_s(trains.keys()[0])] = trains
 
       for station_slug, station in station_times.iteritems():
         if day_type in station['trains']:

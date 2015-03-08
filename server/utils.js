@@ -50,8 +50,20 @@ var getMinutesFromTime = function (hours, minutes) {
   return ((+hours) * 60 + (+minutes)) % 1440;
 };
 
+var isLatitude = function (str) {
+  var _isLatitude = new RegExp(/^[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?)$/);
+  return _isLatitude.test(str);
+};
+
+var isLongitude = function (str) {
+  var _isLongitude = new RegExp(/^[-+]?(180(\.0+)?|((1[0-7]\d)|([1-9]?\d))(\.\d+)?)$/);
+  return _isLongitude.test(str);
+};
+
 exports.arrayToObject = arrayToObject;
 exports.getWeekday = getWeekday;
 exports.getSingleStationLocationIndexQuery = getSingleStationLocationIndexQuery;
 exports.getTimeFromMinutes = getTimeFromMinutes;
 exports.getMinutesFromTime = getMinutesFromTime;
+exports.isLongitude = isLongitude;
+exports.isLatitude = isLatitude;
