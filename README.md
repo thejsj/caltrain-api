@@ -93,14 +93,7 @@ curl http://api.caltrain-api.com/v1/station \
 ```
 
 
-Provide a `longitude` and `latitude` to get the closest station to that location. Returns an array.
-
-```
-curl http://api.caltrain-api.com/v1/station \
-  -d lo='37.3876416,-122.0656136'
-```
-
-or?
+Provide a `longitude` and `latitude` to get the closest station to that location. Returns an array. Both 
 
 ```
 curl http://api.caltrain-api.com/v1/station \
@@ -110,7 +103,12 @@ curl http://api.caltrain-api.com/v1/station \
 
 ### Requests
 
-Requests data can be based by form-encoded data and by JSON-serialized strings:
+Requests parameters can be sent in three types: 
+  1. Data tags 
+  1. JSON Serialized Object
+  1. GET Query Parameters
+
+1. Data Tags
 
 ```
 curl http://api.caltrain-api.com/v1/schedule \
@@ -118,7 +116,7 @@ curl http://api.caltrain-api.com/v1/schedule \
     -d to='mountain-view'   // Station
 ```
 
-is the same as: 
+1. JSON Serialized Object
 
 ```
 curl http://api.caltrain-api.com/v1/schedule \
@@ -128,14 +126,15 @@ curl http://api.caltrain-api.com/v1/schedule \
     }' 
 ```
 
+1. GET Query Parameters
+
+```
+curl http://api.caltrain-api.com/v1/schedule?from=22nd-street&to=mountain-view
+```
+
 ### Response Format
 
 All responses are in JSON format.
-
-All responses include the following as part of the response:
-
-- `id`: UUID of request
-- `created_at`: Time response was created
 
 All timestamps are returned in ISO 8601 format.
 
@@ -147,4 +146,4 @@ All responses include the following headers:
 
 ## Tech 
 
-Built on top of Node.js and RethinDB.
+Built on top of Node.js and RethinkDB.
