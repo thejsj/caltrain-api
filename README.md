@@ -54,8 +54,8 @@ Provide an type in order to filter results by local, limited or express trains.
 
 ```
 curl http://api.caltrain-api.com/v1/train \
-  -d station_from='22nd-street' \
-  -d station_to='mountain-view' \ 
+  -d from='22nd-street' \
+  -d to='mountain-view' \ 
   -d type='limited,express' // 'local', 'limited', 'express'
 ```
 
