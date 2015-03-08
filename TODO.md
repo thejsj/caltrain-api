@@ -43,7 +43,10 @@
         [x] Geolocation
     [ ] Add fields query (Only get certain fields)
         [ ] _.pluck with fields
-    [ ] Only get times for Today (mapping result)(Add option)
+    [ ] Parse all times in to H:mm
+    [ ] Append times for today or departure arrival day (Add option)
+        [ ] Parse times into ISO 8601
+        [ ] Add option for time format parsing 
     [ ] Add Pagination http://dev.billysbilling.com/blog/How-to-make-your-API-better-than-the-REST
     [ ] Add Rate Limiting http://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api#rate-limiting
     [x] ETag http://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api#caching

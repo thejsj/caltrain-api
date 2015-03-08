@@ -60,6 +60,16 @@ var isLongitude = function (str) {
   return _isLongitude.test(str);
 };
 
+var splitAndTrim = function (str) {
+  var array;
+  if (typeof str === 'string') array = str.split(',');
+  else if (Array.isArray(str)) array = str;
+  else throw new Error('Parameter only takes comma-separated string or array as input');
+  return array.map(function (type) {
+      return type.trim();
+    });
+};
+
 exports.arrayToObject = arrayToObject;
 exports.getWeekday = getWeekday;
 exports.getSingleStationLocationIndexQuery = getSingleStationLocationIndexQuery;
@@ -67,3 +77,4 @@ exports.getTimeFromMinutes = getTimeFromMinutes;
 exports.getMinutesFromTime = getMinutesFromTime;
 exports.isLongitude = isLongitude;
 exports.isLatitude = isLatitude;
+exports.splitAndTrim = splitAndTrim;

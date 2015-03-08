@@ -1,9 +1,32 @@
 /*jshint node:true */
 'use strict';
 var q = require('q');
+var _ = require('lodash');
+
 var r = require('../db');
+var splitAndTrim = require('../utils').splitAndTrim;
+
+var fieldsHandler = function (res, query) {
+  var params = res.locals.parameters;
+  if (params.fields !== undefined) {
+    return query.pluck.apply(query, splitAndTrim(params.fields));
+  }
+  return query;
+};
 
 var successHandler = function (res, jsonResponseObject) {
+  if (Array.isArray(jsonResponseObject) &&
+    jsonResponseObject.length > 0 &&
+    _.keys(jsonResponseObject[0]).length === 0
+  ) {
+    throw new Error('No fields returned for queried objects. Check your `fields` parameter in query');
+  }
+  if (typeof jsonResponseObject === 'object' &&
+      !Array.isArray(jsonResponseObject) &&
+      _.keys(jsonResponseObject).length === 0
+  ) {
+    throw new Error('No fields returned for queried objects. Check your `fields` parameter in query');
+  }
   return q()
     .then(function () {
       return r.table('meta')('last_modified')
@@ -29,20 +52,19 @@ var runHandler = function (query) {
   return query.run(r.conn);
 };
 
-var toArray = function (cursor) {
-  return cursor.toArray();
+var cursorHandler = function (cursorOrArray) {
+  if (typeof cursorOrArray.each === 'function') {
+    return cursorOrArray.toArray();
+  }
+  return cursorOrArray;
 };
 
 var responseHandler = function (res, query) {
   if (query instanceof Error) return errorHandler(res, query);
   return q()
-    .then(runHandler.bind(null, query))
-    .then(function (cursorOrArray) {
-      if (typeof cursorOrArray.each === 'function') {
-        return cursorOrArray.toArray();
-      }
-      return cursorOrArray;
-    })
+    .then(fieldsHandler.bind(null, res, query))
+    .then(runHandler)
+    .then(cursorHandler)
     .then(successHandler.bind(null, res))
     .catch(errorHandler.bind(null, res));
 };
@@ -50,5 +72,4 @@ var responseHandler = function (res, query) {
 exports.runHandler = runHandler;
 exports.successHandler = successHandler;
 exports.errorHandler = errorHandler;
-exports.toArray = toArray;
 exports.responseHandler = responseHandler;

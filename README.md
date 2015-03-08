@@ -23,7 +23,7 @@ curl http://api.caltrain-api.com/v1/train \
 
 `Station`s (`from` and `to`) can be queried in two ways:
 
-- Station Name <String>
+- Station Slug <String>
 - Station ID <Integer>
 
 Provide a departure time and get the the closest departures.
