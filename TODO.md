@@ -36,11 +36,11 @@
     [x] Add database queries for /station
     [x] Add database queries for /station/search
     [x] Remove `/search` query
-    [ ] Add database queries for /train
+    [x] Add database queries for /train
         [x] From and to
         [x] Departure and arrival
         [x] Train type filter
-        [ ] Geolocation
+        [x] Geolocation
     [ ] Add fields query (Only get certain fields)
         [ ] _.pluck with fields
     [ ] Only get times for Today (mapping result)(Add option)
@@ -56,3 +56,8 @@
 
 [ ] Deployment
     [ ] Add fig files
+
+[ ] Improving README
+    [ ] Add example response
+    [ ] Add example queries in url format
+    [ ] Make it clear that you can search for stations
