@@ -8,7 +8,6 @@ var moment = require('moment');
 
 var app = require('../index.js');
 var getWeekday = require('../utils').getWeekday;
-var getTimeFromMinutes = require('../utils').getTimeFromMinutes;
 var getMinutesFromTime = require('../utils').getMinutesFromTime;
 
 var agent = request.agent(app);
@@ -19,6 +18,38 @@ var get381Train = function (param, sendObject) {
 
 var searchTrains = function (sendObject) {
   return agent.get('/v1/train/').send(sendObject || { from: '22nd-street' });
+};
+
+var arrivalTimeTest = function (done, timeString, res) {
+  var arrivalTime = moment(new Date(timeString));
+  var arrivalTimeInMinutes = getMinutesFromTime(arrivalTime.format('H'), arrivalTime.format('m'));
+  res.body.length.should.be.above(0);
+  res.body.forEach(function (train) {
+    train.stations[getWeekday(arrivalTime)].should.not.equal(undefined);
+    var timeInMinutes = getMinutesFromTime.apply(
+      null,
+      train.stations[getWeekday(arrivalTime)]['22nd-street'].split(':')
+    );
+    arrivalTimeInMinutes.should.be.above(timeInMinutes);
+  });
+  done();
+  return res;
+};
+
+var departureTimeTest = function (done, timeString, res) {
+  var departureTime = moment(new Date(timeString));
+  var departureTimeInMinutes = getMinutesFromTime(departureTime.format('H'), departureTime.format('m'));
+  res.body.length.should.be.above(0);
+  res.body.forEach(function (train) {
+    train.stations[getWeekday(departureTime)].should.not.equal(undefined);
+    var timeInMinutes = getMinutesFromTime.apply(
+      null,
+      train.stations[getWeekday(departureTime)]['22nd-street'].split(':')
+    );
+    departureTimeInMinutes.should.be.below(timeInMinutes);
+  });
+  done();
+  return res;
 };
 
 describe('/train', function () {
@@ -325,6 +356,77 @@ describe('/train', function () {
             })
             .catch(done);
         });
+    });
+
+    describe('Time Formats', function () {
+      var departureTestTime = new Date('Mon Mar 09 2015 08:35:41 GMT-0700 (PDT)');
+      var arrivalTestTime = new Date('Mon Mar 09 2015 22:35:41 GMT-0700 (PDT)');
+      var __done__ = function () {};
+
+      it('should accept ISO8601 timestamps for `departure` and `arrival`', function (done) {
+        searchTrains({
+          'from': '22nd-street',
+          'to': 'mountain-view',
+          'departure': departureTestTime.toString(),
+          'arrival': arrivalTestTime.toString()
+        })
+          .then(arrivalTimeTest.bind(null, __done__, arrivalTestTime.toString()))
+          .then(departureTimeTest.bind(null, done, departureTestTime.toString()))
+          .catch(done);
+      });
+
+      it('should accept UNIX timestamps (with milliseconds) for `departure` and `arrival`', function (done) {
+        searchTrains({
+          'from': '22nd-street',
+          'to': 'mountain-view',
+          'departure': +(departureTestTime),
+          'arrival': +(arrivalTestTime)
+        })
+          .then(arrivalTimeTest.bind(null, __done__, arrivalTestTime.toString()))
+          .then(departureTimeTest.bind(null, done, departureTestTime.toString()))
+          .catch(done);
+      });
+
+      it('should accept GMT Time string for `departure` and `arrival`', function (done) {
+        searchTrains({
+          'from': '22nd-street',
+          'to': 'mountain-view',
+          'departure': departureTestTime.toGMTString(),
+          'arrival': arrivalTestTime.toGMTString()
+        })
+          .then(arrivalTimeTest.bind(null, __done__, arrivalTestTime.toString()))
+          .then(departureTimeTest.bind(null, done, departureTestTime.toString()))
+          .catch(done);
+      });
+
+      it('should accept JSON Time string for `departure` and `arrival`', function (done) {
+        searchTrains({
+          'from': '22nd-street',
+          'to': 'mountain-view',
+          'departure': departureTestTime.toJSON(),
+          'arrival': arrivalTestTime.toJSON()
+        })
+          .then(arrivalTimeTest.bind(null, __done__, arrivalTestTime.toString()))
+          .then(departureTimeTest.bind(null, done, departureTestTime.toString()))
+          .catch(done);
+      });
+
+      it('should throw an error if a UNIX timestamps is passed that is before the year 2000', function (done) {
+        searchTrains({
+          'from': '22nd-street',
+          'to': 'mountain-view',
+          'departure': +(departureTestTime) / 1000,
+          'arrival': +(arrivalTestTime) / 1000
+        })
+          .expect(400)
+          .then(function (res) {
+            res.body.message.should.match(/UNIX/);
+            res.body.message.should.match(/2000/);
+            done();
+          })
+          .catch(done);
+      });
+
     });
 
     describe('Train Type Filter', function () {

@@ -27,6 +27,21 @@ var trainSearchController = function (req, res) {
       return [query, departureTime, false];
     })
     .spread(function (query, departureTime, arrivalTime) {
+      if (arrivalTime && departureTime) {
+        if (arrivalTime.isBefore(departureTime)) {
+          throw new Error('Incorrect Parameters: Arrival time occurs before departure time');
+        }
+      }
+      if (arrivalTime && arrivalTime.isBefore('2000-01-01') && typeof params.arrival === 'number') {
+        let m = `UNIX Timestamp provided for arrival is before 2000. `;
+        m += `Are you sure you didn\'t forget the milliseconds (JavaScript UNIX Timestamps)?`;
+        throw new Error(m);
+      }
+      if (departureTime && departureTime.isBefore('2000-01-01') && typeof params.departure === 'number') {
+        let m = `UNIX Timestamp provided for departure is before 2000. `;
+        m += `Are you sure you didn\'t forget the milliseconds (JavaScript UNIX Timestamps)?`;
+        throw new Error(m);
+      }
       if (params.from !== undefined) {
         query = query.hasFields(arrayToObject('stations', getWeekday(departureTime), params.from, true));
       }
