@@ -128,7 +128,7 @@ curl http://api.caltrain-api.com/v1/schedule \
     -d to='mountain-view'   // Station
 ```
 
-1. JSON Serialized Object
+2. JSON Serialized Object
 
 ```
 curl http://api.caltrain-api.com/v1/schedule \
@@ -138,7 +138,7 @@ curl http://api.caltrain-api.com/v1/schedule \
     }' 
 ```
 
-1. GET Query Parameters
+3. GET Query Parameters
 
 ```
 curl http://api.caltrain-api.com/v1/schedule?from=22nd-street&to=mountain-view
@@ -158,4 +158,4 @@ All responses include the following headers:
 
 ## Tech 
 
-Built on top of Node.js and RethinkDB.
+Built on top of io.js and RethinkDB.

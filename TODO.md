@@ -43,7 +43,7 @@
         [x] Geolocation
     [x] Add fields query (Only get certain fields)
         [x] _.pluck with fields
-    [ ] Fix times for certain responses (trains 139, 142)
+    [x] Fix times for certain responses (trains 139, 142)
     [ ] Parse all times in to H:mm
         [ ] Add `time_format='minutes'` Returns time in minutes
         [ ] Add `time_format='default'` Returns time in 'H:mm'

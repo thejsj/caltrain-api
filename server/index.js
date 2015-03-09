@@ -12,6 +12,7 @@ var app = express();
 
 // Middlewares
 app
+  .set('json spaces', 4)
   .use(bodyParser.raw())
   .use(bodyParser.text())
   .use(bodyParser.urlencoded({

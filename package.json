@@ -4,9 +4,11 @@
   "description": "A simple API for Caltrain",
   "main": "server/index.js",
   "scripts": {
-    "test": "export NODE_ENV='test'; ./node_modules/mocha/bin/mocha server/test/index.js",
-    "dev": "./node_modules/nodemon/bin/nodemon.js server/index.js",
-    "activate": "source venv/bin/activate"
+    "babel-node": "babel-node --experimental",
+    "test": "export NODE_ENV='test'; ./node_modules/mocha/bin/mocha --compilers js:babel/register server/test/index.js",
+    "dev": "./node_modules/nodemon/bin/nodemon.js --exec npm run babel-node -- server/index.js",
+    "activate": "source venv/bin/activate",
+    "import": "python scraper -g -i -db caltrain_test && python ./scraper -g -i"
   },
   "keywords": [
     "caltrain",
@@ -25,6 +27,7 @@
   },
   "dependencies": {
     "MD5": "^1.2.1",
+    "babel": "^4.7.3",
     "body-parser": "^1.12.0",
     "config": "^1.12.0",
     "crypto": "0.0.3",
