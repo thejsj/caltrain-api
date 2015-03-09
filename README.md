@@ -17,21 +17,21 @@ Provide a `from` station and a `to` station and get a list of departures.
 
 ```
 curl http://api.caltrain-api.com/v1/train \
-    -d from='22nd-street' \ // Station
-    -d to='mountain-view'   // Station
+    -d from='22nd-street' \ // station slug
+    -d to='mountain-view'   // station slug
 ```
 
 `Station`s (`from` and `to`) can be queried in two ways:
 
-- Station Slug <String>
-- Station ID <Integer>
+- station slug <String>
+- station ID <Integer>
 
 Provide a departure time and get the the closest departures. If `departure` is specified without `from`, the API will respond with a 400 error.
 
 ```
 curl http://api.caltrain-api.com/v1/train \
-  -d from='22nd-street' \ // Station
-  -d to='mountain-view' \  // Station
+  -d from='22nd-street' \  // station slug
+  -d to='mountain-view' \  // station slug
   -d departure='1424570262' // Time
 ```
 
@@ -47,7 +47,7 @@ Provide an arrival time an get the the closest departures. If `arrival` is speci
 curl http://api.caltrain-api.com/v1/train \
   -d from='22nd-street' \
   -d to='mountain-view' \ 
-  -d arrival='1424570262' // Unix Timestamp <Number>
+  -d arrival='1424570262' // UNIX timestamp <Number>
 ```
 
 Provide an type in order to filter results by local, limited or express trains.
@@ -124,8 +124,8 @@ Requests parameters can be sent in three types:
 
 ```
 curl http://api.caltrain-api.com/v1/schedule \
-    -d from='22nd-street' \ // Station
-    -d to='mountain-view'   // Station
+    -d from='22nd-street' \ // station
+    -d to='mountain-view'   // station
 ```
 
 2. JSON Serialized Object
@@ -150,11 +150,9 @@ All responses are in JSON format.
 
 All timestamps are returned in ISO 8601 format.
 
-All responses include the following headers:
+All requests include a `Parameters` header with the parameters sent through the request.
 
-- X-RateLimit-Limit: 5000
-- X-RateLimit-Remaining: 4966
-- X-RateLimit-Reset: 1372700873
+All requests include an `Etag` and `Last modified` header.
 
 ## Tech 
 
