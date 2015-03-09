@@ -39,18 +39,23 @@ var _parseTimeInEntry = function (entry) {
 };
 
 var successHandler = function (res, jsonResponseObject) {
+  var params = res.locals.parameters;
   if (Array.isArray(jsonResponseObject)) {
     // Array of Objects
     if(jsonResponseObject.length > 0 && _.keys(jsonResponseObject[0]).length === 0) {
       throw new Error('No fields returned for queried objects. Check your `fields` parameter in query');
     }
-    jsonResponseObject.forEach(_parseTimeInEntry);
+    if (params.timeFormat === 'H:mm') {
+      jsonResponseObject.forEach(_parseTimeInEntry);
+    }
   } else {
     // Objects
     if (!Array.isArray(jsonResponseObject) && _.keys(jsonResponseObject).length === 0) {
       throw new Error('No fields returned for queried objects. Check your `fields` parameter in query');
     }
-    _parseTimeInEntry(jsonResponseObject);
+    if (params.timeFormat === 'H:mm') {
+      _parseTimeInEntry(jsonResponseObject);
+    }
   }
   return q()
     .then(function () {

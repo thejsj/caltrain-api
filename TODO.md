@@ -58,7 +58,7 @@
     [ ] Adding Google Analytics to API Request
 
 [ ] Tests
-    [ ] Add tests for timestamps
+    [x] Add tests for timestamps
     [ ] Add tests for trains past midnight
 
 [ ] Deployment

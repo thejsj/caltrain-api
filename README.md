@@ -113,6 +113,17 @@ curl http://api.caltrain-api.com/v1/station \
 
 By default, the API always returns a `today` attribute in `train.times`, `train.stations`, `station.trains`, and `station.times`. This 
 
+### Time Formats
+
+All time formats are returned as 'H:mm', where H is a 24 hour based hour. Time can also be returned in minutes (as in minutes from 0:00), by passing the `time_format` flag with the value `minutes`.
+
+```
+curl http://api.caltrain-api.com/v1/schedule \
+    -d from='22nd-street' \ // station
+    -d to='mountain-view'   // station
+    -d timeFormat='minutes'
+```
+
 ### Requests
 
 Requests parameters can be sent in three types: 
