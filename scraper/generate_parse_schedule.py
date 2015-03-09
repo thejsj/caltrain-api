@@ -33,17 +33,31 @@ class ScheduleParser():
       train_number: time for train_number, time in trains.iteritems() if self.non_digits.sub('', train_number) not in sat_only
     }
 
-  def get24HourBasedTime(self, text, row_num, col_num):
+  def get24HourBasedTime(self, text, col_num, num_of_cols):
+    col_index = float(col_num) / float(num_of_cols)
     text = self.start_star.sub('', text)
     text = self.end_plus_sign.sub('', text)
     split_numbers = text.split(':')
     if split_numbers[0].isdigit():
-      if ((col_num < 8) or (col_num > 42)) and split_numbers[0] is '12':
-        split_numbers[0] = '0'
-      if col_num > 8 or (col_num > 6 and split_numbers[0] is '12'):
-        split_numbers[0] = str(int(split_numbers[0]) + 12)
+      hour = split_numbers[0]
+      minutes = split_numbers[1]
+      # First train is at 4 a.m. If a train hour is < 4, it's afternoon
+      if int(hour) < 4:
+        hour = str(int(hour) + 12)
+      # If column is in last 75% and hour is >= 10, it's afternoon
+      elif col_index > 0.75 and int(hour) >= 10:
+        if hour == '12': hour = '0'
+        else: hour = hour = str(int(hour) + 12)
+      # If hour is more than 10 and in after 47%, it's in the afternoon
+      elif col_index > 0.47 and int(hour) < 10:
+        hour = str(int(hour) + 12)
+      # If hour is is before 47%, it's in the morning
+      elif col_index <= 0.47:
+        pass
+      else:
+        return False
       try:
-        text = (int(split_numbers[0]) * 60 + int(split_numbers[1])) % 1440
+        text = (int(hour) * 60 + int(minutes)) % 1440
       except (ValueError):
         return False
     return text
@@ -62,7 +76,11 @@ class ScheduleParser():
     return  ('south' if int(train_number) % 2 == 0 else 'north')
 
   def generate_parse_schedule(self, first_index, last_index, day_type):
-    def parse_schedule(soup, table_class, train_times, station_times):
+    def parse_schedule(soup, table_class, **kwargs):
+      station_times = kwargs['station_times']
+      train_times = kwargs['train_times']
+      append_geolocation = kwargs['append_geolocation']
+
       table = soup.find('table', attrs={'class': table_class})
       # Get Lines
       table_head = table.find('thead').find_all('th')
@@ -79,7 +97,7 @@ class ScheduleParser():
         times = cells # the first 2 and last 2 columns are headers
         if first_index > 0: times = times[first_index:]
         if last_index > 0: times = times[:-last_index]
-        times = [self.get24HourBasedTime(time, i, ii) for ii, time in enumerate(times)]
+        times = [self.get24HourBasedTime(time, ii, len(times)) for ii, time in enumerate(times)]
         # times.pop(21) # 21 is a column in this table that copies the header
         # Get Trains
         train_strings = {self.getTrainNumber(train): train for train in train_lines}
@@ -92,21 +110,22 @@ class ScheduleParser():
         slug = slugify(station_name)
         if slug not in ['shuttle-bus', 'departs-sj-diridon', 'arrives-sj-diridon', 'arrives-tamien', 'departs-tamien']:
           if slug not in station_times.keys():
-            sleep(0.1)
-            location = Geocoder.geocode(station_name + " Caltrain Station, CA")
-            coordinates = location[0].coordinates
             station_times[slug] = {
               'location_index': i,
               'name': station_name,
               'slug': slug,
               'zone': cells[first_index - 2],
-              'coordinates': {
-                'latitude': coordinates[0],
-                'longitude': coordinates[1]
-              },
               'times': { },
               'trains': { }
             }
+            if append_geolocation:
+              sleep(0.1)
+              location = Geocoder.geocode(station_name + " Caltrain Station, CA")
+              coordinates = location[0].coordinates
+              station_times[slug]['coordinates'] = {}
+              station_times[slug]['coordinates']['latitude'] = coordinates[0]
+              station_times[slug]['coordinates']['longitude'] = coordinates[1]
+
           if day_type not in station_times[slug]['times']:
             station_times[slug]['times'][day_type] = {}
           if day_type not in station_times[slug]['trains']:

@@ -16,34 +16,6 @@ var fieldsHandler = function (res, query) {
 };
 
 var _parseTimeInEntry = function (entry) {
-  // if (entry.stations) {
-  //   for (let day in entry.stations) {
-  //     for (let station in entry.stations[day]) {
-  //       let time = getTimeFromMinutes(entry.stations[day][station]);
-  //       entry.stations[day][station] = time;
-  //     }
-  //   }
-  // }
-  // // if (entry.times) {
-  // //   for (let day in entry.times) {
-  // //     for (let direction in entry.times[day]) {
-  // //       for(var i = 0; i < entry.times[day][direction].length; i++) {
-  // //         let _t = entry.times[day][direction][i];
-  // //         entry.times[day][direction][i] = getTimeFromMinutes(_t);
-  // //       }
-  // //     }
-  // //   }
-  // // }
-  // if (entry.times) {
-  //   for (let day in entry.times) {
-  //     for (let direction in entry.times[day]) {
-  //       for(var i = 0; i < entry.times[day][direction].length; i++) {
-  //         let _t = entry.times[day][direction][i];
-  //         entry.times[day][direction][i] = getTimeFromMinutes(_t);
-  //       }
-  //     }
-  //   }
-  // }
   var _parseTime = function (object, key) {
     if (Array.isArray(object[key])) {
       for (let i = 0; i < object[key].length; i += 1) {

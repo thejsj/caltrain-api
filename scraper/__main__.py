@@ -11,7 +11,8 @@ class CaltrainScraper():
     parser = argparse.ArgumentParser(description = "Scrapes the Caltrain website")
     parser.add_argument('-c', '--clear', action='store_true', help="Clear the current cache of HTML files")
     parser.add_argument('-i', '--file_import', action='store_true', help="Import JSON files into database")
-    parser.add_argument('-d', '--database', type=str, default='caltrain', help="Name of database to import results to")
+    parser.add_argument('-db', '--database', type=str, default='caltrain', help="Name of database to import results to")
+    parser.add_argument('-g', '--append_geolocation', action='store_true', help="Geolocate stations using Google Maps API")
     args = parser.parse_args(sys.argv[1:])
 
     schedule_parser = ScheduleParser()
@@ -30,7 +31,13 @@ class CaltrainScraper():
     train_times = {}
     station_times = {}
     for key, url in urls.iteritems():
-      train_times, station_times = self.get_schedule(url, key, train_times, station_times)
+      train_times, station_times = self.get_schedule(
+        url,
+        key,
+        train_times=train_times,
+        station_times=station_times,
+        append_geolocation=args.append_geolocation
+      )
 
     self.save_to_json(train_times.values(), 'trains')
     self.save_to_json(station_times.values(), 'stations')
@@ -48,7 +55,11 @@ class CaltrainScraper():
     file_name = "%s/%s/%s.%s" % ('data', file_extension, name, file_extension)
     return os.path.join(parent_path, file_name)
 
-  def get_schedule(self, schedule_url, schedule_name, train_times, station_times):
+  def get_schedule(self, schedule_url, schedule_name, **kwargs):
+    train_times = kwargs['train_times']
+    station_times = kwargs['station_times']
+    append_geolocation = kwargs['append_geolocation']
+
     html = open(self.get_location(schedule_name, 'html'), 'r')
     soup = BeautifulSoup(html)
     directions = {
@@ -57,11 +68,29 @@ class CaltrainScraper():
     }
     for key, value in directions.iteritems():
       if schedule_name is 'weekday':
-        train_times, station_times = self.parse_weekday_schedule(soup, value, train_times, station_times)
+        train_times, station_times = self.parse_weekday_schedule(
+          soup,
+          value,
+          train_times=train_times,
+          station_times=station_times,
+          append_geolocation=append_geolocation
+        )
       elif schedule_name is 'saturday':
-        train_times, station_times = self.parse_saturday_schedule(soup, value, train_times, station_times)
+        train_times, station_times = self.parse_saturday_schedule(
+          soup,
+          value,
+          train_times=train_times,
+          station_times=station_times,
+          append_geolocation=append_geolocation
+        )
       elif schedule_name is 'sunday':
-        train_times, station_times = self.parse_sunday_schedule(soup, value, train_times, station_times)
+        train_times, station_times = self.parse_sunday_schedule(
+          soup,
+          value,
+          train_times=train_times,
+          station_times=station_times,
+          append_geolocation=append_geolocation
+        )
     return train_times, station_times
 
   def clear_cache(self, urls):
