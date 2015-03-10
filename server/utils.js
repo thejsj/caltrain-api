@@ -70,6 +70,29 @@ var splitAndTrim = function (str) {
     });
 };
 
+var parseTimeInEntry = function (entry) {
+  var _parseTime = function (object, key) {
+    if (Array.isArray(object[key])) {
+      for (let i = 0; i < object[key].length; i += 1) {
+        object[key][i] = getTimeFromMinutes(object[key][i]);
+      }
+      return;
+    }
+    if (typeof _.values(object[key])[0] === 'number') {
+      for (let i in object[key]) {
+        object[key][i] = getTimeFromMinutes(object[key][i]);
+      }
+      return;
+    }
+    _.each(object[key], function (obj, newKey) {
+      _parseTime(object[key], newKey);
+    });
+  };
+  if (entry.stations) _parseTime(entry, 'stations');
+  if (entry.trains) _parseTime(entry, 'trains');
+  if (entry.times) _parseTime(entry, 'times');
+};
+
 exports.arrayToObject = arrayToObject;
 exports.getWeekday = getWeekday;
 exports.getSingleStationLocationIndexQuery = getSingleStationLocationIndexQuery;
@@ -78,3 +101,4 @@ exports.getMinutesFromTime = getMinutesFromTime;
 exports.isLongitude = isLongitude;
 exports.isLatitude = isLatitude;
 exports.splitAndTrim = splitAndTrim;
+exports.parseTimeInEntry = parseTimeInEntry;

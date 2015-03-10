@@ -5,7 +5,7 @@ var _ = require('lodash');
 
 var r = require('../db');
 var splitAndTrim = require('../utils').splitAndTrim;
-var getTimeFromMinutes = require('../utils').getTimeFromMinutes;
+var parseTimeInEntry = require('../utils').parseTimeInEntry;
 
 var fieldsHandler = function (res, query) {
   var params = res.locals.parameters;
@@ -13,29 +13,6 @@ var fieldsHandler = function (res, query) {
     return query.pluck.apply(query, splitAndTrim(params.fields));
   }
   return query;
-};
-
-var _parseTimeInEntry = function (entry) {
-  var _parseTime = function (object, key) {
-    if (Array.isArray(object[key])) {
-      for (let i = 0; i < object[key].length; i += 1) {
-        object[key][i] = getTimeFromMinutes(object[key][i]);
-      }
-      return;
-    }
-    if (typeof _.values(object[key])[0] === 'number') {
-      for (let i in object[key]) {
-        object[key][i] = getTimeFromMinutes(object[key][i]);
-      }
-      return;
-    }
-    _.each(object[key], function (obj, newKey) {
-      _parseTime(object[key], newKey);
-    });
-  };
-  if (entry.stations) _parseTime(entry, 'stations');
-  if (entry.trains) _parseTime(entry, 'trains');
-  if (entry.times) _parseTime(entry, 'times');
 };
 
 var successHandler = function (res, jsonResponseObject) {
@@ -46,7 +23,7 @@ var successHandler = function (res, jsonResponseObject) {
       throw new Error('No fields returned for queried objects. Check your `fields` parameter in query');
     }
     if (params.timeFormat === 'H:mm') {
-      jsonResponseObject.forEach(_parseTimeInEntry);
+      jsonResponseObject.forEach(parseTimeInEntry);
     }
   } else {
     // Objects
@@ -54,7 +31,7 @@ var successHandler = function (res, jsonResponseObject) {
       throw new Error('No fields returned for queried objects. Check your `fields` parameter in query');
     }
     if (params.timeFormat === 'H:mm') {
-      _parseTimeInEntry(jsonResponseObject);
+      parseTimeInEntry(jsonResponseObject);
     }
   }
   return q()

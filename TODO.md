@@ -48,7 +48,9 @@
         [x] Add `time_format='minutes'` Returns time in minutes
         [x] Add `time_format='H:mm'` Returns time in 'H:mm'
     [ ] Append times for today or departure arrival day (Add option)
-        [ ] Add `today=true`
+        [ ] Add `today=true` `single_day`, `all_times`, `queried_day`
+        [ ] `time`: `all`, `queried`, `historic`
+        [ ] `time`: `all`, `queried`, `archived`
         [ ] Parse times into ISO 8601
         [ ] Add option for time format parsing 
     [ ] Add Pagination http://dev.billysbilling.com/blog/How-to-make-your-API-better-than-the-REST
@@ -63,7 +65,9 @@
 
 [ ] Deployment
     [ ] Add fig files
-
+    [ ] Add Varnish
+    [ ] Add GZip
+    
 [ ] Improving README
     [ ] Add example response
     [ ] Add example queries in url format
