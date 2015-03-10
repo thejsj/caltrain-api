@@ -57,7 +57,6 @@ describe('Argument Parser', function () {
           parameters.should.be.an.instanceOf(Object);
           parameters.from.should.equal('22nd-street');
           parameters.timeFormat.should.equal('minutes');
-          parameters.time_format.should.equal('minutes');
           done();
         })
         .catch(done);

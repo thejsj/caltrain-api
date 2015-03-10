@@ -44,9 +44,9 @@
     [x] Add fields query (Only get certain fields)
         [x] _.pluck with fields
     [x] Fix times for certain responses (trains 139, 142)
-    [ ] Parse all times in to H:mm
-        [ ] Add `time_format='minutes'` Returns time in minutes
-        [ ] Add `time_format='H:mm'` Returns time in 'H:mm'
+    [x] Parse all times in to H:mm
+        [x] Add `time_format='minutes'` Returns time in minutes
+        [x] Add `time_format='H:mm'` Returns time in 'H:mm'
     [ ] Append times for today or departure arrival day (Add option)
         [ ] Add `today=true`
         [ ] Parse times into ISO 8601

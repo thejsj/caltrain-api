@@ -7,14 +7,11 @@ var _ = require('lodash');
 
 var app = require('../index.js');
 var agent = request.agent(app);
+var getTimeFromMinutes = require('../utils').getTimeFromMinutes;
 
 var get381Train = function (param, sendObject) {
   return agent.get('/v1/train/' + (param || 381)).send(sendObject);
 };
-
-// var searchTrains = function (sendObject) {
-//   return agent.get('/v1/train/').send(sendObject || { from: '22nd-street' });
-// };
 
 describe('Global', function () {
 
@@ -45,6 +42,26 @@ describe('Global', function () {
           done();
         });
     });
+  });
+
+  describe('Time Format', function () {
+
+    it('should return the time in minutes if `timeFormat` is passed as `minutes`', function (done) {
+      var now = new Date(Date.now());
+      get381Train('381', {'timeFormat': 'minutes', 'departure': now.toJSON() })
+        .expect(200)
+        .then(function (res) {
+          _.each(res.body.stations, function (day) {
+            _.each(day, function (train) {
+              train.should.be.instanceOf(Number);
+              var time = getTimeFromMinutes(train);
+              time.should.match(/[0-9]{1,2}:[0-9]{2}/);
+            });
+          });
+          done();
+        });
+    });
+
   });
 
 });

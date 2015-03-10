@@ -9,6 +9,14 @@ var camelCase = function(input) {
     });
 };
 
+var checkArguments = function (params, opts) {
+  if (typeof opts.property !== 'string') throw new Error('checkArguments requires `property` String');
+  if (!Array.isArray(opts.args)) throw new Error('checkArguments requires array `args`');
+  if (params[opts.property] !== undefined && !_.contains(opts.args, params[opts.property])) {
+    throw new Error('Invalid argument supplied for ' + opts.property);
+  }
+};
+
 var bodyParamaterParser = function (bodyObject) {
   if (_.size(bodyObject) === 1 && _.values(bodyObject)[0] === '') {
     try {
@@ -38,9 +46,14 @@ var argumentParser = function () {
         params[camelCase(key)] = val;
       }
     }
-    res.locals.parameters = _.defaults(params, {
+    params = _.defaults(params, {
       'timeFormat': 'H:mm'
     });
+    checkArguments(params, {
+      'property': 'timeFormat',
+      'args': ['H:mm',  'minutes']
+    });
+    res.locals.parameters = params;
     next();
   };
 };
