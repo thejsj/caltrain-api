@@ -19,17 +19,20 @@ var trainSearchController = function (req, res) {
       return r.table('trains');
     })
     .then(function (query) {
-      if (params.departure !== undefined) return [query, moment(new Date(params.departure))];
+      if (params.arrival !== undefined) return [query, moment(new Date(params.arrival))];
       return [query, false];
     })
-    .spread(function (query, departureTime) {
-      if (params.arrival !== undefined) return [query, departureTime, moment(new Date(params.arrival))];
-      return [query, departureTime, false];
+    .spread(function (query, arrivalTime) {
+      if (params.departure !== undefined) return [query, moment(new Date(params.departure)), arrivalTime];
+      return [query, false, arrivalTime];
     })
     .spread(function (query, departureTime, arrivalTime) {
       if (arrivalTime && departureTime) {
         if (arrivalTime.isBefore(departureTime)) {
           throw new Error('Incorrect Parameters: Arrival time occurs before departure time');
+        }
+        if (arrivalTime.format('YYYY/M/DD') !== departureTime.format('YYYY/MM/DD')) {
+          throw new Error('Incorrect Parameters: Arrival time and departure time are not on the same date');
         }
       }
       if (arrivalTime && arrivalTime.isBefore('2000-01-01') && typeof params.arrival === 'number') {

@@ -1,6 +1,8 @@
 /*jshint node:true */
 'use strict';
 var _ = require('lodash');
+var moment = require('moment');
+
 var splitAndTrim = require('./utils').splitAndTrim;
 
 var camelCase = function(input) {
@@ -29,6 +31,23 @@ var bodyParamaterParser = function (bodyObject) {
 };
 
 var argumentParser = function () {
+  /**
+   * Possible Parameters
+   *
+   *    fields <Array>
+   *
+   * /station
+   *    name <String>
+   *    latitude <Number>
+   *    longitude <Number>
+   *
+   * /train
+   *    from <String>
+   *    to <String>
+   *    departure <String>/<Number>
+   *    arrival <String>/<Number>
+   *    type <Array>
+   */
   return function (req, res, next) {
     var params = _.extend(
       {},
@@ -36,23 +55,25 @@ var argumentParser = function () {
       bodyParamaterParser(req.body),
       req.params
     );
+    // Parse Array Types
     if (params.type !== undefined) {
       params.type = splitAndTrim(params.type);
     }
+    // Convert _ to CamelCase
     for (var key in params) {
       if (key.indexOf('_') !== -1) {
         let val = params[key];
         delete params[key];
-        params[camelCase(key)] = val;
+        if (camelCase(key)) params[camelCase(key)] = val;
       }
     }
+    var queryDay = (params.queryDay !== undefined ? params.queryDay : '');
     params = _.defaults(params, {
-      'timeFormat': 'H:mm'
+      timeFormat: 'YYYY-MM-DDThh:mm:ssTZD',
+      // There's a train at 12:03 am
+      queryDay: moment(new Date(queryDay)).set({hour: 1, minute: 0, seconds: 0 })
     });
-    checkArguments(params, {
-      'property': 'timeFormat',
-      'args': ['H:mm',  'minutes']
-    });
+    params.queryDay.set({ hour: 1, minute: 0, second: 0 });
     res.locals.parameters = params;
     next();
   };
