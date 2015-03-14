@@ -11,7 +11,7 @@ var config = {
     'http': 8000
   },
   'url': '127.0.0.1',
-  'timeFormat': 'YYYY-MM-DDTHH:MM:SSZ',
+  'googleAnalyticsUACode': false
 };
 
 module.exports = config;

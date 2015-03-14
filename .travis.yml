@@ -1,0 +1,25 @@
+sudo: true
+language: node_js, python
+before_install:
+  - npm update -g npm
+  - sudo add-apt-repository ppa:rethinkdb/ppa -y
+  - sudo apt-get update -q
+  - sudo apt-get install rethinkdb
+install:
+  - pip install -r requirements.txt
+before_script:
+  - npm install -g babel
+  - python ./scraper -i -g
+  - python ./scraper -i -g -db caltrain_test
+node_js:
+  - 'iojs-v1.4.2'
+python:
+  - '2.7'
+branches:
+   only:
+     - master
+notifications:
+  email: false
+git:
+  depth: 1
+script: npm --expose-gc test

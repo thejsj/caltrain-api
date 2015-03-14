@@ -2,6 +2,7 @@
 'use strict';
 var bodyParser = require('body-parser');
 var express = require('express');
+var compression = require('compression');
 
 var argumentParser = require('./argument-parser');
 var etagGenerator = require('./etag-generator');
@@ -13,6 +14,7 @@ var app = express();
 // Middlewares
 app
   .set('json spaces', 4)
+  .use(compression())
   .use(bodyParser.raw())
   .use(bodyParser.text())
   .use(bodyParser.urlencoded({

@@ -44,9 +44,9 @@
     [x] Add fields query (Only get certain fields)
         [x] _.pluck with fields
     [x] Fix times for certain responses (trains 139, 142)
-    [ ] Append times for today or departure arrival day (Add option)
-        [ ] Parse times into ISO 8601
-        [ ] Add option for time format parsing 
+    [x] Append times for today or departure arrival day (Add option)
+        [x] Parse times into ISO 8601
+        [x] Add option for time format parsing 
     [ ] Add Pagination http://dev.billysbilling.com/blog/How-to-make-your-API-better-than-the-REST
     [ ] Add Rate Limiting http://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api#rate-limiting
     [x] ETag http://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api#caching
@@ -60,7 +60,7 @@
 [ ] Deployment
     [ ] Add fig files
     [ ] Add Varnish
-    [ ] Add GZip
+    [x] Add GZip
     
 [ ] Improving README
     [ ] Add example response

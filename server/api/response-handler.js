@@ -1,7 +1,9 @@
 /*jshint node:true */
 'use strict';
+var config = require('config');
 var q = require('q');
 var _ = require('lodash');
+var ua = require('universal-analytics');
 
 var r = require('../db');
 var splitAndTrim = require('../utils').splitAndTrim;
@@ -74,6 +76,13 @@ var cursorHandler = (cursorOrArray) =>  {
   return cursorOrArray;
 };
 
+var analytisHandler = (res) => {
+  if (config.get('googleAnalyticsUACode')) {
+    var visitor = ua('UA-XXXX-XX');
+    visitor.pageview(res.req.originalUrl).send();
+  }
+};
+
 var responseHandler = (res, query) =>  {
   if (query instanceof Error) return errorHandler(res, query);
   return q()
@@ -81,7 +90,8 @@ var responseHandler = (res, query) =>  {
     .then(runHandler)
     .then(cursorHandler)
     .then(successHandler.bind(null, res))
-    .catch(errorHandler.bind(null, res));
+    .catch(errorHandler.bind(null, res))
+    .then(analytisHandler.bind(null, res));
 };
 
 exports.runHandler = runHandler;

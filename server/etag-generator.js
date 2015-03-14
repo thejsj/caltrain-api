@@ -3,7 +3,7 @@
 var crypto = require('crypto');
 
 var etagGenerator = () =>  {
-  return (body, encoding) =>  {
+  return (body) =>  {
     return crypto.createHash('md5').update(body).digest('hex');
   };
 };
