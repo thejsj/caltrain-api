@@ -7,7 +7,7 @@ var r = require('../db');
 var splitAndTrim = require('../utils').splitAndTrim;
 var parseTimeInEntry = require('../utils').parseTimeInEntry;
 
-var fieldsHandler = function (res, query) {
+var fieldsHandler = (res, query) =>  {
   var params = res.locals.parameters;
   if (params.fields !== undefined) {
     return query.pluck.apply(query, splitAndTrim(params.fields));
@@ -15,7 +15,7 @@ var fieldsHandler = function (res, query) {
   return query;
 };
 
-var successHandler = function (res, jsonResponseObject) {
+var successHandler = (res, jsonResponseObject) =>  {
   var params = res.locals.parameters;
   if (Array.isArray(jsonResponseObject)) {
     // Array of Objects
@@ -43,19 +43,19 @@ var successHandler = function (res, jsonResponseObject) {
     parseTimeInEntry(params.queryDay, params.timeFormat, jsonResponseObject);
   }
   return q()
-    .then(function () {
+    .then(() =>  {
       return r.table('meta')('last_modified')
         .max().toISO8601()
         .run(r.conn);
     })
-    .then(function (last_modified) {
+    .then((last_modified) =>  {
       res.set('Last-Modified', last_modified);
       res.set('Parameters', JSON.stringify(res.locals.parameters));
       return res.json(jsonResponseObject);
     });
 };
 
-var errorHandler = function (res, err) {
+var errorHandler = (res, err) =>  {
   res.set('Parameters', JSON.stringify(res.locals.parameters));
   res.status(400);
   res.json({
@@ -63,18 +63,18 @@ var errorHandler = function (res, err) {
   });
 };
 
-var runHandler = function (query) {
+var runHandler = (query) =>  {
   return query.run(r.conn);
 };
 
-var cursorHandler = function (cursorOrArray) {
+var cursorHandler = (cursorOrArray) =>  {
   if (typeof cursorOrArray.each === 'function') {
     return cursorOrArray.toArray();
   }
   return cursorOrArray;
 };
 
-var responseHandler = function (res, query) {
+var responseHandler = (res, query) =>  {
   if (query instanceof Error) return errorHandler(res, query);
   return q()
     .then(fieldsHandler.bind(null, res, query))

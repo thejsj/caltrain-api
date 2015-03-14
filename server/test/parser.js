@@ -8,15 +8,15 @@ var app = require('../index.js');
 
 var agent = request.agent(app);
 
-var resHandler = function (done, res) {
+var resHandler = (done, res) =>  {
   var parameters = JSON.parse(res.headers.parameters);
   parameters.should.be.an.instanceOf(Object);
   parameters.from.should.equal('22nd-street');
   done();
 };
 
-describe('Argument Parser', function () {
-    it('should receive parameters through the data attribute', function (done) {
+describe('Argument Parser', () =>  {
+    it('should receive parameters through the data attribute', (done) =>  {
       agent
         .get('/v1/train/')
         .send({
@@ -27,7 +27,7 @@ describe('Argument Parser', function () {
         .catch(done);
     });
 
-    it('should receive GET query parameters', function (done) {
+    it('should receive GET query parameters', (done) =>  {
       agent
         .get('/v1/train/?from=22nd-street')
         .expect(200)
@@ -35,7 +35,7 @@ describe('Argument Parser', function () {
         .catch(done);
     });
 
-    it('should receive parameters through the data attribute', function (done) {
+    it('should receive parameters through the data attribute', (done) =>  {
       agent
         .get('/v1/train/')
         .send('{"from": "22nd-street"}')
@@ -44,7 +44,7 @@ describe('Argument Parser', function () {
         .catch(done);
     });
 
-    it('should convert `_` separated arguments to camelCase', function (done) {
+    it('should convert `_` separated arguments to camelCase', (done) =>  {
       agent
         .get('/v1/train/')
         .send({
@@ -52,7 +52,7 @@ describe('Argument Parser', function () {
           time_format: 'minutes'
         })
         .expect(200)
-        .then(function (res) {
+        .then((res) =>  {
           var parameters = JSON.parse(res.headers.parameters);
           parameters.should.be.an.instanceOf(Object);
           parameters.from.should.equal('22nd-street');

@@ -3,7 +3,7 @@
 'use strict';
 require('should');
 
-describe('API', function () {
+describe('API', () =>  {
   require('./parser');
   require('./station');
   require('./train');

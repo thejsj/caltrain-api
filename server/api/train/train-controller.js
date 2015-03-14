@@ -6,17 +6,17 @@ var _ = require('lodash');
 var r = require('../../db');
 var respond = require('../response-handler').responseHandler;
 
-var trainController = function (req, res) {
+var trainController = (req, res) =>  {
   _.extend(res.locals.parameters, req.params);
   var params = res.locals.parameters;
   return q()
-    .then(function () {
+    .then(() =>  {
       if (params.number === undefined && params.id === undefined) {
         throw new Error('Not enough parameters specified');
       }
       return r.table('trains');
     })
-    .then(function (query) {
+    .then((query) =>  {
       if (params.number !== undefined) return query.getAll(+params.number, {'index': 'number'})(0);
       if (params.id !== undefined) return query.get(params.id);
     })

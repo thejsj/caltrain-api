@@ -6,27 +6,27 @@ var config = require('config');
 r.connections = [];
 
 r.connect(config.get('rethinkdb'))
-  .then(function (conn) {
+  .then((conn) =>  {
     r.conn = conn;
     r.conn.use(config.get('rethinkdb').db);
     return r;
   })
-  .then(function () {
+  .then(() =>  {
     return r.table('stations')
       .indexList()
       .run(r.conn)
-      .then(function (indexList) {
+      .then((indexList) =>  {
         if (indexList.indexOf('slug') === -1) {
           return r.table('stations').indexCreate('slug').run(r.conn);
         }
         return;
       });
   })
-  .then(function () {
+  .then(() =>  {
     return r.table('trains')
       .indexList()
       .run(r.conn)
-      .then(function (indexList) {
+      .then((indexList) =>  {
         if (indexList.indexOf('number') === -1) {
           return r.table('trains').indexCreate('number').run(r.conn);
         }

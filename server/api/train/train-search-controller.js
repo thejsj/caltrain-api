@@ -9,24 +9,24 @@ var arrayToObject = require('../../utils').arrayToObject;
 var getWeekday = require('../../utils').getWeekday;
 var getSingleStationLocationIndexQuery = require('../../utils').getSingleStationLocationIndexQuery;
 
-var trainSearchController = function (req, res) {
+var trainSearchController = (req, res) =>  {
   var params = res.locals.parameters;
   return q()
-    .then(function () {
+    .then(() =>  {
       if (params.from === undefined && params.to === undefined) {
         throw new Error('Not enough parameters specified');
       }
       return r.table('trains');
     })
-    .then(function (query) {
+    .then((query) =>  {
       if (params.arrival !== undefined) return [query, moment(new Date(params.arrival))];
       return [query, false];
     })
-    .spread(function (query, arrivalTime) {
+    .spread((query, arrivalTime) =>  {
       if (params.departure !== undefined) return [query, moment(new Date(params.departure)), arrivalTime];
       return [query, false, arrivalTime];
     })
-    .spread(function (query, departureTime, arrivalTime) {
+    .spread((query, departureTime, arrivalTime) =>  {
       if (arrivalTime && departureTime) {
         if (arrivalTime.isBefore(departureTime)) {
           throw new Error('Incorrect Parameters: Arrival time occurs before departure time');
@@ -56,14 +56,14 @@ var trainSearchController = function (req, res) {
         return getSingleStationLocationIndexQuery(params.to)
           .gt(getSingleStationLocationIndexQuery(params.from))
           .run(r.conn)
-          .then(function (isNorth) {
+          .then((isNorth) =>  {
             query = query.filter({'direction': (isNorth ? 'north' : 'south')});
             return [query, departureTime, arrivalTime];
           });
       }
       return [query, departureTime, arrivalTime];
     })
-    .spread(function (query, departureTime, arrivalTime) {
+    .spread((query, departureTime, arrivalTime) =>  {
       // Query by arrivalTime and departureTime
       if (departureTime) {
         if (params.from === undefined) {
@@ -85,7 +85,7 @@ var trainSearchController = function (req, res) {
       }
       return [query, departureTime, arrivalTime];
     })
-    .spread(function (query, departureTime, arrivalTime) {
+    .spread((query, departureTime, arrivalTime) =>  {
       if (params.type !== undefined) {
         if (params.type.length === 1) {
           query = query

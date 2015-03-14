@@ -8,34 +8,34 @@ var moment = require('moment');
 var app = require('../index.js');
 var agent = request.agent(app);
 
-var get381Train = function (param, sendObject) {
+var get381Train = (param, sendObject) =>  {
   return agent.get('/v1/train/' + (param || 381)).send(sendObject);
 };
 
-var searchTrains = function (sendObject) {
+var searchTrains = (sendObject) =>  {
   return agent.get('/v1/train/').send(sendObject || { from: '22nd-street' });
 };
 
-describe('Metadata', function () {
+describe('Metadata', () =>  {
 
-  describe('ETag', function () {
-    it('should return an ETag', function (done) {
+  describe('ETag', () =>  {
+    it('should return an ETag', (done) =>  {
       get381Train()
         .expect(200)
-        .then(function (res) {
+        .then((res) =>  {
           should.exist(res.headers.etag);
           done();
         })
         .catch(done);
     });
 
-    it('should return the same ETag for the same request', function (done) {
+    it('should return the same ETag for the same request', (done) =>  {
       get381Train()
         .expect(200)
-        .then(function (res) {
+        .then((res) =>  {
           var etag = res.headers.etag;
           return get381Train()
-            .then(function (res) {
+            .then((res) =>  {
               etag.should.equal(res.headers.etag);
               done();
             });
@@ -43,13 +43,13 @@ describe('Metadata', function () {
         .catch(done);
     });
 
-    it('should return a different ETag for two different requests', function (done) {
+    it('should return a different ETag for two different requests', (done) =>  {
       get381Train()
         .expect(200)
-        .then(function (res) {
+        .then((res) =>  {
           var etag = res.headers.etag;
           return get381Train(385)
-            .then(function (res) {
+            .then((res) =>  {
               etag.should.not.equal(res.headers.etag);
               done();
             });
@@ -58,12 +58,12 @@ describe('Metadata', function () {
     });
   });
 
-  describe('Last-Modified', function () {
+  describe('Last-Modified', () =>  {
 
-    it('should return a valid `Last-Modified` header', function (done) {
+    it('should return a valid `Last-Modified` header', (done) =>  {
       get381Train()
         .expect(200)
-        .then(function (res) {
+        .then((res) =>  {
           should.exist(res.headers['last-modified']);
           var lastModified = moment(res.headers['last-modified']);
           lastModified._f.should.equal('YYYY-MM-DDTHH:mm:ss.SSSSZ'); // ISO 8601
