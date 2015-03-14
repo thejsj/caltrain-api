@@ -1,7 +1,7 @@
 
 # CalTrain API
 
-**This is still in development. None of it actually works yet :)**
+[![Build Status](https://travis-ci.org/thejsj/caltrain-api.svg)](https://travis-ci.org/code-friends/CodeFriends) [![Dependency Status](https://david-dm.org/thejsj/caltrain-api.svg)](https://david-dm.org/code-friends/CodeFriends) [![devDependency Status](https://david-dm.org/thejsj/caltrain-api/dev-status.svg)](https://david-dm.org/code-friends/CodeFriends#info=devDependencies)
 
 Extremely simple API to get Caltrain schedule data.
 
