@@ -56,7 +56,9 @@ var isLatitude = function (str) {
 };
 
 var isLongitude = function (str) {
-  var _isLongitude = new RegExp(/^[-+]?(180(\.0+)?|((1[0-7]\d)|([1-9]?\d))(\.\d+)?)$/);
+  var _isLongitude = new RegExp(
+    /^[-+]?(180(\.0+)?|((1[0-7]\d)|([1-9]?\d))(\.\d+)?)$/
+  );
   return _isLongitude.test(str);
 };
 
@@ -64,23 +66,25 @@ var splitAndTrim = function (str) {
   var array;
   if (typeof str === 'string') array = str.split(',');
   else if (Array.isArray(str)) array = str;
-  else throw new Error('Parameter only takes comma-separated string or array as input');
+  else throw new Error(
+    'Parameter only takes comma-separated string or array as input'
+  );
   return array.map(function (type) {
       return type.trim();
     });
 };
 
-var parseTimeInEntry = function (entry) {
+var parseTimeInEntry = function (queryDay, timeFormat, entry) {
   var _parseTime = function (object, key) {
     if (Array.isArray(object[key])) {
       for (let i = 0; i < object[key].length; i += 1) {
-        object[key][i] = getTimeFromMinutes(object[key][i]);
+        object[key][i] = queryDay.clone().minutes(object[key][i]);
       }
       return;
     }
     if (typeof _.values(object[key])[0] === 'number') {
       for (let i in object[key]) {
-        object[key][i] = getTimeFromMinutes(object[key][i]);
+        object[key][i] = queryDay.clone().minutes(object[key][i]);
       }
       return;
     }
@@ -88,9 +92,19 @@ var parseTimeInEntry = function (entry) {
       _parseTime(object[key], newKey);
     });
   };
-  if (entry.stations) _parseTime(entry, 'stations');
-  if (entry.trains) _parseTime(entry, 'trains');
-  if (entry.times) _parseTime(entry, 'times');
+  var dayType = getWeekday(queryDay);
+  if (entry.stations) {
+    _parseTime(entry.stations, dayType);
+    entry.stations = entry.stations[dayType];
+  }
+  if (entry.trains) {
+    _parseTime(entry.trains, dayType);
+    entry.trains = entry.trains[dayType];
+  }
+  if (entry.times) {
+    _parseTime(entry.times, dayType);
+    entry.times = entry.times[dayType];
+  }
 };
 
 exports.arrayToObject = arrayToObject;

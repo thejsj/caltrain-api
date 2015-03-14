@@ -12,9 +12,16 @@ var camelCase = function(input) {
 };
 
 var checkArguments = function (params, opts) {
-  if (typeof opts.property !== 'string') throw new Error('checkArguments requires `property` String');
-  if (!Array.isArray(opts.args)) throw new Error('checkArguments requires array `args`');
-  if (params[opts.property] !== undefined && !_.contains(opts.args, params[opts.property])) {
+  if (typeof opts.property !== 'string') {
+    throw new Error('checkArguments requires `property` String');
+  }
+  if (!Array.isArray(opts.args)) {
+    throw new Error('checkArguments requires array `args`');
+  }
+  if (
+    params[opts.property] !== undefined &&
+    !_.contains(opts.args, params[opts.property])
+  ) {
     throw new Error('Invalid argument supplied for ' + opts.property);
   }
 };
@@ -67,11 +74,18 @@ var argumentParser = function () {
         if (camelCase(key)) params[camelCase(key)] = val;
       }
     }
-    var queryDay = (params.queryDay !== undefined ? params.queryDay : '');
+    var queryDay = (
+      params.queryDay !== undefined ? new Date(params.queryDay) : new Date()
+    );
     params = _.defaults(params, {
       timeFormat: 'YYYY-MM-DDThh:mm:ssTZD',
       // There's a train at 12:03 am
-      queryDay: moment(new Date(queryDay)).set({hour: 1, minute: 0, seconds: 0 })
+      queryDay: moment(queryDay).set({
+        hour: 1,
+        minute: 0,
+        seconds: 0,
+        milliseconds: 0
+      })
     });
     params.queryDay.set({ hour: 1, minute: 0, second: 0 });
     res.locals.parameters = params;

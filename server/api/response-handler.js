@@ -19,20 +19,28 @@ var successHandler = function (res, jsonResponseObject) {
   var params = res.locals.parameters;
   if (Array.isArray(jsonResponseObject)) {
     // Array of Objects
-    if(jsonResponseObject.length > 0 && _.keys(jsonResponseObject[0]).length === 0) {
-      throw new Error('No fields returned for queried objects. Check your `fields` parameter in query');
+    let keys = _.keys(jsonResponseObject[0]);
+    if(jsonResponseObject.length > 0 && keys.length === 0) {
+      throw new Error(
+        'No fields returned for queried objects. '+
+        'Check your `fields` parameter in query'
+      );
     }
-    if (params.timeFormat === 'H:mm') {
-      jsonResponseObject.forEach(parseTimeInEntry);
-    }
+    jsonResponseObject.forEach(parseTimeInEntry.bind(
+      null,
+      params.queryDay,
+      params.timeFormat
+    ));
   } else {
     // Objects
-    if (!Array.isArray(jsonResponseObject) && _.keys(jsonResponseObject).length === 0) {
-      throw new Error('No fields returned for queried objects. Check your `fields` parameter in query');
+    let keys = _.keys(jsonResponseObject);
+    if (!Array.isArray(jsonResponseObject) && keys.length === 0) {
+      throw new Error(
+        'No fields returned for queried objects. ' +
+        'Check your `fields` parameter in query'
+      );
     }
-    if (params.timeFormat === 'H:mm') {
-      parseTimeInEntry(jsonResponseObject);
-    }
+    parseTimeInEntry(params.queryDay, params.timeFormat, jsonResponseObject);
   }
   return q()
     .then(function () {

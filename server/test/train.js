@@ -21,16 +21,12 @@ var searchTrains = function (sendObject) {
 };
 
 var arrivalTimeTest = function (done, timeString, res) {
+  console.log('arrivalTimeTest', res.body);
   var arrivalTime = moment(new Date(timeString));
-  var arrivalTimeInMinutes = getMinutesFromTime(arrivalTime.format('H'), arrivalTime.format('m'));
   res.body.length.should.be.above(0);
   res.body.forEach(function (train) {
-    train.stations[getWeekday(arrivalTime)].should.not.equal(undefined);
-    var timeInMinutes = getMinutesFromTime.apply(
-      null,
-      train.stations[getWeekday(arrivalTime)]['22nd-street'].split(':')
-    );
-    arrivalTimeInMinutes.should.be.above(timeInMinutes);
+    train.stations.should.not.equal(undefined);
+    arrivalTime.isAfter(train.stations['22nd-street']);
   });
   done();
   return res;
@@ -38,15 +34,10 @@ var arrivalTimeTest = function (done, timeString, res) {
 
 var departureTimeTest = function (done, timeString, res) {
   var departureTime = moment(new Date(timeString));
-  var departureTimeInMinutes = getMinutesFromTime(departureTime.format('H'), departureTime.format('m'));
   res.body.length.should.be.above(0);
   res.body.forEach(function (train) {
-    train.stations[getWeekday(departureTime)].should.not.equal(undefined);
-    var timeInMinutes = getMinutesFromTime.apply(
-      null,
-      train.stations[getWeekday(departureTime)]['22nd-street'].split(':')
-    );
-    departureTimeInMinutes.should.be.below(timeInMinutes);
+    train.stations.should.not.equal(undefined);
+    departureTime.isBefore(train.stations['22nd-street']);
   });
   done();
   return res;
@@ -123,7 +114,7 @@ describe('/train', function () {
         searchTrains({'from': '22nd-street'})
           .then(function (res) {
             res.body.forEach(function (train) {
-              _.some(_.keys(train.stations.weekday), function (stationName) {
+              _.some(_.keys(train.stations), function (stationName) {
                 return stationName === '22nd-street';
               }).should.equal(true);
             });
@@ -136,7 +127,7 @@ describe('/train', function () {
         searchTrains({'from': '22nd-street', 'departure': weekdayMorningTimeString})
           .then(function (res) {
             res.body.forEach(function (train) {
-              _.some(_.keys(train.stations.weekday), function (stationName) {
+              _.some(_.keys(train.stations), function (stationName) {
                 return stationName === '22nd-street';
               }).should.equal(true);
             });
@@ -154,10 +145,10 @@ describe('/train', function () {
           .then(function (res) {
             res.body.length.should.be.above(0);
             res.body.forEach(function (train) {
-              _.some(_.keys(train.stations.weekday), function (stationName) {
+              _.some(_.keys(train.stations), function (stationName) {
                 return stationName === '22nd-street';
               }).should.equal(true);
-              _.some(_.keys(train.stations.weekday), function (stationName) {
+              _.some(_.keys(train.stations), function (stationName) {
                 return stationName === 'mountain-view';
               }).should.equal(true);
               train.direction.should.equal('south');
@@ -176,10 +167,10 @@ describe('/train', function () {
           .then(function (res) {
             res.body.length.should.be.above(0);
             res.body.forEach(function (train) {
-              _.some(_.keys(train.stations.weekday), function (stationName) {
+              _.some(_.keys(train.stations), function (stationName) {
                 return stationName === '22nd-street';
               }).should.equal(true);
-              _.some(_.keys(train.stations.weekday), function (stationName) {
+              _.some(_.keys(train.stations), function (stationName) {
                 return stationName === 'mountain-view';
               }).should.equal(true);
               train.direction.should.equal('north');
@@ -201,8 +192,7 @@ describe('/train', function () {
           .then(function (res) {
             res.body.length.should.be.above(0);
             res.body.forEach(function (train) {
-              var timeInHmm = train.stations[getWeekday(departureTime)]['22nd-street'];
-              var time = moment(timeInHmm, 'H:mm');
+              var time = moment(train.stations['22nd-street']);
               departureTime.isBefore(time).should.equal(true);
             });
             done();
@@ -218,15 +208,10 @@ describe('/train', function () {
         })
           .then(function (res) {
             var departureTime = moment(new Date(saturdayTimeString));
-            var departureTimeInMinutes = getMinutesFromTime(departureTime.format('H'), departureTime.format('m'));
             res.body.length.should.be.above(0);
             res.body.forEach(function (train) {
-              train.stations[getWeekday(departureTime)].should.not.equal(undefined);
-              var timeInMinutes = getMinutesFromTime.apply(
-                null,
-                train.stations[getWeekday(departureTime)]['22nd-street'].split(':')
-              );
-              departureTimeInMinutes.should.be.below(timeInMinutes);
+              train.stations.should.not.equal(undefined);
+              departureTime.isBefore(train.stations['22nd-street']);
             });
             done();
           })
@@ -241,28 +226,23 @@ describe('/train', function () {
         })
           .then(function (res) {
             var departureTime = moment(new Date(sundayTimeString));
-            var departureTimeInMinutes = getMinutesFromTime(departureTime.format('H'), departureTime.format('m'));
             res.body.length.should.be.above(0);
             res.body.forEach(function (train) {
-              train.stations[getWeekday(departureTime)].should.not.equal(undefined);
-              var timeInMinutes = getMinutesFromTime.apply(
-                null,
-                train.stations[getWeekday(departureTime)]['22nd-street'].split(':')
-              );
-              departureTimeInMinutes.should.be.below(timeInMinutes);
+              train.stations.should.not.equal(undefined);
+              departureTime.isBefore(train.stations['22nd-street']);
             });
             done();
           })
           .catch(done);
       });
 
-      it('it should throw an error if a `departure` is specified and no `from` is specified', function (done) {
+      it('it should throw an error if a `departure` is specified and no `from` is specified', (done) => {
         return searchTrains({
           'to': 'mountain-view',
           'departure': weekdayEveningTimeString
         })
           .expect(400)
-          .then(function (res) {
+          .then((res) => {
             res.body.message.should.match(/departure/);
             res.body.message.should.match(/from/);
             done();
@@ -271,9 +251,9 @@ describe('/train', function () {
       });
     });
 
-   describe('Arrival', function () {
+   describe('Arrival', () => {
 
-      it('should only get trains that depart after the arrival time on weekdays', function (done) {
+      it('should only get trains that depart after the arrival time on weekdays', (done) => {
         searchTrains({
           'from': '22nd-street',
           'to': 'mountain-view',
@@ -281,22 +261,16 @@ describe('/train', function () {
         })
           .then(function (res) {
             var arrivalTime = moment(new Date(weekdayEveningTimeString));
-            var arrivalTimeInMinutes = getMinutesFromTime(arrivalTime.format('H'), arrivalTime.format('m'));
             res.body.length.should.be.above(0);
             res.body.forEach(function (train) {
-              train.stations[getWeekday(arrivalTime)].should.not.equal(undefined);
-              var timeInMinutes = getMinutesFromTime.apply(
-                null,
-                train.stations[getWeekday(arrivalTime)]['22nd-street'].split(':')
-              );
-              arrivalTimeInMinutes.should.be.above(timeInMinutes);
+              arrivalTime.isAfter(train.stations['22nd-street']);
             });
             done();
           })
           .catch(done);
         });
 
-      it('should only get trains that depart after the arrival time on Saturdays', function (done) {
+      it('should only get trains that depart after the arrival time on Saturdays', (done) => {
         searchTrains({
           'from': '22nd-street',
           'to': 'mountain-view',
@@ -304,16 +278,10 @@ describe('/train', function () {
         })
           .then(function (res) {
             var arrivalTime = moment(new Date(saturdayTimeString));
-            var arrivalTimeInMinutes =
-              getMinutesFromTime(arrivalTime.format('H'), arrivalTime.format('m'));
             res.body.length.should.be.above(0);
             res.body.forEach(function (train) {
-              train.stations[getWeekday(arrivalTime)].should.not.equal(undefined);
-              var timeInMinutes = getMinutesFromTime.apply(
-                null,
-                train.stations[getWeekday(arrivalTime)]['22nd-street'].split(':')
-              );
-              arrivalTimeInMinutes.should.be.above(timeInMinutes);
+              train.stations.should.not.equal(undefined);
+              arrivalTime.isAfter(train.stations['22nd-street']);
             });
             done();
           })
@@ -328,15 +296,10 @@ describe('/train', function () {
         })
           .then(function (res) {
             var arrivalTime = moment(new Date(sundayTimeString));
-            var arrivalTimeInMinutes = getMinutesFromTime(arrivalTime.format('H'), arrivalTime.format('m'));
             res.body.length.should.be.above(0);
             res.body.forEach(function (train) {
-              train.stations[getWeekday(arrivalTime)].should.not.equal(undefined);
-              var timeInMinutes = getMinutesFromTime.apply(
-                null,
-                train.stations[getWeekday(arrivalTime)]['22nd-street'].split(':')
-              );
-              arrivalTimeInMinutes.should.be.above(timeInMinutes);
+              train.stations.should.not.equal(undefined);
+              arrivalTime.isAfter(train.stations['22nd-street']);
             });
             done();
           })
