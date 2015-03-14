@@ -26,7 +26,7 @@ app
 app
   .use('/v1', apiRouter)
   .use('*', send404)
-  .listen(8000, function () {
+  .listen(8000, () =>  {
     console.log('Server listening on port:', 8000);
   });
 

@@ -11,20 +11,20 @@ var camelCase = (input) => {
     });
 };
 
-var checkArguments = (params, opts) => {
-  if (typeof opts.property !== 'string') {
-    throw new Error('checkArguments requires `property` String');
-  }
-  if (!Array.isArray(opts.args)) {
-    throw new Error('checkArguments requires array `args`');
-  }
-  if (
-    params[opts.property] !== undefined &&
-    !_.contains(opts.args, params[opts.property])
-  ) {
-    throw new Error('Invalid argument supplied for ' + opts.property);
-  }
-};
+// var checkArguments = (params, opts) => {
+//   if (typeof opts.property !== 'string') {
+//     throw new Error('checkArguments requires `property` String');
+//   }
+//   if (!Array.isArray(opts.args)) {
+//     throw new Error('checkArguments requires array `args`');
+//   }
+//   if (
+//     params[opts.property] !== undefined &&
+//     !_.contains(opts.args, params[opts.property])
+//   ) {
+//     throw new Error('Invalid argument supplied for ' + opts.property);
+//   }
+// };
 
 var bodyParamaterParser = (bodyObject) => {
   if (_.size(bodyObject) === 1 && _.values(bodyObject)[0] === '') {
