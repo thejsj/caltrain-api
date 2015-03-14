@@ -5,13 +5,13 @@ var moment = require('moment');
 
 var splitAndTrim = require('./utils').splitAndTrim;
 
-var camelCase = function(input) {
-    return input.toLowerCase().replace(/_(.)/g, function(match, group1) {
+var camelCase = (input) => {
+    return input.toLowerCase().replace(/_(.)/g, (match, group1)  => {
         return group1.toUpperCase();
     });
 };
 
-var checkArguments = function (params, opts) {
+var checkArguments = (params, opts) => {
   if (typeof opts.property !== 'string') {
     throw new Error('checkArguments requires `property` String');
   }
@@ -26,7 +26,7 @@ var checkArguments = function (params, opts) {
   }
 };
 
-var bodyParamaterParser = function (bodyObject) {
+var bodyParamaterParser = (bodyObject) => {
   if (_.size(bodyObject) === 1 && _.values(bodyObject)[0] === '') {
     try {
       return JSON.parse(_.keys(bodyObject)[0]);
@@ -37,7 +37,7 @@ var bodyParamaterParser = function (bodyObject) {
   return bodyObject;
 };
 
-var argumentParser = function () {
+var argumentParser = () => {
   /**
    * Possible Parameters
    *
@@ -55,7 +55,7 @@ var argumentParser = function () {
    *    arrival <String>/<Number>
    *    type <Array>
    */
-  return function (req, res, next) {
+  return (req, res, next) =>  {
     var params = _.extend(
       {},
       req.query,
