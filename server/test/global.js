@@ -44,7 +44,7 @@ describe('Global', function () {
     });
   });
 
-  describe('Time Format', function () {
+  xdescribe('Time Format', function () {
 
     it('should return the time in minutes if `timeFormat` is passed as `minutes`', function (done) {
       var now = new Date(Date.now());

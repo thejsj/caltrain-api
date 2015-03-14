@@ -31,7 +31,7 @@ var trainSearchController = function (req, res) {
         if (arrivalTime.isBefore(departureTime)) {
           throw new Error('Incorrect Parameters: Arrival time occurs before departure time');
         }
-        if (arrivalTime.isSame(departureTime, 'day')) {
+        if (!arrivalTime.isSame(departureTime, 'day')) {
           throw new Error('Incorrect Parameters: Arrival time and departure time are not on the same date');
         }
       }

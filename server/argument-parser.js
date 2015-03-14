@@ -74,17 +74,20 @@ var argumentParser = function () {
         if (camelCase(key)) params[camelCase(key)] = val;
       }
     }
-    var queryDay = (
-      params.queryDay !== undefined ? new Date(params.queryDay) : new Date()
-    );
+    var queryDay = (() => {
+      if (params.queryDay !== undefined) return new Date(params.queryDay);
+      if (params.departure !== undefined) {
+        return moment(new Date(params.departure)).set({
+          hour: 1, minute: 0, seconds: 0, milliseconds: 0
+        });
+      }
+      return new Date(); // Default to today
+    }());
     params = _.defaults(params, {
       timeFormat: 'YYYY-MM-DDThh:mm:ssTZD',
       // There's a train at 12:03 am
       queryDay: moment(queryDay).set({
-        hour: 1,
-        minute: 0,
-        seconds: 0,
-        milliseconds: 0
+        hour: 1, minute: 0, seconds: 0, milliseconds: 0
       })
     });
     params.queryDay.set({ hour: 1, minute: 0, second: 0 });

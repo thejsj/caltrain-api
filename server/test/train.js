@@ -1,4 +1,4 @@
-/*global describe:true, it:true, xit:true */
+/*global describe:true, it:true */
 /*jshint node:true */
 'use strict';
 require('should');
@@ -7,8 +7,6 @@ var _ = require('lodash');
 var moment = require('moment');
 
 var app = require('../index.js');
-var getWeekday = require('../utils').getWeekday;
-var getMinutesFromTime = require('../utils').getMinutesFromTime;
 
 var agent = request.agent(app);
 
@@ -21,7 +19,6 @@ var searchTrains = (sendObject) =>  {
 };
 
 var arrivalTimeTest = (done, timeString, res) =>  {
-  console.log('arrivalTimeTest', res.body);
   var arrivalTime = moment(new Date(timeString));
   res.body.length.should.be.above(0);
   res.body.forEach((train) =>  {
