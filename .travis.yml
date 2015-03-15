@@ -20,6 +20,4 @@ branches:
      - master
 notifications:
   email: false
-git:
-  depth: 1
-script: npm --expose-gc test
+script: npm test
