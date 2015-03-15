@@ -1,13 +1,13 @@
 rethinkdb:
   image: dockerfile/rethinkdb
   ports:
-   - "10001:8080"
-   - "10002:28015"
-   - "10003:29015"
+   - "10101:8080"
+   - "10102:28015"
+   - "10103:29015"
 server:
   image: unlucio/iojs
   ports:
-   - "80:8080"
+   - "10100:8080"
   links:
    - "rethinkdb"
   environment:
