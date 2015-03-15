@@ -5,6 +5,8 @@
 **/*.pyc
 **/*.log
 .DS_Store
+fabfile.py
+fabfile.pyc
 node_modules
 data/html/*.html
 data/json/*.json
