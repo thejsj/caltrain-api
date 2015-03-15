@@ -5,8 +5,7 @@ before_install:
   - sudo add-apt-repository ppa:rethinkdb/ppa -y
   - sudo apt-get update -q
   - sudo apt-get install -y rethinkdb --force-yes
-install:
-  - pip install -r requirements.pip
+  - sudo pip install -r requirements.pip
 before_script:
   - npm install -g babel
   - python ./scraper -i -g
