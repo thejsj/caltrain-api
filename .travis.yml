@@ -8,6 +8,7 @@ before_install:
   - sudo pip install -r requirements.pip
 before_script:
   - npm install -g babel
+  - rethinkdb
   - python ./scraper -i -g -c
   - python ./scraper -i -g -c -db caltrain_test
 node_js:
