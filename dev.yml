@@ -4,6 +4,7 @@ server:
    - "80:8080"
   links:
    - "rethinkdb"
+   - "python"
   environment:
     NODE_ENV: docker-local
     PORT: 8080

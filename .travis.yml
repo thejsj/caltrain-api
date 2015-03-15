@@ -8,8 +8,8 @@ before_install:
   - sudo pip install -r requirements.pip
 before_script:
   - npm install -g babel
-  - python ./scraper -i -g
-  - python ./scraper -i -g -db caltrain_test
+  - python ./scraper -i -g -c
+  - python ./scraper -i -g -c -db caltrain_test
 node_js:
   - 'iojs-v1.4.2'
 python:
