@@ -1,28 +1,26 @@
-server:
-  image: iojs
-  ports:
-   - "80:8080"
-  links:
-   - "rethinkdb"
-   - "python"
-  environment:
-    NODE_ENV: docker-local
-    PORT: 8080
-  volumes:
-    - ./:/app
-  volumes_from:
-    - "python"
-  command: /bin/bash /app/run.sh
-python:
-  image: dockerfile/python
-  links:
-   - "rethinkdb"
-  volumes:
-    - ./:/app
-  command: python /app/scraper -i -g
 rethinkdb:
   image: dockerfile/rethinkdb
   ports:
    - "10001:8080"
    - "10002:28015"
    - "10003:29015"
+# python:
+#   image: dockerfile/python
+#   links:
+#    - "rethinkdb"
+#   volumes:
+#     - ./:/main
+#   command: /bin/bash /main/python.sh
+server:
+  image: unlucio/iojs
+  ports:
+   - "80:8080"
+  links:
+   - "rethinkdb"
+   # - "python"
+  environment:
+    NODE_ENV: docker-local
+    PORT: 8080
+  volumes:
+    - ./:/app
+  command: /bin/bash /app/server.sh

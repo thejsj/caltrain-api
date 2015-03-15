@@ -1,10 +1,13 @@
 !*
 
 *.pyc
+*.log
 **/*.pyc
+**/*.log
 .DS_Store
 node_modules
-data
+data/html/*
+data/json/*
 venv
 config/*
 !config/default.js
