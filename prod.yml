@@ -11,7 +11,7 @@ server:
   links:
    - "rethinkdb"
   environment:
-    NODE_ENV: docker-local
+    NODE_ENV: production
     PORT: 8080
   volumes:
     - ./:/app

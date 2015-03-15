@@ -30,8 +30,8 @@ app
 app
   .use('/v1', apiRouter)
   .use('*', send404)
-  .listen(8000, () =>  {
-    console.log('Server listening on port:', 8000);
+  .listen(config.get('ports').http, () =>  {
+    console.log('Server listening on port:', config.get('ports').http);
   });
 
 module.exports = app;
