@@ -8,6 +8,7 @@ var respond = require('../response-handler').responseHandler;
 var arrayToObject = require('../../utils').arrayToObject;
 var getWeekday = require('../../utils').getWeekday;
 var getSingleStationLocationIndexQuery = require('../../utils').getSingleStationLocationIndexQuery;
+var isDigits = new RegExp(/^([\d]*)$/);
 
 var trainSearchController = (req, res) =>  {
   var params = res.locals.parameters;
@@ -19,11 +20,18 @@ var trainSearchController = (req, res) =>  {
       return r.table('trains');
     })
     .then((query) =>  {
-      if (params.arrival !== undefined) return [query, moment(new Date(params.arrival))];
+      if (params.arrival !== undefined) {
+        return [query, moment(new Date(params.arrival))];
+      }
       return [query, false];
     })
     .spread((query, arrivalTime) =>  {
-      if (params.departure !== undefined) return [query, moment(new Date(params.departure)), arrivalTime];
+      if (params.departure !== undefined) {
+        if (isDigits.test(params.departure)) {
+          params.departure = +params.departure;
+        }
+        return [query, moment(new Date(params.departure)), arrivalTime];
+      }
       return [query, false, arrivalTime];
     })
     .spread((query, departureTime, arrivalTime) =>  {
