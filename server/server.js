@@ -1,7 +1,6 @@
 /*jshint node:true */
 'use strict';
 var config = require('config');
-console.log(config);
 var bodyParser = require('body-parser');
 var express = require('express');
 var compression = require('compression');

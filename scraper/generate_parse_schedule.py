@@ -119,7 +119,7 @@ class ScheduleParser():
               'trains': { }
             }
             if append_geolocation:
-              sleep(0.1)
+              sleep(0.2)
               location = Geocoder.geocode(station_name + " Caltrain Station, CA")
               coordinates = location[0].coordinates
               station_times[slug]['coordinates'] = {}
