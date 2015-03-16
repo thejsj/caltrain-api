@@ -9,6 +9,7 @@ pathtools==0.1.2
 pygeocoder==1.2.5
 PyYAML==3.11
 requests==2.5.3
-rethinkdb==1.16.0.post3
+rethinkdb==1.16.0.post1
 slugify==0.0.1
 watchdog==0.8.3
+yolk==0.4.3
