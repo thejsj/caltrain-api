@@ -28,10 +28,6 @@ app
 
 // Set Routes
 app
-  .use((res, req, next) => {
-    console.log('Request!');
-    next();
-  })
   .use('/v1', apiRouter)
   .use(express.static(__dirname + '/../docs'))
   .use('*', send404)
