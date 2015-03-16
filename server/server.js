@@ -1,6 +1,7 @@
 /*jshint node:true */
 'use strict';
 var config = require('config');
+console.log(config);
 var bodyParser = require('body-parser');
 var express = require('express');
 var compression = require('compression');
@@ -27,6 +28,10 @@ app
 
 // Set Routes
 app
+  .use((res, req, next) => {
+    console.log('Request!');
+    next();
+  })
   .use('/v1', apiRouter)
   .use(express.static(__dirname + '/../docs'))
   .use('*', send404)
