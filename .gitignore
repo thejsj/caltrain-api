@@ -16,7 +16,8 @@ fabfile.py
 fabfile.pyc
 
 # Generated Data
-site
+docs/**/*
+!docs/index.md
 data/html/*.html
 data/json/*.json
 

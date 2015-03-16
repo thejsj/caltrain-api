@@ -9,7 +9,8 @@
     "dev": "./node_modules/nodemon/bin/nodemon.js --exec npm run babel-node -- server/index.js",
     "activate": "source venv/bin/activate",
     "import": "python scraper -g -i -db caltrain_test && python ./scraper -g -i",
-    "start": "node ./server"
+    "start": "node ./server",
+    "docs": "./node_modules/docco/bin/docco ./docs/index.md"
   },
   "keywords": [
     "caltrain",
