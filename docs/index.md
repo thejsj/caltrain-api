@@ -1,125 +1,149 @@
-# Caltrain API
+
+# CalTrain API
+
+[![Build Status](https://travis-ci.org/thejsj/caltrain-api.svg)](https://travis-ci.org/code-friends/CodeFriends) [![Dependency Status](https://david-dm.org/thejsj/caltrain-api.svg)](https://david-dm.org/code-friends/CodeFriends) [![devDependency Status](https://david-dm.org/thejsj/caltrain-api/dev-status.svg)](https://david-dm.org/code-friends/CodeFriends#info=devDependencies)
 
 Extremely simple API to get Caltrain schedule data.
 
-## Endpoints
+## API
+
+### Endpoints
 
 There are two endpoints in this API: `/train` and `/station`,
 
-### /train
+#### /train/(`ID or train number`)
+
+Provide a train `id` to see the schedule for that train.
+
+```
+curl http://caltrain-api.thejsj.com/v1/train/d9000734-078e-490b-bbfa-c11fb2f48322
+```
+
+[See Response](http://caltrain-api.thejsj.com/v1/train/d9000734-078e-490b-bbfa-c11fb2f48322)
+
+Provide a train number to see the schedule for that train.
+
+```
+curl http://caltrain-api.thejsj.com/v1/train/103
+```
+
+[See Response](http://caltrain-api.thejsj.com/v1/train/103)
+
+#### /train
 
 Provide a `from` station and a `to` station and get a list of departures.
 
 ```
-curl http://api.caltrain-api.com/v1/train \
+curl http://caltrain-api.thejsj.com/v1/train \
     -d from='22nd-street' \ // station slug
     -d to='mountain-view'   // station slug
 ```
+
+[See Response](http://caltrain-api.thejsj.com/v1/train?from=22nd-street&to=mountain-view)
 
 `Station`s (`from` and `to`) can be queried in two ways:
 
 - station slug <String>
 - station ID <Integer>
 
+[See All Available Stations]((http://caltrain-api.thejsj.com/v1/station?name=&fields=id,slug,name)
+
 Provide a departure time and get the the closest departures. If `departure` is specified without `from`, the API will respond with a 400 error.
 
 ```
-curl http://api.caltrain-api.com/v1/train \
+curl http://caltrain-api.thejsj.com/v1/train \
   -d from='22nd-street' \  // station slug
   -d to='mountain-view' \  // station slug
-  -d departure='1424570262' // Time
+  -d departure=1424570262000 // Time
 ```
 
-`Time` (`departure` and `arrival`) can be queried in two ways:
+[See Response](http://caltrain-api.thejsj.com/v1/train?from=22nd-street&to=mountain-view&departure=1424570262000)
 
-- Unix Timestamp `<Number>`
-- Time and Format `<Array>` (A tuple with a time `<String>` and the format `<String>`)(in serialized JSON)
-- Time `<String>` (To be automatically parse by `moment.js`)
+`Time`s (`departure` and `arrival`) are parsed using JavaScripte `new Date`. Because of this, many types of `Time` inputs can be used. UNIX timestamps require milliseconds to work correctly.
 
 Provide an arrival time an get the the closest departures. If `arrival` is specified without `to`, the API will respond with a 400 error.
 
 ```
-curl http://api.caltrain-api.com/v1/train \
-  -d from='22nd-street' \
-  -d to='mountain-view' \ 
-  -d arrival='1424570262' // UNIX timestamp <Number>
+curl http://caltrain-api.thejsj.com/v1/train \
+  -d from=22nd-street \
+  -d to=mountain-view \ 
+  -d arrival=1424570262000 // UNIX timestamp <Number>
 ```
+
+[See Response](http://caltrain-api.thejsj.com/v1/train?from=22nd-street&to=mountain-view&departure=1424570262000)
 
 Provide an type in order to filter results by local, limited or express trains.
 
 ```
-curl http://api.caltrain-api.com/v1/train \
-  -d from='22nd-street' \
-  -d to='mountain-view' \ 
-  -d type='limited,express' // 'local', 'limited', 'express'
+curl http://caltrain-api.thejsj.com/v1/train \
+  -d from=22nd-street \
+  -d to=mountain-view \ 
+  -d type=limited,express // 'local', 'limited', 'express'
 ```
 
-Provide a train `id` to see the schedule for that train.
+[See Response](http://caltrain-api.thejsj.com/v1/train?from=22nd-street&to=mountain-view&type=limited,express)
 
-```
-curl http://api.caltrain-api.com/v1/train/d9000734-078e-490b-bbfa-c11fb2f48322
-```
-
-Provide a train number to see the schedule for that train.
-
-```
-curl http://api.caltrain-api.com/v1/train/103
-```
-
-### /station
+#### /station/(`ID or slug`)
 
 Provide an `id` to get a particular station. Returns a JSON object.
 
 ```
-curl http://api.caltrain-api.com/v1/station/d9000734-078e-490b-bbfa-c11fb2f48322
+curl http://caltrain-api.thejsj.com/v1/station/d9000734-078e-490b-bbfa-c11fb2f48322
 ```
 
 Provide a `slug` to get a particular station. Returns a JSON object.
 
 ```
-curl http://api.caltrain-api.com/v1/station/mountain-view
+curl http://caltrain-api.thejsj.com/v1/station/mountain-view
 ```
+
+[See All Available Station IDs, Slugs, and Names]((http://caltrain-api.thejsj.com/v1/station?name=&fields=id,slug,name)
+
+#### /station
 
 Provide a `name`  in `/` to query stations with that name. Returns an array.
 
 ```
-curl http://api.caltrain-api.com/v1/station \
+curl http://caltrain-api.thejsj.com/v1/station \
   -d name='san'
 ```
 
+[See Resposne]((http://caltrain-api.thejsj.com/v1/station?name=san)
 
-Provide a `longitude` and `latitude` to get the closest station to that location. Returns an array. Both 
+Provide a `longitude` and `latitude` to get an array of stations ordered by distance to that geolocation. This can be combined with `name` for more accurate queries.
 
 ```
-curl http://api.caltrain-api.com/v1/station \
+curl http://caltrain-api.thejsj.com/v1/station \
   -d latitude='37.3876416'
   -d longitude='-122.0656136'
 ```
 
-## Filters and Options
+[See Resposne]((http://caltrain-api.thejsj.com/v1/station?latitude=37.3876416&longitude=-122.0656136)
+
+### Filters and Options
  
 Provide a `fields` in order to filter the response to only certain fields:
 
 ```
-curl http://api.caltrain-api.com/v1/station \
+curl http://caltrain-api.thejsj.com/v1/station \
   -d name='san'
   -d fields='id,name,coordinates,trains'
 ```
 
-By default, the API always returns a `today` attribute in `train.times`, `train.stations`, `station.trains`, and `station.times`. This 
+[See Resposne]((http://caltrain-api.thejsj.com/v1/station?name=san&fields='id,name,coordinates,trains')
 
-## Time Formats
+### Time Formats
 
-All time formats are returned as 'H:mm', where H is a 24 hour based hour. Time can also be returned in minutes (as in minutes from 0:00), by passing the `time_format` flag with the value `minutes`.
+All time formats are returned as ISO 8601. Time can be returned in any format by passing a `timeFormat` flag through the query using the following parameters:
 
 ```
-curl http://api.caltrain-api.com/v1/schedule \
+curl http://caltrain-api.thejsj.com/v1/schedule \
     -d from='22nd-street' \ // station
     -d to='mountain-view'   // station
-    -d timeFormat='minutes'
+    -d timeFormat='YYYY MM dd HH:mm:s'
 ```
 
-## Requests
+### Requests
 
 Requests parameters can be sent in three types: 
   1. Data tags 
@@ -129,7 +153,7 @@ Requests parameters can be sent in three types:
 1. Data Tags
 
 ```
-curl http://api.caltrain-api.com/v1/schedule \
+curl http://caltrain-api.thejsj.com/v1/schedule \
     -d from='22nd-street' \ // station
     -d to='mountain-view'   // station
 ```
@@ -137,7 +161,7 @@ curl http://api.caltrain-api.com/v1/schedule \
 2. JSON Serialized Object
 
 ```
-curl http://api.caltrain-api.com/v1/schedule \
+curl http://caltrain-api.thejsj.com/v1/schedule \
     -d '{
         "from": "22nd Street",
         "to": "Mountain View"
@@ -147,10 +171,10 @@ curl http://api.caltrain-api.com/v1/schedule \
 3. GET Query Parameters
 
 ```
-curl http://api.caltrain-api.com/v1/schedule?from=22nd-street&to=mountain-view
+curl http://caltrain-api.thejsj.com/v1/schedule?from=22nd-street&to=mountain-view
 ```
 
-## Response Format
+### Response Format
 
 All responses are in JSON format.
 

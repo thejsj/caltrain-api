@@ -10,7 +10,7 @@
     "activate": "source venv/bin/activate",
     "import": "python scraper -g -i -db caltrain_test && python ./scraper -g -i",
     "start": "node ./server",
-    "docs": "./node_modules/docco/bin/docco --layout=linear ./docs/index.md"
+    "docs": "cp README.md docs/index.md && ./node_modules/docco/bin/docco --layout=linear ./docs/index.md"
   },
   "keywords": [
     "caltrain",
