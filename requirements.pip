@@ -1,5 +1,14 @@
+argh==0.26.1
 beautifulsoup4==4.3.2
+ghp-import==0.4.1
+Jinja2==2.7.3
+Markdown==2.4.1
+MarkupSafe==0.23
+mkdocs==0.11.1
+pathtools==0.1.2
 pygeocoder==1.2.5
+PyYAML==3.11
 requests==2.5.3
-rethinkdb==1.16.0-0
+rethinkdb==1.16.0.post3
 slugify==0.0.1
+watchdog==0.8.3

@@ -28,6 +28,7 @@ app
 // Set Routes
 app
   .use('/v1', apiRouter)
+  .use(express.static(__dirname + '/site'))
   .use('*', send404)
   .listen(config.get('ports').http, () =>  {
     console.log('Server listening on port:', config.get('ports').http);

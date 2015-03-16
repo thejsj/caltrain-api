@@ -1,16 +1,29 @@
 !*
 
+.DS_Store
+
+# Logs and Python
 *.pyc
 *.log
 **/*.pyc
 **/*.log
-.DS_Store
+
+# Node Modules
+node_modules
+
+# Keep fabfile.py private
 fabfile.py
 fabfile.pyc
-node_modules
+
+# Generated Data
+site
 data/html/*.html
 data/json/*.json
+
+# Ignore Virtual Environment
 venv
+
+# Config
 config/*
 !config/default.js
 !config/test.js
