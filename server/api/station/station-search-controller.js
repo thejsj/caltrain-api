@@ -26,12 +26,18 @@ var stationSearchController = (req, res) =>  {
     })
     .then((query) =>  {
       if (params.latitude !== undefined && params.longitude !== undefined) {
-        if (!isLatitude(params.latitude)) throw new Error('Latitude parameter is not a valid latitude');
-        if (!isLongitude(params.longitude)) throw new Error('Longitude parameter is not a valid longitude');
+        if (!isLatitude(params.latitude)) {
+          throw new Error('Latitude parameter is not a valid latitude');
+        }
+        if (!isLongitude(params.longitude)) {
+          throw new Error('Longitude parameter is not a valid longitude');
+        }
         return query
           .merge((row) =>  {
             return { 'distance':
-              r.distance(row('location'), r.point(+params.longitude, +params.latitude))
+              r.distance(
+                row('location'), r.point(+params.longitude, +params.latitude)
+              )
             };
           })
           .orderBy((row) =>  {

@@ -57,6 +57,21 @@ describe('/station', () =>  {
   });
 
   describe('/', () =>  {
+
+    it('should return all stations', (done) =>  {
+      searchStation({})
+        .expect(200)
+        .then((res) =>  {
+          res.body.should.be.an.instanceOf(Array);
+          let keys = _.pluck(res.body, 'slug');
+          keys.indexOf('san-mateo').should.be.above(-1);
+          keys.indexOf('22nd-street').should.be.above(-1);
+          keys.indexOf('sunnyvale').should.be.above(-1);
+          done();
+        })
+        .catch(done);
+    });
+
     describe('Name Search', () =>  {
       it('should a return an array or stations when given a name', (done) =>  {
         searchStation({ 'name': 'mountain' })
