@@ -38,7 +38,7 @@ var getWeekday = (time) => {
 };
 
 var getSingleStationLocationIndexQuery = (stationSlug) => {
-  return r.db('caltrain_test').table('stations')
+  return r.table('stations')
     .getAll(stationSlug, {'index': 'slug'}).limit(1)(0)('location_index');
 };
 
