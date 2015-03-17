@@ -64,10 +64,10 @@
 
 [x] Deployment
     [x] Add fig files
-    [ ] Add Varnish
     [x] Add GZip
+    [ ] Add Varnish
     
-[ ] Improving README
-    [ ] Add example response
-    [ ] Add example queries in url format
-    [ ] Make it clear that you can search for stations
+[x] Improving README
+    [x] Add example response
+    [x] Add example queries in url format
+    [x] Make it clear that you can search for stations

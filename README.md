@@ -5,9 +5,7 @@
 
 Extremely simple API to get Caltrain schedule data.
 
-## API
-
-### Endpoints
+### API Endpoints
 
 There are two endpoints in this API: `/train` and `/station`,
 
@@ -19,7 +17,7 @@ Provide a train `id` to see the schedule for that train.
 curl http://caltrain-api.thejsj.com/v1/train/a7ae75c9-9905-56fd-8c70-279fd25d0373
 ```
 
-[See Response](/v1/train/d9000734-078e-490b-bbfa-c11fb2f48322)
+[See Response](/v1/train/a7ae75c9-9905-56fd-8c70-279fd25d0373)
 
 Provide a train number to see the schedule for that train.
 
