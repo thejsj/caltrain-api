@@ -14,9 +14,6 @@ var trainSearchController = (req, res) =>  {
   var params = res.locals.parameters;
   return q()
     .then(() =>  {
-      if (params.from === undefined && params.to === undefined) {
-        throw new Error('Not enough parameters specified');
-      }
       return r.table('trains');
     })
     .then((query) =>  {

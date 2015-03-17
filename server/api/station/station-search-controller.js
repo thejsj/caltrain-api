@@ -12,9 +12,6 @@ var stationSearchController = (req, res) =>  {
   var params = res.locals.parameters;
   return q()
     .then(() =>  {
-      if (params.name === undefined && (params.longitude === undefined && params.latitude === undefined)) {
-        throw new Error('Not enough parameters specified');
-      }
       return r.table('stations');
     })
     .then((query) =>  {
