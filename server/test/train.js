@@ -96,10 +96,24 @@ describe('/train', () =>  {
     var sundayTimeString = 'Sun Mar 08 2015 20:42:37 GMT-0800 (PST)';
 
     it('should return an array', (done) =>  {
-      searchTrains()
+      searchTrains({})
         .expect(200)
         .then((res) =>  {
           res.body.should.be.an.instanceOf(Array);
+          done();
+        })
+        .catch(done);
+    });
+
+    it('should return with all trains', (done) =>  {
+      searchTrains({})
+        .expect(200)
+        .then((res) =>  {
+          res.body.should.be.an.instanceOf(Array);
+          let keys = _.pluck(res.body, 'number');
+          keys.indexOf(227).should.be.above(-1);
+          keys.indexOf(155).should.be.above(-1);
+          keys.indexOf(196).should.be.above(-1);
           done();
         })
         .catch(done);

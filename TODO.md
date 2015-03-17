@@ -52,9 +52,9 @@
     [x] ETag http://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api#caching
     [x] Last Modified http://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api#caching
     [ ] Adding Google Analytics to API Request
-    [ ] Add way to query all stations. 
-        [ ] Don't throw an error when no `name` or `from`/`to` are passed
-    [ ] Add way to query all trains
+    [x] Add way to query all stations. 
+        [x] Don't throw an error when no `name` or `from`/`to` are passed
+    [x] Add way to query all trains
     [ ] Time Format - Specify time format in which to render times
     [x] Remove querying by ID (ID might change when importing data)
 
