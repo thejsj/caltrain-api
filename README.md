@@ -99,7 +99,7 @@ curl http://caltrain-api.thejsj.com/v1/station/mountain-view
 
 [See Response](/v1/station/mountain-view)
 
-[See All Available Station IDs, Slugs, and Names](/v1/station?name=&fields=id,slug,name)
+[See All Available Stations](/v1/station?fields=id,slug,name)
 
 #### /station
 

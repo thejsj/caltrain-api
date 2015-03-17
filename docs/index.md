@@ -5,9 +5,7 @@
 
 Extremely simple API to get Caltrain schedule data.
 
-## API
-
-### Endpoints
+### API Endpoints
 
 There are two endpoints in this API: `/train` and `/station`,
 
@@ -16,10 +14,10 @@ There are two endpoints in this API: `/train` and `/station`,
 Provide a train `id` to see the schedule for that train.
 
 ```
-curl http://caltrain-api.thejsj.com/v1/train/d9000734-078e-490b-bbfa-c11fb2f48322
+curl http://caltrain-api.thejsj.com/v1/train/a7ae75c9-9905-56fd-8c70-279fd25d0373
 ```
 
-[See Response](/v1/train/d9000734-078e-490b-bbfa-c11fb2f48322)
+[See Response](/v1/train/a7ae75c9-9905-56fd-8c70-279fd25d0373)
 
 Provide a train number to see the schedule for that train.
 
@@ -88,8 +86,10 @@ curl http://caltrain-api.thejsj.com/v1/train \
 Provide an `id` to get a particular station. Returns a JSON object.
 
 ```
-curl http://caltrain-api.thejsj.com/v1/station/d9000734-078e-490b-bbfa-c11fb2f48322
+curl http://caltrain-api.thejsj.com/v1/station/dfc2e118-6c85-3f22-b47e-569d62bc5953
 ```
+
+[See Reponse](/v1/station/dfc2e118-6c85-3f22-b47e-569d62bc5953)
 
 Provide a `slug` to get a particular station. Returns a JSON object.
 
@@ -97,7 +97,9 @@ Provide a `slug` to get a particular station. Returns a JSON object.
 curl http://caltrain-api.thejsj.com/v1/station/mountain-view
 ```
 
-[See All Available Station IDs, Slugs, and Names](/v1/station?name=&fields=id,slug,name)
+[See Response](/v1/station/mountain-view)
+
+[See All Available Stations](/v1/station?fields=id,slug,name)
 
 #### /station
 
