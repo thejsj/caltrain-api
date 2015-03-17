@@ -44,7 +44,7 @@ curl http://caltrain-api.thejsj.com/v1/train \
 - station slug <String>
 - station ID <Integer>
 
-[See All Available Stations]((http://caltrain-api.thejsj.com/v1/station?name=&fields=id,slug,name)
+[See All Available Stations](/v1/station?fields=id,slug,name)
 
 Provide a departure time and get the the closest departures. If `departure` is specified without `from`, the API will respond with a 400 error.
 
@@ -188,4 +188,4 @@ All requests include an `Etag` and `Last modified` header.
 
 ## Tech 
 
-Built on top of io.js and RethinkDB.
+Built on top of [io.js](https://iojs.org/en/index.html) and [RethinkDB](http://www.rethinkdb.com).
