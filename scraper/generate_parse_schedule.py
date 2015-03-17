@@ -2,6 +2,7 @@
 from slugify import slugify
 from time import sleep
 from pygeocoder import Geocoder
+import uuid
 import re
 
 class ScheduleParser():
@@ -111,6 +112,7 @@ class ScheduleParser():
         if slug not in ['shuttle-bus', 'departs-sj-diridon', 'arrives-sj-diridon', 'arrives-tamien', 'departs-tamien']:
           if slug not in station_times.keys():
             station_times[slug] = {
+              'id': str(uuid.uuid3(uuid.NAMESPACE_DNS, 's' + str(station_name))),
               'location_index': i,
               'name': station_name,
               'slug': slug,
@@ -140,6 +142,7 @@ class ScheduleParser():
             for train_number, time in _trains.iteritems():
               if train_number not in train_times.keys():
                 train_times[train_number] = {
+                  'id': str(uuid.uuid5(uuid.NAMESPACE_DNS, 't' + str(train_number))),
                   'number': int(train_number),
                   'direction': direction,
                   'type': self.get_type(train_number, day_type),
