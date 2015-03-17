@@ -148,9 +148,6 @@ curl http://caltrain-api.thejsj.com/v1/schedule \
 ### Requests
 
 Requests parameters can be sent in three types: 
-  1. Data tags 
-  1. JSON Serialized Object
-  1. GET Query Parameters
 
 1. Data Tags
 
