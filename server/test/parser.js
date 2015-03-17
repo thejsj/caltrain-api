@@ -4,7 +4,7 @@
 require('should');
 
 var request = require('supertest-as-promised');
-var app = require('../index.js');
+var app = require('../server.js');
 
 var agent = request.agent(app);
 

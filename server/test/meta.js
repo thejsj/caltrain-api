@@ -5,7 +5,7 @@ var should = require('should');
 var request = require('supertest-as-promised');
 var moment = require('moment');
 
-var app = require('../index.js');
+var app = require('../server.js');
 var agent = request.agent(app);
 
 var get381Train = (param, sendObject) =>  {

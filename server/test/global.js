@@ -5,7 +5,7 @@ require('should');
 var request = require('supertest-as-promised');
 var _ = require('lodash');
 
-var app = require('../index.js');
+var app = require('../server.js');
 var agent = request.agent(app);
 var getTimeFromMinutes = require('../utils').getTimeFromMinutes;
 
