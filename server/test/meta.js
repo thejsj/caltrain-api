@@ -4,6 +4,7 @@
 var should = require('should');
 var request = require('supertest-as-promised');
 var moment = require('moment');
+var _ = require('lodash');
 
 var app = require('../server.js');
 var agent = request.agent(app);
@@ -75,4 +76,56 @@ describe('Metadata', () =>  {
 
   });
 
+  describe('Time Formatas', () => {
+
+    it('should accept arbitrary time formats (`YYYY`)', (done) => {
+      var year = moment().format('YYYY');
+      get381Train(false, {'timeFormat': 'YYYY'})
+        .expect(200)
+        .then((res) => {
+          res.body.times.forEach((time) => {
+            time.should.equal(year);
+          });
+          _.each(res.body.stations, (time) => {
+            time.should.equal(year);
+          });
+          done();
+        });
+    });
+
+    it('should accept arbitrary time formats (`YYYY MM`)', () => {
+      var year_month = moment().format('YYYY MM');
+      searchTrains({ timeFormat: 'YYYY MM' })
+        .expect(200)
+        .then((res) => {
+          res.body.forEach((train) => {
+            train.times.forEach((time) => {
+              time.should.equal(year_month);
+            });
+            _.each(train.stations, (time) => {
+              time.should.equal(year_month);
+            });
+          });
+          done();
+        });
+    });
+
+  });
+
+
+  describe('Query Day', () => {
+
+    xit('should accept a query day and return all times in that query day', () => {
+
+    });
+
+    xit('should throw an error when the query day is different from `departure`', () => {
+
+    });
+
+    xit('should throw an error when the query day is different from `arrival`', () => {
+
+    });
+
+  });
 });

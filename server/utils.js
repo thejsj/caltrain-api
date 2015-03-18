@@ -81,12 +81,14 @@ var parseTimeInEntry = (queryDay, timeFormat, entry) => {
     if (Array.isArray(object[key])) {
       for (let i = 0; i < object[key].length; i += 1) {
         object[key][i] = queryDay.clone().minutes(object[key][i]);
+        if (timeFormat) object[key][i] = object[key][i].format(timeFormat);
       }
       return;
     }
     if (typeof _.values(object[key])[0] === 'number') {
       for (let i in object[key]) {
         object[key][i] = queryDay.clone().minutes(object[key][i]);
+        if (timeFormat) object[key][i] = object[key][i].format(timeFormat);
       }
       return;
     }
