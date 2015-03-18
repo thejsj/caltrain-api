@@ -177,16 +177,16 @@ describe('/station', () =>  {
       });
 
       it('should return a 400 error if bad longitude is given', (done) =>  {
-            return searchStation({
-              'longitude': '-120.18202',
-              'latitude': 'asdfasd'
-            })
-              .expect(400)
-              .then((res) =>  {
-                res.body.message.should.match(/latitude/);
-                done();
-              })
-              .catch(done);
+        return searchStation({
+          'longitude': '-120.18202',
+          'latitude': 'asdfasd'
+        })
+          .expect(400)
+          .then((res) =>  {
+            res.body.message.should.match(/latitude/);
+            done();
+          })
+          .catch(done);
       });
     });
   });

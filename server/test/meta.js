@@ -93,20 +93,26 @@ describe('Metadata', () =>  {
         });
     });
 
-    it('should accept arbitrary time formats (`YYYY MM`)', () => {
+    it('should accept arbitrary time formats (`YYYY MM`)', (done) => {
       var year_month = moment().format('YYYY MM');
       searchTrains({ timeFormat: 'YYYY MM' })
         .expect(200)
         .then((res) => {
           res.body.forEach((train) => {
-            train.times.forEach((time) => {
-              time.should.equal(year_month);
-            });
-            _.each(train.stations, (time) => {
-              time.should.equal(year_month);
-            });
+            if (Array.isArray(train.times)) {
+              train.times.forEach((time) => {
+                time.should.equal(year_month);
+              });
+              _.each(train.stations, (time) => {
+                time.should.equal(year_month);
+              });
+            }
           });
           done();
+        })
+        .catch((err) => {
+          console.log('err');
+          console.log(err);
         });
     });
 
@@ -115,12 +121,35 @@ describe('Metadata', () =>  {
 
   describe('Query Day', () => {
 
-    xit('should accept a query day and return all times in that query day', () => {
-
+    it('should accept a query day and return all times in that query day', (done) => {
+      var format = 'YYYY MM DD';
+      var time = moment().add(100, 'days');
+      var time_string = time.format(format);
+      get381Train(false, {'timeFormat': format, queryDay: time.toString() })
+        .expect(200)
+        .then((res) => {
+          res.body.times.forEach((time) => {
+            time.should.equal(time_string);
+          });
+          _.each(res.body.stations, (time) => {
+            time.should.equal(time_string);
+          });
+          done();
+        });
     });
 
-    xit('should throw an error when the query day is different from `departure`', () => {
-
+    it('should throw an error when the query day is different from `departure`', (done) => {
+      var queryDay = moment()
+      var departure = queryDay.clone().add(100, 'days');
+      console.log(queryDay.toString());
+      console.log(departure.toString());
+      get381Train(false, { departure: departure, queryDay: queryDay })
+        .expect(400)
+        .then((res) => {
+          res.body.message.should.match(/departure/);
+          res.body.message.should.match(/query/);
+          done();
+        });
     });
 
     xit('should throw an error when the query day is different from `arrival`', () => {

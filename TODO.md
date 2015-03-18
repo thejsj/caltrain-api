@@ -46,17 +46,19 @@
     [x] Fix times for certain responses (trains 139, 142)
     [x] Append times for today or departure arrival day (Add option)
         [x] Parse times into ISO 8601
-        [x] Add option for time format parsing 
+        [x] Add option for time format parsing
     [ ] Add Pagination http://dev.billysbilling.com/blog/How-to-make-your-API-better-than-the-REST
     [ ] Add Rate Limiting http://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api#rate-limiting
     [x] ETag http://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api#caching
     [x] Last Modified http://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api#caching
     [ ] Adding Google Analytics to API Request
-    [x] Add way to query all stations. 
+    [x] Add way to query all stations.
         [x] Don't throw an error when no `name` or `from`/`to` are passed
     [x] Add way to query all trains
     [ ] Time Format - Specify time format in which to render times
     [x] Remove querying by ID (ID might change when importing data)
+    [ ] Fix all trains having `times` and `stations`
+    [ ] Fix all stations having `times` and `trains`
 
 [ ] Tests
     [x] Add tests for timestamps
@@ -66,7 +68,7 @@
     [x] Add fig files
     [x] Add GZip
     [ ] Add Varnish
-    
+
 [x] Improving README
     [x] Add example response
     [x] Add example queries in url format
