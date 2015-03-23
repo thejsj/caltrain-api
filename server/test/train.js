@@ -136,7 +136,7 @@ describe('/train', () =>  {
 
       it('should only return trains that pass through the `from` station with a departure time', (done) =>  {
         searchTrains({'from': '22nd-street', 'departure': weekdayMorningTimeString})
-          .then((res) =>  {
+          .then((res) => {
             res.body.forEach((train) =>  {
               _.some(_.keys(train.stations), (stationName) =>  {
                 return stationName === '22nd-street';
@@ -192,7 +192,7 @@ describe('/train', () =>  {
       });
     });
 
-    describe('Departure', () =>  {
+    describe('Departure', () => {
       var departureTime = moment(new Date(weekdayEveningTimeString));
       it('should only get trains that depart after the arrival time on weekdays', (done) =>  {
         searchTrains({
@@ -200,10 +200,10 @@ describe('/train', () =>  {
           'to': 'mountain-view',
           'departure': weekdayEveningTimeString
         })
-          .then((res) =>  {
+          .then((res) => {
             res.body.length.should.be.above(0);
             res.body.forEach((train) =>  {
-              var time = moment(train.stations['22nd-street']);
+              var time = moment(new Date(train.stations['22nd-street']));
               departureTime.isBefore(time).should.equal(true);
             });
             done();

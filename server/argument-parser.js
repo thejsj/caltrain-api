@@ -86,7 +86,7 @@ var argumentParser = () => {
       return new Date(); // Default to today
     }());
     params = _.defaults(params, {
-      timeFormat: 'YYYY-MM-DDThh:mm:ssTZD',
+      timeFormat: moment.defaultFormat
     });
     params.queryDay = params.queryDay.set({ hour: 1, minute: 0, second: 0 });
     res.locals.parameters = params;

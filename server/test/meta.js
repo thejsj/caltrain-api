@@ -141,11 +141,11 @@ describe('Metadata', () =>  {
     it('should throw an error when the query day is different from `departure`', (done) => {
       var queryDay = moment()
       var departure = queryDay.clone().add(100, 'days');
-      console.log(queryDay.toString());
-      console.log(departure.toString());
       get381Train(false, { departure: departure, queryDay: queryDay })
-        .expect(400)
+        // .expect(400)
         .then((res) => {
+          console.log(JSON.parse(res.headers.parameters));
+          console.log(res.body);
           res.body.message.should.match(/departure/);
           res.body.message.should.match(/query/);
           done();
