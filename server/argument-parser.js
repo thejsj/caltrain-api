@@ -11,21 +11,6 @@ var camelCase = (input) => {
     });
 };
 
-// var checkArguments = (params, opts) => {
-//   if (typeof opts.property !== 'string') {
-//     throw new Error('checkArguments requires `property` String');
-//   }
-//   if (!Array.isArray(opts.args)) {
-//     throw new Error('checkArguments requires array `args`');
-//   }
-//   if (
-//     params[opts.property] !== undefined &&
-//     !_.contains(opts.args, params[opts.property])
-//   ) {
-//     throw new Error('Invalid argument supplied for ' + opts.property);
-//   }
-// };
-
 var bodyParamaterParser = (bodyObject) => {
   if (_.size(bodyObject) === 1 && _.values(bodyObject)[0] === '') {
     try {
@@ -80,6 +65,11 @@ var argumentParser = () => {
       }
       if (params.departure !== undefined) {
         return moment(new Date(params.departure)).set({
+          hour: 1, minute: 0, seconds: 0, milliseconds: 0
+        });
+      }
+      if (params.arrival !== undefined) {
+        return moment(new Date(params.arrival)).set({
           hour: 1, minute: 0, seconds: 0, milliseconds: 0
         });
       }

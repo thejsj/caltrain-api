@@ -50,18 +50,10 @@ var trainSearchController = (req, res) =>  {
         m += `Are you sure you didn\'t forget the milliseconds (JavaScript UNIX Timestamps)?`;
         throw new Error(m);
       }
-      if (arrivalTime && !arrivalTime.isSame(arrivalTime, 'day')) {
-        console.log(' ** Not the same arrival');
-        console.log(arrivalTime);
+      if (arrivalTime && !arrivalTime.isSame(params.queryDay, 'day')) {
         throw new Error('Incorrect Parameters: Arrival time and query day are not on the same date');
       }
-      if (departureTime) {
-        console.log('DEPARTURE TIME', departureTime.toISOString(), params.queryDay);
-      } else {
-        console.log('NO DEPARTURE TIME', params);
-      }
       if (departureTime && !departureTime.isSame(params.queryDay, 'day')) {
-        console.log(' ** Not the same departure');
         throw new Error('Incorrect Parameters: Departure time and query day are not on the same date');
       }
       if (params.from !== undefined) {

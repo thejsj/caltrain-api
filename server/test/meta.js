@@ -110,14 +110,10 @@ describe('Metadata', () =>  {
           });
           done();
         })
-        .catch((err) => {
-          console.log('err');
-          console.log(err);
-        });
+        .catch(done);
     });
 
   });
-
 
   describe('Query Day', () => {
 
@@ -141,19 +137,25 @@ describe('Metadata', () =>  {
     it('should throw an error when the query day is different from `departure`', (done) => {
       var queryDay = moment()
       var departure = queryDay.clone().add(100, 'days');
-      get381Train(false, { departure: departure, queryDay: queryDay })
-        // .expect(400)
+      searchTrains({ from: '22nd-street', departure: departure, queryDay: queryDay })
+        .expect(400)
         .then((res) => {
-          console.log(JSON.parse(res.headers.parameters));
-          console.log(res.body);
-          res.body.message.should.match(/departure/);
+          res.body.message.should.match(/Departure/);
           res.body.message.should.match(/query/);
           done();
         });
     });
 
-    xit('should throw an error when the query day is different from `arrival`', () => {
-
+    it('should throw an error when the query day is different from `arrival`', (done) => {
+      var queryDay = moment()
+      var arrival = queryDay.clone().add(100, 'days');
+      searchTrains({ to: '22nd-street', arrival: arrival, queryDay: queryDay })
+        .expect(400)
+        .then((res) => {
+          res.body.message.should.match(/Arrival/);
+          res.body.message.should.match(/query/);
+          done();
+        });
     });
 
   });

@@ -87,6 +87,14 @@ describe('/train', () =>  {
         })
         .catch(done);
     });
+
+    it('should return an error if the train doesn\'t exist', (done) => {
+      get381Train('999')
+        .expect(400)
+        .then((res) => {
+          done();
+        });
+    });
   });
 
   describe('/', () =>  {

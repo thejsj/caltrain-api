@@ -57,12 +57,13 @@
     [x] Add way to query all trains
     [ ] Time Format - Specify time format in which to render times
     [x] Remove querying by ID (ID might change when importing data)
-    [ ] Fix all trains having `times` and `stations`
-    [ ] Fix all stations having `times` and `trains`
+    [ ] Add better tests for trains/stations that don't exist
 
 [ ] Tests
     [x] Add tests for timestamps
     [ ] Add tests for trains past midnight
+    [ ] Add tests for all trains having `times` and `stations`
+    [ ] Add tests for all stations having `times` and `trains`
 
 [x] Deployment
     [x] Add fig files
