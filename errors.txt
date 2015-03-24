@@ -1,0 +1,11 @@
+ParameterValueError
+  UnixTimestampFormattingError
+  FieldsParameterValueError
+  DepartureQueryDayParameterValueError
+  ArrivalQueryDayParameterValueError
+  LatitudeParameterValueError
+  LongitudeParameterValueError
+NotEnoughParametersError
+  ArrivalToNotEnoughParametersError
+  DeparturFromNotEnoughParametersError
+QueryError

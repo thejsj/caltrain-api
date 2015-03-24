@@ -170,6 +170,7 @@ describe('/station', () =>  {
         })
           .expect(400)
           .then((res) =>  {
+            console.log(res.body);
             res.body.message.should.match(/longitude/);
             done();
           })
@@ -182,7 +183,8 @@ describe('/station', () =>  {
           'latitude': 'asdfasd'
         })
           .expect(400)
-          .then((res) =>  {
+          .then((res) => {
+            console.log(res.body);
             res.body.message.should.match(/latitude/);
             done();
           })

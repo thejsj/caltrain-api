@@ -61,7 +61,8 @@ var errorHandler = (res, err) =>  {
   res.set('Parameters', JSON.stringify(res.locals.parameters));
   res.status(400);
   res.json({
-    message: err.toString()
+    error: err.name,
+    message: err.message
   });
 };
 

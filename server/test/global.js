@@ -38,6 +38,7 @@ describe('Global', () =>  {
       get381Train('381', {'fields': 'numasdfadber,directiasdfasdon'})
         .expect(400)
         .then((res) =>  {
+          console.log(res.body);
           res.body.message.match(/fields/);
           done();
         });

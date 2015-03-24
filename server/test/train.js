@@ -92,6 +92,7 @@ describe('/train', () =>  {
       get381Train('999')
         .expect(400)
         .then((res) => {
+          console.log(res.body);
           done();
         });
     });
@@ -262,6 +263,7 @@ describe('/train', () =>  {
         })
           .expect(400)
           .then((res) => {
+            console.log(res.body);
             res.body.message.should.match(/departure/);
             res.body.message.should.match(/from/);
             done();
@@ -331,7 +333,8 @@ describe('/train', () =>  {
             'arrival': weekdayEveningTimeString
           })
             .expect(400)
-            .then((res) =>  {
+            .then((res) => {
+              console.log(res.body);
               res.body.message.should.match(/arrival/);
               res.body.message.should.match(/to/);
               done();
@@ -401,7 +404,8 @@ describe('/train', () =>  {
           'arrival': +(arrivalTestTime) / 1000
         })
           .expect(400)
-          .then((res) =>  {
+          .then((res) => {
+            console.log(res.body);
             res.body.message.should.match(/UNIX/);
             res.body.message.should.match(/2000/);
             done();
