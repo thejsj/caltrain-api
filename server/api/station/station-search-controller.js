@@ -7,6 +7,7 @@ var isLatitude = require('../../utils').isLatitude;
 
 var r = require('../../db');
 var respond = require('../response-handler').responseHandler;
+var errors = require('../errors');
 
 var stationSearchController = (req, res) =>  {
   var params = res.locals.parameters;
@@ -27,10 +28,10 @@ var stationSearchController = (req, res) =>  {
     .then((query) =>  {
       if (params.latitude !== undefined && params.longitude !== undefined) {
         if (!isLatitude(params.latitude)) {
-          throw new Error('Latitude parameter is not a valid latitude');
+          throw new errors.LatitudeParameterValueError();
         }
         if (!isLongitude(params.longitude)) {
-          throw new Error('Longitude parameter is not a valid longitude');
+          throw new errors.LongitudeParameterValueError();
         }
         return query
           .merge((row) =>  {

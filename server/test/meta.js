@@ -140,7 +140,6 @@ describe('Metadata', () =>  {
       searchTrains({ from: '22nd-street', departure: departure, queryDay: queryDay })
         .expect(400)
         .then((res) => {
-          console.log(res.body);
           res.body.message.should.match(/Departure/);
           res.body.message.should.match(/query/);
           done();
@@ -153,7 +152,6 @@ describe('Metadata', () =>  {
       searchTrains({ to: '22nd-street', arrival: arrival, queryDay: queryDay })
         .expect(400)
         .then((res) => {
-          console.log(res.body);
           res.body.message.should.match(/Arrival/);
           res.body.message.should.match(/query/);
           done();

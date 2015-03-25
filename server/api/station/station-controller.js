@@ -5,6 +5,7 @@ var q = require('q');
 
 var r = require('../../db');
 var respond = require('../response-handler').responseHandler;
+var errors = require('../errors');
 
 var stationController = (req, res) =>  {
   _.extend(res.locals.parameters, req.params);
@@ -12,7 +13,7 @@ var stationController = (req, res) =>  {
   return q()
     .then(() =>  {
       if (params.id === undefined && params.slug === undefined) {
-        throw new Error('Not enough parameters specified');
+        throw new errors.NotEnoughParametersError();
       }
       return r.table('stations');
     })

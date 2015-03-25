@@ -38,31 +38,10 @@ describe('Global', () =>  {
       get381Train('381', {'fields': 'numasdfadber,directiasdfasdon'})
         .expect(400)
         .then((res) =>  {
-          console.log(res.body);
           res.body.message.match(/fields/);
           done();
         });
     });
-  });
-
-  xdescribe('Time Format', () =>  {
-
-    it('should return the time in minutes if `timeFormat` is passed as `minutes`', (done) =>  {
-      var now = new Date(Date.now());
-      get381Train('381', {'timeFormat': 'minutes', 'departure': now.toJSON() })
-        .expect(200)
-        .then((res) =>  {
-          _.each(res.body.stations, (day) =>  {
-            _.each(day, (train) =>  {
-              train.should.be.instanceOf(Number);
-              var time = getTimeFromMinutes(train);
-              time.should.match(/[0-9]{1,2}:[0-9]{2}/);
-            });
-          });
-          done();
-        });
-    });
-
   });
 
 });

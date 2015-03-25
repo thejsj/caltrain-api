@@ -9,6 +9,7 @@ var arrayToObject = require('../../utils').arrayToObject;
 var getWeekday = require('../../utils').getWeekday;
 var getSingleStationLocationIndexQuery = require('../../utils').getSingleStationLocationIndexQuery;
 var isDigits = new RegExp(/^([\d]*)$/);
+var errors = require('../errors');
 
 var trainSearchController = (req, res) =>  {
   var params = res.locals.parameters;
@@ -34,27 +35,23 @@ var trainSearchController = (req, res) =>  {
     .spread((query, departureTime, arrivalTime) =>  {
       if (arrivalTime && departureTime) {
         if (arrivalTime.isBefore(departureTime)) {
-          throw new Error('Incorrect Parameters: Arrival time occurs before departure time');
+          throw new errors.DepartureArrivalParameterValueError();
         }
         if (!arrivalTime.isSame(departureTime, 'day')) {
-          throw new Error('Incorrect Parameters: Arrival time and departure time are not on the same date');
+          throw new errors.DepartureArrivalParameterValueError();
         }
       }
       if (arrivalTime && arrivalTime.isBefore('2000-01-01') && typeof params.arrival === 'number') {
-        let m = `UNIX Timestamp provided for arrival is before 2000. `;
-        m += `Are you sure you didn\'t forget the milliseconds (JavaScript UNIX Timestamps)?`;
-        throw new Error(m);
+        throw new errors.UnixTimestampFormattingError();
       }
       if (departureTime && departureTime.isBefore('2000-01-01') && typeof params.departure === 'number') {
-        let m = `UNIX Timestamp provided for departure is before 2000. `;
-        m += `Are you sure you didn\'t forget the milliseconds (JavaScript UNIX Timestamps)?`;
-        throw new Error(m);
+        throw new errors.UnixTimestampFormattingError();
       }
       if (arrivalTime && !arrivalTime.isSame(params.queryDay, 'day')) {
-        throw new Error('Incorrect Parameters: Arrival time and query day are not on the same date');
+        throw new errors.ArrivalQueryDayParameterValueError();
       }
       if (departureTime && !departureTime.isSame(params.queryDay, 'day')) {
-        throw new Error('Incorrect Parameters: Departure time and query day are not on the same date');
+        throw new errors.DepartureQueryDayParameterValueError();
       }
       if (params.from !== undefined) {
         query = query.hasFields(arrayToObject('stations', getWeekday(departureTime), params.from, true));
@@ -78,7 +75,7 @@ var trainSearchController = (req, res) =>  {
       // Query by arrivalTime and departureTime
       if (departureTime) {
         if (params.from === undefined) {
-          throw new Error('Not enough parameters supplied. `departure` specified without a `from` station.');
+          throw new errors.DepartureFromNotEnoughParametersError();
         }
         var departureTimeInMinutes = (+departureTime.format('H')) * 60 + (+departureTime.format('m'));
         query = query
@@ -87,7 +84,7 @@ var trainSearchController = (req, res) =>  {
       }
       if (arrivalTime) {
         if (params.to === undefined) {
-          throw new Error('Not enough parameters supplied. `arrival` specified without a `to` station.');
+          throw new errors.ArrivalToNotEnoughParametersError();
         }
         var arrivalTimeInMinutes = (+arrivalTime.format('H')) * 60 + (+arrivalTime.format('m'));
         query = query
@@ -106,7 +103,7 @@ var trainSearchController = (req, res) =>  {
           query = query
             .filter(r.row('type').eq(params.type[0]).or(r.row('type').eq(params.type[1])));
         }
-        if (params.type.length > 2) throw new Error('Only two types allowed for type filter');
+        if (params.type.length > 2) throw new errors.TrainTypeFilterParameterError();
       }
       return [query, departureTime, arrivalTime];
     })

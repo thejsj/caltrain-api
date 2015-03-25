@@ -8,6 +8,7 @@ var ua = require('universal-analytics');
 var r = require('../db');
 var splitAndTrim = require('../utils').splitAndTrim;
 var parseTimeInEntry = require('../utils').parseTimeInEntry;
+var errors = require('./errors');
 
 var fieldsHandler = (res, query) =>  {
   var params = res.locals.parameters;
@@ -23,10 +24,7 @@ var successHandler = (res, jsonResponseObject) =>  {
     // Array of Objects
     let keys = _.keys(jsonResponseObject[0]);
     if(jsonResponseObject.length > 0 && keys.length === 0) {
-      throw new Error(
-        'No fields returned for queried objects. '+
-        'Check your `fields` parameter in query'
-      );
+      throw new errors.FieldsParameterValueError();
     }
     jsonResponseObject.forEach(parseTimeInEntry.bind(
       null,
@@ -37,10 +35,7 @@ var successHandler = (res, jsonResponseObject) =>  {
     // Objects
     let keys = _.keys(jsonResponseObject);
     if (!Array.isArray(jsonResponseObject) && keys.length === 0) {
-      throw new Error(
-        'No fields returned for queried objects. ' +
-        'Check your `fields` parameter in query'
-      );
+      throw new errors.FieldsParameterValueError();
     }
     parseTimeInEntry(params.queryDay, params.timeFormat, jsonResponseObject);
   }
@@ -70,6 +65,10 @@ var runHandler = (query) =>  {
   return query.run(r.conn);
 };
 
+var queryErrorHandler = (err) => {
+  throw new errors.QueryError();
+};
+
 var cursorHandler = (cursorOrArray) =>  {
   if (typeof cursorOrArray.each === 'function') {
     return cursorOrArray.toArray();
@@ -79,7 +78,7 @@ var cursorHandler = (cursorOrArray) =>  {
 
 var analytisHandler = (res) => {
   if (config.get('googleAnalyticsUACode')) {
-    var visitor = ua('UA-XXXX-XX');
+    var visitor = ua(config.get('googleAnalyticsUACode'));
     visitor.pageview(res.req.originalUrl).send();
   }
 };
@@ -89,6 +88,7 @@ var responseHandler = (res, query) =>  {
   return q()
     .then(fieldsHandler.bind(null, res, query))
     .then(runHandler)
+    .catch(queryErrorHandler)
     .then(cursorHandler)
     .then(successHandler.bind(null, res))
     .catch(errorHandler.bind(null, res))

@@ -5,6 +5,7 @@ var _ = require('lodash');
 
 var r = require('../../db');
 var respond = require('../response-handler').responseHandler;
+var errors = require('../errors');
 
 var trainController = (req, res) =>  {
   _.extend(res.locals.parameters, req.params);
@@ -12,7 +13,7 @@ var trainController = (req, res) =>  {
   return q()
     .then(() =>  {
       if (params.number === undefined && params.id === undefined) {
-        throw new Error('Not enough parameters specified');
+        throw new errors.NotEnoughParametersError();
       }
       return r.table('trains');
     })
