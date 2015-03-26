@@ -17,7 +17,10 @@ r.promise.then((r) => {
     })
     .then((initialSinceId) => {
       var trainNotice = new RegExp(/late|holding|departing/);
-      var sinceId = initialSinceId.id;
+      var sinceId;
+      if (typeof initialSinceId === 'object' && initialSinceId.id !== undefined) {
+        sinceId = initialSinceId.id;
+      }
       var getTweets = () => {
         T.get('statuses/user_timeline', {
           screen_name: 'caltrain_news',
