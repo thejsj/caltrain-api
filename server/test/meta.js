@@ -1,5 +1,5 @@
 /*global describe:true, it:true */
-/*jshint node:true */
+/*jshint node:true, esnext: true */
 'use strict';
 var should = require('should');
 var request = require('supertest-as-promised');
@@ -135,7 +135,7 @@ describe('Metadata', () =>  {
     });
 
     it('should throw an error when the query day is different from `departure`', (done) => {
-      var queryDay = moment()
+      var queryDay = moment();
       var departure = queryDay.clone().add(100, 'days');
       searchTrains({ from: '22nd-street', departure: departure, queryDay: queryDay })
         .expect(400)
@@ -147,7 +147,7 @@ describe('Metadata', () =>  {
     });
 
     it('should throw an error when the query day is different from `arrival`', (done) => {
-      var queryDay = moment()
+      var queryDay = moment();
       var arrival = queryDay.clone().add(100, 'days');
       searchTrains({ to: '22nd-street', arrival: arrival, queryDay: queryDay })
         .expect(400)
