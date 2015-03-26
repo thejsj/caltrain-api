@@ -1,4 +1,3 @@
-/*jshint node:true */
 'use strict';
 var q = require('q');
 var moment = require('moment');
@@ -11,19 +10,19 @@ var getSingleStationLocationIndexQuery = require('../../utils').getSingleStation
 var isDigits = new RegExp(/^([\d]*)$/);
 var errors = require('../errors');
 
-var trainSearchController = (req, res) =>  {
+var trainSearchController = (req, res) => {
   var params = res.locals.parameters;
   return q()
-    .then(() =>  {
+    .then(() => {
       return r.table('trains');
     })
-    .then((query) =>  {
+    .then((query) => {
       if (params.arrival !== undefined) {
         return [query, moment(new Date(params.arrival))];
       }
       return [query, false];
     })
-    .spread((query, arrivalTime) =>  {
+    .spread((query, arrivalTime) => {
       if (params.departure !== undefined) {
         if (isDigits.test(params.departure)) {
           params.departure = +params.departure;
@@ -32,7 +31,7 @@ var trainSearchController = (req, res) =>  {
       }
       return [query, false, arrivalTime];
     })
-    .spread((query, departureTime, arrivalTime) =>  {
+    .spread((query, departureTime, arrivalTime) => {
       if (arrivalTime && departureTime) {
         if (arrivalTime.isBefore(departureTime)) {
           throw new errors.DepartureArrivalParameterValueError();
@@ -64,14 +63,14 @@ var trainSearchController = (req, res) =>  {
         return getSingleStationLocationIndexQuery(params.to)
           .gt(getSingleStationLocationIndexQuery(params.from))
           .run(r.conn)
-          .then((isNorth) =>  {
+          .then((isNorth) => {
             query = query.filter({'direction': (isNorth ? 'north' : 'south')});
             return [query, departureTime, arrivalTime];
           });
       }
       return [query, departureTime, arrivalTime];
     })
-    .spread((query, departureTime, arrivalTime) =>  {
+    .spread((query, departureTime, arrivalTime) => {
       // Query by arrivalTime and departureTime
       if (departureTime) {
         if (params.from === undefined) {
@@ -93,7 +92,7 @@ var trainSearchController = (req, res) =>  {
       }
       return [query, departureTime, arrivalTime];
     })
-    .spread((query, departureTime, arrivalTime) =>  {
+    .spread((query, departureTime, arrivalTime) => {
       if (params.type !== undefined) {
         if (params.type.length === 1) {
           query = query

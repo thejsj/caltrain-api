@@ -55,9 +55,13 @@
     [x] Add way to query all stations.
         [x] Don't throw an error when no `name` or `from`/`to` are passed
     [x] Add way to query all trains
-    [ ] Time Format - Specify time format in which to render times
+    [x] Time Format - Specify time format in which to render times
     [x] Remove querying by ID (ID might change when importing data)
     [ ] Add better tests for trains/stations that don't exist
+
+[ ] Delays
+  [ ] Connect to Twitter API
+  [ ]
 
 [ ] Tests
     [x] Add tests for timestamps

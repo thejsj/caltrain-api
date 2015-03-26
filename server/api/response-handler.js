@@ -1,4 +1,3 @@
-/*jshint node:true */
 'use strict';
 var config = require('config');
 var q = require('q');
@@ -10,7 +9,7 @@ var splitAndTrim = require('../utils').splitAndTrim;
 var parseTimeInEntry = require('../utils').parseTimeInEntry;
 var errors = require('./errors');
 
-var fieldsHandler = (res, query) =>  {
+var fieldsHandler = (res, query) => {
   var params = res.locals.parameters;
   if (params.fields !== undefined) {
     return query.pluck.apply(query, splitAndTrim(params.fields));
@@ -18,7 +17,7 @@ var fieldsHandler = (res, query) =>  {
   return query;
 };
 
-var successHandler = (res, jsonResponseObject) =>  {
+var successHandler = (res, jsonResponseObject) => {
   var params = res.locals.parameters;
   if (Array.isArray(jsonResponseObject)) {
     // Array of Objects
@@ -40,19 +39,19 @@ var successHandler = (res, jsonResponseObject) =>  {
     parseTimeInEntry(params.queryDay, params.timeFormat, jsonResponseObject);
   }
   return q()
-    .then(() =>  {
+    .then(() => {
       return r.table('meta')('last_modified')
         .max().toISO8601()
         .run(r.conn);
     })
-    .then((last_modified) =>  {
+    .then((last_modified) => {
       res.set('Last-Modified', last_modified);
       res.set('Parameters', JSON.stringify(res.locals.parameters));
       return res.json(jsonResponseObject);
     });
 };
 
-var errorHandler = (res, err) =>  {
+var errorHandler = (res, err) => {
   res.set('Parameters', JSON.stringify(res.locals.parameters));
   res.status(400);
   res.json({
@@ -61,7 +60,7 @@ var errorHandler = (res, err) =>  {
   });
 };
 
-var runHandler = (query) =>  {
+var runHandler = (query) => {
   return query.run(r.conn);
 };
 
@@ -69,7 +68,7 @@ var queryErrorHandler = (err) => {
   throw new errors.QueryError();
 };
 
-var cursorHandler = (cursorOrArray) =>  {
+var cursorHandler = (cursorOrArray) => {
   if (typeof cursorOrArray.each === 'function') {
     return cursorOrArray.toArray();
   }
@@ -83,7 +82,7 @@ var analytisHandler = (res) => {
   }
 };
 
-var responseHandler = (res, query) =>  {
+var responseHandler = (res, query) => {
   if (query instanceof Error) return errorHandler(res, query);
   return q()
     .then(fieldsHandler.bind(null, res, query))

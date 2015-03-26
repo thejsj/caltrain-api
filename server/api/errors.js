@@ -1,4 +1,3 @@
-
 /**
  * Parameter Value Error
  *
@@ -18,8 +17,8 @@ var _name = extendError('name');
 var _message = extendError('message');
 
 var ParameterValueError = function () {
-  this.name = e(Error, 'name', 'Parameter Valuer Error');
-  this.message = e(Error, 'message', 'The supplied parameters are incorrect');
+  this.name = 'Parameter Valuer Error';
+  this.message = 'The supplied parameters are incorrect';
 };
 ParameterValueError.prototype = Object.create(Error.prototype);
 ParameterValueError.constructor = ParameterValueError;

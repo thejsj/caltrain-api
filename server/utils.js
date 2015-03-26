@@ -1,4 +1,3 @@
-/*jshint node:true */
 'use strict';
 var moment = require('moment');
 var _ = require('lodash');

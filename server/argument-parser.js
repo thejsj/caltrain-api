@@ -1,4 +1,3 @@
-/*jshint node:true */
 'use strict';
 var _ = require('lodash');
 var moment = require('moment');
@@ -40,7 +39,7 @@ var argumentParser = () => {
    *    arrival <String>/<Number>
    *    type <Array>
    */
-  return (req, res, next) =>  {
+  return (req, res, next) => {
     var params = _.extend(
       {},
       req.query,
