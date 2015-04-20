@@ -11,7 +11,6 @@ before_script:
   - npm install -g babel
   - npm install
   - rethinkdb --bind all --daemon
-  - echo rethinkdb -v
   - python ./scraper -i -g -c -db caltrain_test
 node_js:
   - 'iojs-v1.4.2'
