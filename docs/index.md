@@ -1,7 +1,7 @@
 
 # CalTrain API
 
-[![Build Status](https://travis-ci.org/thejsj/caltrain-api.svg)](https://travis-ci.org/code-friends/CodeFriends) [![Dependency Status](https://david-dm.org/thejsj/caltrain-api.svg)](https://david-dm.org/code-friends/CodeFriends) [![devDependency Status](https://david-dm.org/thejsj/caltrain-api/dev-status.svg)](https://david-dm.org/code-friends/CodeFriends#info=devDependencies)
+[![Build Status](https://travis-ci.org/thejsj/caltrain-api.svg)](https://travis-ci.org/thejsj/caltrain-api) [![Dependency Status](https://david-dm.org/thejsj/caltrain-api.svg)](https://david-dm.org/thejsj/caltrain-api) [![devDependency Status](https://david-dm.org/thejsj/caltrain-api/dev-status.svg)](https://david-dm.org/thejsj/caltrain-api#info=devDependencies)
 
 Extremely simple API to get Caltrain schedule data.
 
@@ -148,9 +148,6 @@ curl http://caltrain-api.thejsj.com/v1/schedule \
 ### Requests
 
 Requests parameters can be sent in three types: 
-  1. Data tags 
-  1. JSON Serialized Object
-  1. GET Query Parameters
 
 1. Data Tags
 
