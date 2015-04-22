@@ -12,4 +12,4 @@ ls -R node_modules/babel/node_modules/babel-core/node_modules/core-js/
 
 cd /app
 npm run docs
-nodemon --exec npm run babel-node -- server/index.js
+nodemon --exec npm run babel-node -- server/server.js
