@@ -4,7 +4,7 @@
   "description": "A simple API for Caltrain",
   "main": "server/index.js",
   "scripts": {
-    "babel-node": "babel-node --experimental",
+    "babel-node": "babel-node --stage 0 --ignore='foo|bar|baz'",
     "test": "export NODE_ENV='test'; ./node_modules/mocha/bin/mocha --compilers js:babel/register server/test/index.js",
     "dev": "./node_modules/nodemon/bin/nodemon.js --exec npm run babel-node -- server/index.js",
     "activate": "source venv/bin/activate",
