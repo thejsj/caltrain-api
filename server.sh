@@ -7,9 +7,5 @@ npm install -g babel nodemon
 npm install
 
 cd /app
-ls node_modules
-ls -R node_modules/babel/node_modules/babel-core/node_modules/core-js/
-
-cd /app
 npm run docs
-nodemon --exec npm run babel-node -- server/server.js
+npm run dev
