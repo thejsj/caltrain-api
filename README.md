@@ -17,7 +17,7 @@ Provide a train `id` to see the schedule for that train.
 curl http://caltrain-api.thejsj.com/v1/train/a7ae75c9-9905-56fd-8c70-279fd25d0373
 ```
 
-[See Response](/v1/train/a7ae75c9-9905-56fd-8c70-279fd25d0373)
+[See Response](http://caltrain-api.thejsj.com/v1/train/a7ae75c9-9905-56fd-8c70-279fd25d0373)
 
 Provide a train number to see the schedule for that train.
 
@@ -25,7 +25,7 @@ Provide a train number to see the schedule for that train.
 curl http://caltrain-api.thejsj.com/v1/train/103
 ```
 
-[See Response](/v1/train/103)
+[See Response](http://caltrain-api.thejsj.com/v1/train/103)
 
 #### /train
 
@@ -37,14 +37,14 @@ curl http://caltrain-api.thejsj.com/v1/train \
     -d to='mountain-view'   // station slug
 ```
 
-[See Response](/v1/train?from=22nd-street&to=mountain-view)
+[See Response](http://caltrain-api.thejsj.com/v1/train?from=22nd-street&to=mountain-view)
 
 `Station`s (`from` and `to`) can be queried in two ways:
 
 - station slug <String>
 - station ID <Integer>
 
-[See All Available Stations](/v1/station?fields=id,slug,name)
+[See All Available Stations](http://caltrain-api.thejsj.com/v1/station?fields=id,slug,name)
 
 Provide a departure time and get the the closest departures. If `departure` is specified without `from`, the API will respond with a 400 error.
 
@@ -55,7 +55,7 @@ curl http://caltrain-api.thejsj.com/v1/train \
   -d departure=1424570262000 // Time
 ```
 
-[See Response](/v1/train?from=22nd-street&to=mountain-view&departure=1424570262000)
+[See Response](http://caltrain-api.thejsj.com/v1/train?from=22nd-street&to=mountain-view&departure=1424570262000)
 
 `Time`s (`departure` and `arrival`) are parsed using JavaScripte `new Date`. Because of this, many types of `Time` inputs can be used. UNIX timestamps require milliseconds to work correctly.
 
@@ -68,7 +68,7 @@ curl http://caltrain-api.thejsj.com/v1/train \
   -d arrival=1424570262000 // UNIX timestamp <Number>
 ```
 
-[See Response](/v1/train?from=22nd-street&to=mountain-view&departure=1424570262000)
+[See Response](http://caltrain-api.thejsj.com/v1/train?from=22nd-street&to=mountain-view&departure=1424570262000)
 
 Provide an type in order to filter results by local, limited or express trains.
 
@@ -79,7 +79,7 @@ curl http://caltrain-api.thejsj.com/v1/train \
   -d type=limited,express // 'local', 'limited', 'express'
 ```
 
-[See Response](/v1/train?from=22nd-street&to=mountain-view&type=limited,express)
+[See Response](http://caltrain-api.thejsj.com/v1/train?from=22nd-street&to=mountain-view&type=limited,express)
 
 #### /station/(`ID or slug`)
 
@@ -89,7 +89,7 @@ Provide an `id` to get a particular station. Returns a JSON object.
 curl http://caltrain-api.thejsj.com/v1/station/dfc2e118-6c85-3f22-b47e-569d62bc5953
 ```
 
-[See Reponse](/v1/station/dfc2e118-6c85-3f22-b47e-569d62bc5953)
+[See Reponse](http://caltrain-api.thejsj.com/v1/station/dfc2e118-6c85-3f22-b47e-569d62bc5953)
 
 Provide a `slug` to get a particular station. Returns a JSON object.
 
@@ -97,9 +97,9 @@ Provide a `slug` to get a particular station. Returns a JSON object.
 curl http://caltrain-api.thejsj.com/v1/station/mountain-view
 ```
 
-[See Response](/v1/station/mountain-view)
+[See Response](http://caltrain-api.thejsj.com/v1/station/mountain-view)
 
-[See All Available Stations](/v1/station?fields=id,slug,name)
+[See All Available Stations](http://caltrain-api.thejsj.com/v1/station?fields=id,slug,name)
 
 #### /station
 
@@ -110,7 +110,7 @@ curl http://caltrain-api.thejsj.com/v1/station \
   -d name='san'
 ```
 
-[See Resposne](/v1/station?name=san)
+[See Resposne](http://caltrain-api.thejsj.com/v1/station?name=san)
 
 Provide a `longitude` and `latitude` to get an array of stations ordered by distance to that geolocation. This can be combined with `name` for more accurate queries.
 
@@ -120,7 +120,7 @@ curl http://caltrain-api.thejsj.com/v1/station \
   -d longitude='-122.0656136'
 ```
 
-[See Resposne](/v1/station?latitude=37.3876416&longitude=-122.0656136)
+[See Resposne](http://caltrain-api.thejsj.com/v1/station?latitude=37.3876416&longitude=-122.0656136)
 
 ### Filters and Options
  
@@ -132,7 +132,7 @@ curl http://caltrain-api.thejsj.com/v1/station \
   -d fields='id,name,coordinates,trains'
 ```
 
-[See Resposne](/v1/station?name=san&fields='id,name,coordinates,trains')
+[See Resposne](http://caltrain-api.thejsj.com/v1/station?name=san&fields='id,name,coordinates,trains')
 
 ### Time Formats
 
