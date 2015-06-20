@@ -6,7 +6,7 @@ class CaltrainFileImport():
 
   def __init__(self, db='caltrain'):
     # Import Into Database
-    host = os.getenv('RETHINKDB_PORT_8080_TCP_ADDR', 'localhost')
+    host = os.getenv('RETHINKDB_HOST', 'localhost')
     port = os.getenv('RETHINKDB_PORT_28015_TCP_PORT', 28015)
     self.conn = r.connect(host=host, port=port, auth_key="", timeout=20)
     if db not in r.db_list().run(self.conn):

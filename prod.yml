@@ -1,17 +1,10 @@
-rethinkdb:
-  image: rethinkdb:2.0
-  ports:
-   - "10101:8080"
-   - "10102:28015"
-   - "10103:29015"
 server:
   image: unlucio/iojs
   ports:
    - "10100:8080"
-  links:
-   - "rethinkdb"
   environment:
     NODE_ENV: production
+    RETHINKDB_HOST: rethinkdb.thejsj.com
     PORT: 8080
   volumes:
     - ./:/app
