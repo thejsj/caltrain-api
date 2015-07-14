@@ -109,7 +109,8 @@ class ScheduleParser():
         # Remove empty times
         station_name = cells[first_index - 1].replace(u'\xa0', u' ')
         slug = slugify(station_name)
-        if slug not in ['shuttle-bus', 'departs-sj-diridon', 'arrives-sj-diridon', 'arrives-tamien', 'departs-tamien']:
+        # Add san-jose to exceptions because there's san-jose-diridon
+        if slug not in ['shuttle-bus', 'departs-sj-diridon', 'arrives-sj-diridon', 'arrives-tamien', 'departs-tamien', 'san-jose']:
           if slug not in station_times.keys():
             station_times[slug] = {
               'id': str(uuid.uuid3(uuid.NAMESPACE_DNS, 's' + str(station_name))),

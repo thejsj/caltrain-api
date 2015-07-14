@@ -20,6 +20,7 @@ var searchTrains = (sendObject) => {
 
 var arrivalTimeTest = (done, timeString, res) => {
   var arrivalTime = moment(new Date(timeString));
+  if (res.body.length === undefined) console.log('res.body', res.body, new Date());
   res.body.length.should.be.above(0);
   res.body.forEach((train) => {
     train.stations.should.not.equal(undefined);
