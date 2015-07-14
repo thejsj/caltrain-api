@@ -43,11 +43,11 @@ var FieldsParameterValueError = function () {
 FieldsParameterValueError.prototype = Object.create(ParameterValueError.prototype);
 FieldsParameterValueError.constructor = FieldsParameterValueError;
 
-var DepartureArrivalParameterValueError = function () {
+var DepartureArrivalParameterValueError = function (message) {
   this.name = name('Departure/Arrival Error');
   let m = 'Incorrect Parameters: Arrival time and departure time are not on the same date';
   m += ' or Arrival time occurs before departure time';
-  this.messgae = message(m);
+  this.messgae = message(message || m);
 };
 DepartureArrivalParameterValueError.prototype = Object.create(ParameterValueError.prototype);
 DepartureArrivalParameterValueError.constructor = DepartureArrivalParameterValueError;

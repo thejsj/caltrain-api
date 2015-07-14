@@ -343,7 +343,7 @@ describe('/train', () => {
 
     describe('Time Formats', () => {
       var departureTestTime = new Date('Mon Mar 09 2015 08:35:41 GMT-0700 (PDT)');
-      var arrivalTestTime = new Date('Mon Mar 09 2015 22:35:41 GMT-0700 (PDT)');
+      var arrivalTestTime = new Date('Mon Mar 09 2015 12:35:41 GMT-0700 (PDT)');
       var __done__ = () => {};
 
       it('should accept ISO8601 timestamps for `departure` and `arrival`', (done) => {
