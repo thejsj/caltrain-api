@@ -34,10 +34,14 @@ var trainSearchController = (req, res) => {
     .spread((query, departureTime, arrivalTime) => {
       if (arrivalTime && departureTime) {
         if (arrivalTime.isBefore(departureTime)) {
-          throw new errors.DepartureArrivalParameterValueError();
+          throw new errors.DepartureArrivalParameterValueError(
+            arrivalTime.toISOString() + ' is before ' + departureTime.toISOString()
+          );
         }
         if (!arrivalTime.isSame(departureTime, 'day')) {
-          throw new errors.DepartureArrivalParameterValueError();
+          throw new errors.DepartureArrivalParameterValueError(
+            arrivalTime.toISOString() + ' is not the same day as ' + departureTime.toISOString()
+          );
         }
       }
       if (arrivalTime && arrivalTime.isBefore('2000-01-01') && typeof params.arrival === 'number') {
