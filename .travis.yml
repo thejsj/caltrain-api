@@ -13,7 +13,9 @@ before_script:
   - rethinkdb --bind all --daemon
   - python ./scraper -i -g -c -db caltrain_test
 node_js:
-  - 'iojs-v1.4.2'
+  - "0.11"
+  - "0.12"
+  - "iojs"
 python:
   - '2.7'
 branches:

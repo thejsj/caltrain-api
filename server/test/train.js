@@ -355,7 +355,10 @@ describe('/train', () => {
         })
           .then(arrivalTimeTest.bind(null, __done__, arrivalTestTime.toString()))
           .then(departureTimeTest.bind(null, done, departureTestTime.toString()))
-          .catch(done);
+          .catch(function (err) {
+            console.log(err);
+            done(err);
+          });
       });
 
       it('should accept UNIX timestamps (with milliseconds) for `departure` and `arrival`', (done) => {
@@ -379,7 +382,10 @@ describe('/train', () => {
         })
           .then(arrivalTimeTest.bind(null, __done__, arrivalTestTime.toString()))
           .then(departureTimeTest.bind(null, done, departureTestTime.toString()))
-          .catch(done);
+          .catch(function (err) {
+            console.log(err);
+            done(err);
+          });
       });
 
       it('should accept JSON Time string for `departure` and `arrival`', (done) => {
