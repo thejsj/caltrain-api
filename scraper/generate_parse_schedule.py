@@ -160,5 +160,10 @@ class ScheduleParser():
               #   train_times[train_number]['stations'][day_type][direction] = {}
               train_times[train_number]['times'][day_type].append(time)
               train_times[train_number]['stations'][day_type][station['slug']] = time
+      # Sort times in trains
+      for train_number in train_times:
+        # Sort times
+        for day in train_times[train_number]['times']:
+          train_times[train_number]['times'][day].sort()
       return train_times, station_times
     return parse_schedule
