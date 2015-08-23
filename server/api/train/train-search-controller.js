@@ -1,6 +1,7 @@
 'use strict';
 var q = require('q');
 var moment = require('moment');
+var config = require('config');
 
 var r = require('../../db');
 var respond = require('../response-handler').responseHandler;
@@ -68,12 +69,16 @@ var trainSearchController = (req, res) => {
       }
       // Get by direction
       if (params.to !== undefined && params.from !== undefined) {
-        return getSingleStationLocationIndexQuery(params.to)
-          .gt(getSingleStationLocationIndexQuery(params.from))
-          .run(r.conn)
-          .then((isNorth) => {
-            query = query.filter({'direction': (isNorth ? 'north' : 'south')});
-            return [query, departureTime, arrivalTime];
+        return r.connect(config.get('rethinkdb'))
+          .then((conn) => {
+            return getSingleStationLocationIndexQuery(params.to)
+              .gt(getSingleStationLocationIndexQuery(params.from))
+              .run(conn)
+              .finally(() => conn.close())
+              .then((isNorth) => {
+                query = query.filter({'direction': (isNorth ? 'north' : 'south')});
+                return [query, departureTime, arrivalTime];
+              });
           });
       }
       return [query, departureTime, arrivalTime];

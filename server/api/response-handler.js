@@ -40,9 +40,13 @@ var successHandler = (res, jsonResponseObject) => {
   }
   return q()
     .then(() => {
-      return r.table('meta')('last_modified')
-        .max().toISO8601()
-        .run(r.conn);
+      return r.connect(config.get('rethinkdb'))
+        .then((conn) => {
+          return r.table('meta')('last_modified')
+            .max().toISO8601()
+            .run(conn)
+            .finally(() => conn.close());
+        });
     })
     .then((last_modified) => {
       res.set('Last-Modified', last_modified);
@@ -61,7 +65,10 @@ var errorHandler = (res, err) => {
 };
 
 var runHandler = (query) => {
-  return query.run(r.conn);
+  return r.connect(config.get('rethinkdb'))
+    .then((conn) => {
+      return query.run(conn).finally(() => conn.close());
+    });
 };
 
 var queryErrorHandler = (err) => {
