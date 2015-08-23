@@ -7,7 +7,7 @@
     "babel-node": "babel-node --stage 0 --ignore='foo|bar|baz'",
     "test": "export NODE_ENV='test'; ./node_modules/mocha/bin/mocha --compilers js:babel/register server/test/index.js",
     "dev": "./node_modules/nodemon/bin/nodemon.js --exec npm run babel-node -- server/index.js",
-    "activate": "source venv/bin/activate",
+    "activate": "source ./venv/bin/activate",
     "import": "python scraper -g -i -db caltrain_test && python ./scraper -g -i",
     "start": "node ./server",
     "docs": "cp README.md docs/index.md && ./node_modules/docco/bin/docco --layout=linear ./docs/index.md"
