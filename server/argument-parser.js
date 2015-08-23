@@ -2,6 +2,7 @@
 var _ = require('lodash');
 var moment = require('moment');
 
+var responseHandler = require('./api/response-handler').responseHandler;
 var splitAndTrim = require('./utils').splitAndTrim;
 
 var camelCase = (input) => {
@@ -58,17 +59,38 @@ var argumentParser = () => {
         if (camelCase(key)) params[camelCase(key)] = val;
       }
     }
+    var getDate = function (time, name, res) {
+      var date = new Date((function () {
+        if (
+          typeof time === 'number' ||
+          typeof time === 'string' && time.match(/^[0-9]*$/) !== null
+        ) {
+          return +(time);
+        }
+        return time;
+      }()));
+      if (date.toString() === 'Invalid Date') {
+         return responseHandler(
+           res,
+           new Error('Timestamp/Data provided for `' + name + '` is invalid')
+         );
+      }
+      return date;
+    };
     params.queryDay = moment(() => {
       if (params.queryDay !== undefined) {
-        return moment(new Date(params.queryDay));
+        var queryDay = getDate(params.queryDay);
+        return moment(queryDay);
       }
       if (params.departure !== undefined) {
-        return moment(new Date(params.departure)).set({
+        var departure = getDate(params.departure);
+        return moment(departure).set({
           hour: 1, minute: 0, seconds: 0, milliseconds: 0
         });
       }
       if (params.arrival !== undefined) {
-        return moment(new Date(params.arrival)).set({
+        var arrival = getDate(params.arrival);
+        return moment(arrival).set({
           hour: 1, minute: 0, seconds: 0, milliseconds: 0
         });
       }
