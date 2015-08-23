@@ -1,11 +1,30 @@
-
 ## TODO
+
+[ ] Scraper
+    [ ] Shuttle Bus
+ 
+[ ] Delays
+    [ ] Connect to Twitter API
+
+[ ] Create API
+    [ ] Add Pagination http://dev.billysbilling.com/blog/How-to-make-your-API-better-than-the-REST
+    [ ] Add Rate Limiting http://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api#rate-limiting
+    [ ] Adding Google Analytics to API Request
+    [ ] Add better tests for trains/stations that don't exist
+
+[ ] Deployment
+    [ ] Add Varnish
+
+[ ] Tests
+    [ ] Add tests for trains past midnight
+    [ ] Test weekend trains
+
+## DONE
 
 [x] Scraper
     [x] Add Saturday VS. Sunday Service
     [x] Add Express/Limited/Local
     [x] Write Tests
-    [ ] Shuttle Bus
     [x] Train may leave up to 5 minutes early
     [x] Train departure may be delayed up to 15 minutes
     [x] Add am and pm
@@ -28,7 +47,7 @@
     [x] Create indexes
     [x] Add documents
 
-[ ] Create API
+[x] Create API
     [x] Install io.js
     [x] Add express.js, bodyParser
     [x] Add Routes
@@ -47,34 +66,24 @@
     [x] Append times for today or departure arrival day (Add option)
         [x] Parse times into ISO 8601
         [x] Add option for time format parsing
-    [ ] Add Pagination http://dev.billysbilling.com/blog/How-to-make-your-API-better-than-the-REST
-    [ ] Add Rate Limiting http://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api#rate-limiting
     [x] ETag http://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api#caching
     [x] Last Modified http://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api#caching
-    [ ] Adding Google Analytics to API Request
     [x] Add way to query all stations.
         [x] Don't throw an error when no `name` or `from`/`to` are passed
     [x] Add way to query all trains
     [x] Time Format - Specify time format in which to render times
     [x] Remove querying by ID (ID might change when importing data)
-    [ ] Add better tests for trains/stations that don't exist
-
-[ ] Delays
-  [ ] Connect to Twitter API
-  [ ]
-
-[ ] Tests
-    [x] Add tests for timestamps
-    [ ] Add tests for trains past midnight
-    [ ] Add tests for all trains having `times` and `stations`
-    [ ] Add tests for all stations having `times` and `trains`
-
-[x] Deployment
-    [x] Add fig files
-    [x] Add GZip
-    [ ] Add Varnish
 
 [x] Improving README
     [x] Add example response
     [x] Add example queries in url format
     [x] Make it clear that you can search for stations
+
+[x] Deployment
+    [x] Add fig files
+    [x] Add GZip
+
+[x] Tests
+    [x] Add tests for timestamps
+    [x] Add tests for all trains having `times` and `stations`
+    [x] Add tests for all stations having `times` and `trains`
