@@ -15,6 +15,7 @@ var get381Train = (param, sendObject) => {
 var searchTrains = (sendObject) => {
   return agent.get('/v1/train/').send(sendObject || { from: '22nd-street' });
 };
+var weekdayMorningTimeString = 'Tue Mar 03 2015 08:17:43 GMT-0700 (PST)';
 
 describe('Metadata', () => {
 
@@ -79,9 +80,12 @@ describe('Metadata', () => {
 
     it('should accept arbitrary time formats (`YYYY`)', (done) => {
       var year = moment().format('YYYY');
-      get381Train(false, {'timeFormat': 'YYYY'})
+      get381Train(false, {'timeFormat': 'YYYY', 'departure': weekdayMorningTimeString })
         .expect(200)
         .then((res) => {
+          res.body.should.have.property('times');
+          res.body.times.should.be.an.Array;
+          res.body.times.length.should.be.above(0);
           res.body.times.forEach((time) => {
             time.should.equal(year);
           });
@@ -89,7 +93,8 @@ describe('Metadata', () => {
             time.should.equal(year);
           });
           done();
-        });
+        })
+        .catch(done);
     });
 
     it('should accept arbitrary time formats (`YYYY MM`)', (done) => {

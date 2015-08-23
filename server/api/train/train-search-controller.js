@@ -62,10 +62,23 @@ var trainSearchController = (req, res) => {
         throw new errors.DepartureQueryDayParameterValueError(message);
       }
       if (params.from !== undefined) {
-        query = query.hasFields(arrayToObject('stations', getWeekday(departureTime), params.from, true));
+        query = query.hasFields(
+          arrayToObject(
+            'stations',
+            getWeekday(departureTime, params.queryDay),
+            params.from,
+            true
+          )
+        );
       }
       if (params.to !== undefined) {
-        query = query.hasFields(arrayToObject('stations', getWeekday(departureTime), params.to, true));
+        query = query.hasFields(
+          arrayToObject(
+            'stations',
+            getWeekday(departureTime, params.queryDay),
+            params.to,
+            true)
+        );
       }
       // Get by direction
       if (params.to !== undefined && params.from !== undefined) {
@@ -91,8 +104,13 @@ var trainSearchController = (req, res) => {
         }
         var departureTimeInMinutes = (+departureTime.format('H')) * 60 + (+departureTime.format('m'));
         query = query
-          .hasFields(arrayToObject('stations', getWeekday(departureTime), true))
-          .filter(r.row('stations')(getWeekday(departureTime))(params.from).gt(departureTimeInMinutes));
+          .hasFields(
+            arrayToObject('stations', getWeekday(departureTime, params.queryDay), true)
+          )
+          .filter(
+            r.row('stations')(getWeekday(departureTime, params.queryDay))(params.from)
+            .gt(departureTimeInMinutes)
+          );
       }
       if (arrivalTime) {
         if (params.to === undefined) {
@@ -100,8 +118,13 @@ var trainSearchController = (req, res) => {
         }
         var arrivalTimeInMinutes = (+arrivalTime.format('H')) * 60 + (+arrivalTime.format('m'));
         query = query
-          .hasFields(arrayToObject('stations', getWeekday(arrivalTime), true))
-          .filter(r.row('stations')(getWeekday(arrivalTime))(params.from).lt(arrivalTimeInMinutes));
+          .hasFields(
+            arrayToObject('stations', getWeekday(arrivalTime, params.queryDay), true)
+          )
+          .filter(
+            r.row('stations')(getWeekday(arrivalTime, params.queryDay))(params.from)
+            .lt(arrivalTimeInMinutes)
+          );
       }
       return [query, departureTime, arrivalTime];
     })

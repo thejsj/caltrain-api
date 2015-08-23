@@ -25,7 +25,7 @@ var successHandler = (res, jsonResponseObject) => {
     if(jsonResponseObject.length > 0 && keys.length === 0) {
       throw new errors.FieldsParameterValueError();
     }
-    jsonResponseObject.forEach(parseTimeInEntry.bind(
+    jsonResponseObject = jsonResponseObject.map(parseTimeInEntry.bind(
       null,
       params.queryDay,
       params.timeFormat
@@ -36,7 +36,7 @@ var successHandler = (res, jsonResponseObject) => {
     if (!Array.isArray(jsonResponseObject) && keys.length === 0) {
       throw new errors.FieldsParameterValueError();
     }
-    parseTimeInEntry(params.queryDay, params.timeFormat, jsonResponseObject);
+    jsonResponseObject = parseTimeInEntry(params.queryDay, params.timeFormat, jsonResponseObject);
   }
   return q()
     .then(() => {

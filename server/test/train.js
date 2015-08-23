@@ -99,10 +99,10 @@ describe('/train', () => {
   });
 
   describe('/', () => {
-    var weekdayMorningTimeString = 'Tue Mar 03 2015 08:17:43 GMT-0800 (PST)';
-    var weekdayEveningTimeString = 'Wed Mar 04 2015 20:42:37 GMT-0800 (PST)';
-    var saturdayTimeString = 'Sat Mar 07 2015 20:42:37 GMT-0800 (PST)';
-    var sundayTimeString = 'Sun Mar 08 2015 20:42:37 GMT-0800 (PST)';
+    var weekdayMorningTimeString = 'Tue Mar 03 2015 08:17:43 GMT-0700 (PST)';
+    var weekdayEveningTimeString = 'Wed Mar 04 2015 19:42:37 GMT-0800 (PST)';
+    var saturdayTimeString = 'Sat Mar 07 2015 19:42:37 GMT-0800 (PST)';
+    var sundayTimeString = 'Sun Mar 08 2015 19:42:37 GMT-0800 (PST)';
 
     it('should return an array', (done) => {
       searchTrains({})
@@ -220,7 +220,7 @@ describe('/train', () => {
           .catch(done);
         });
 
-      it('should only get trains that depart after the arrival time on Saturdays', (done) => {
+      it('should only get weekend trains that depart after the arrival time on Saturdays', (done) => {
         searchTrains({
           'from': '22nd-street',
           'to': 'mountain-view',
@@ -228,6 +228,10 @@ describe('/train', () => {
         })
           .then((res) => {
             var departureTime = moment(new Date(saturdayTimeString));
+            res.body.forEach((train) => {
+              // Weekend/Sunday trains start with a '4'
+              train.number.toString()[0].should.equal('4');
+            });
             res.body.length.should.be.above(0);
             res.body.forEach((train) => {
               train.stations.should.not.equal(undefined);
@@ -238,7 +242,7 @@ describe('/train', () => {
           .catch(done);
 
       });
-      it('should only get trains that depart after the arrival time on Sundays', (done) => {
+      it('should only get weekend trains that depart after the arrival time on Sundays', (done) => {
         searchTrains({
           'from': '22nd-street',
           'to': 'mountain-view',
@@ -247,6 +251,9 @@ describe('/train', () => {
           .then((res) => {
             var departureTime = moment(new Date(sundayTimeString));
             res.body.length.should.be.above(0);
+            res.body.forEach((train) => {
+              train.number.toString()[0].should.equal('4');
+            });
             res.body.forEach((train) => {
               train.stations.should.not.equal(undefined);
               departureTime.isBefore(train.stations['22nd-street']);
@@ -424,7 +431,8 @@ describe('/train', () => {
         searchTrains({
           'from': '22nd-street',
           'to': 'mountain-view',
-          'type': 'express'
+          'type': 'express',
+          'departure': weekdayMorningTimeString
         })
           .then((res) => {
             res.body.length.should.be.above(0);
@@ -440,7 +448,8 @@ describe('/train', () => {
         searchTrains({
           'from': '22nd-street',
           'to': 'mountain-view',
-          'type': 'express, limited'
+          'type': 'express, limited',
+          'departure': weekdayMorningTimeString
         })
           .then((res) => {
             res.body.length.should.be.above(0);
