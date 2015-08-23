@@ -4,6 +4,7 @@
 
 # Logs and Python
 *.pyc
+**/*.pyc
 *.log
 **/*.pyc
 **/*.log

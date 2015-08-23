@@ -1,7 +1,5 @@
 #!/usr/bin/python
 from slugify import slugify
-from time import sleep
-from pygeocoder import Geocoder
 import uuid
 import re
 
@@ -76,7 +74,7 @@ class ScheduleParser():
   def n_or_s(self, train_number):
     return  ('south' if int(train_number) % 2 == 0 else 'north')
 
-  def generate_parse_schedule(self, first_index, last_index, day_type):
+  def generate_parse_schedule(self, first_index, last_index, day_type, geolocations):
     def parse_schedule(soup, table_class, **kwargs):
       station_times = kwargs['station_times']
       train_times = kwargs['train_times']
@@ -122,9 +120,7 @@ class ScheduleParser():
               'trains': { }
             }
             if append_geolocation:
-              sleep(0.2)
-              location = Geocoder.geocode(station_name + " Caltrain Station, CA")
-              coordinates = location[0].coordinates
+              coordinates = geolocations[slug] # Throw error if coordinates are not present!
               station_times[slug]['coordinates'] = {}
               station_times[slug]['coordinates']['latitude'] = coordinates[0]
               station_times[slug]['coordinates']['longitude'] = coordinates[1]

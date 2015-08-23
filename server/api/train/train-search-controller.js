@@ -51,10 +51,14 @@ var trainSearchController = (req, res) => {
         throw new errors.UnixTimestampFormattingError();
       }
       if (arrivalTime && !arrivalTime.isSame(params.queryDay, 'day')) {
-        throw new errors.ArrivalQueryDayParameterValueError();
+        let message = 'Arrival time (' + arrivalTime.toString() + ') is not in ';
+        message += 'the same day as query day (' + params.queryDay + ')';
+        throw new errors.ArrivalQueryDayParameterValueError(message);
       }
       if (departureTime && !departureTime.isSame(params.queryDay, 'day')) {
-        throw new errors.DepartureQueryDayParameterValueError();
+        let message = 'Departure time (' + departureTime.toString() + ') is not in ';
+        message += 'the same day as query day (' + params.queryDay + ')';
+        throw new errors.DepartureQueryDayParameterValueError(message);
       }
       if (params.from !== undefined) {
         query = query.hasFields(arrayToObject('stations', getWeekday(departureTime), params.from, true));

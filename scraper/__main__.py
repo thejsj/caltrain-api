@@ -16,9 +16,11 @@ class CaltrainScraper():
     args = parser.parse_args(sys.argv[1:])
 
     schedule_parser = ScheduleParser()
-    self.parse_weekday_schedule = schedule_parser.generate_parse_schedule(2, 2, 'weekday')
-    self.parse_saturday_schedule = schedule_parser.generate_parse_schedule(3, 0, 'saturday')
-    self.parse_sunday_schedule = schedule_parser.generate_parse_schedule(3, 0, 'sunday')
+    f = open(self.get_location("station-geolocations", 'json'), 'r')
+    geolocations = json.loads(f.read())
+    self.parse_weekday_schedule = schedule_parser.generate_parse_schedule(2, 2, 'weekday', geolocations)
+    self.parse_saturday_schedule = schedule_parser.generate_parse_schedule(3, 0, 'saturday', geolocations)
+    self.parse_sunday_schedule = schedule_parser.generate_parse_schedule(3, 0, 'sunday', geolocations)
 
     urls = {
       'saturday': 'http://www.caltrain.com/schedules/weekend-timetable.html',
